@@ -105,9 +105,35 @@ class StatusHandler(tornado.web.RequestHandler):
         self.write(json.dumps(info))
 
 
+class SetProtectHandler(tornado.web.RequestHandler):
+    def get(self):
+        g = GuardState()
+        h = HouseState()
+        pmode = self.get_argument('protect', 'unknown')
+        print(pmode)
+        if pmode == 'indoors':
+            h.ind()
+        if pmode == 'outgoing':
+            h.outg()
+        g.setup_guard()
+        self.write('{"result":"OK"}')
+
+
 class StaticHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
+
+
+class CancelProtectHandler(tornado.web.RequestHandler):
+    def get(self):
+        g = GuardState()
+        action = self.get_argument('action', 'unknown')
+        passwd = self.get_argument('passwd', 'unknown')
+        print(passwd)
+        if action == 'cancel':
+            g.remove_guard()
+
+        self.write('{"result":"OK"}')
 
 
 class TornadoServer(object):
@@ -121,8 +147,8 @@ class TornadoServer(object):
                 (r"/disable_alarm", JsonHandler),
                 (r"/set_password", JsonHandler),
                 (r"/set_device_position", JsonHandler),
-                (r"/set_house_status", JsonHandler),
-                (r"/set_guard", JsonHandler),
+                (r"/set_cancel_protected", CancelProtectHandler),
+                (r"/set_protect_start", SetProtectHandler),
                 (r"/", StaticHandler),
             ],
             static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -158,7 +184,7 @@ if __name__ == '__main__':
 
         def every_time(self):
             WebSocketHandler.send_to_all({'event': 'loop'})
-            timer = threading.Timer(2, self.every_time)
+            timer = threading.Timer(30, self.every_time)
             timer.setDaemon(True)
             timer.start()
 
@@ -203,17 +229,6 @@ if __name__ == '__main__':
         def get(self):
             self.render('index.html')
 
-    class SetProtectHandler(tornado.web.RequestHandler):
-        def get(self):
-            g = GuardState()
-            h = HouseState()
-            pmode = self.get_argument('protect', 'unknown')
-            print(pmode)
-            if pmode == 'indoors':
-                h.ind()
-            if pmode == 'outgoing':
-                h.outg()
-            g.setup_guard()
 
 
     wapp = tornado.web.Application(
@@ -223,7 +238,7 @@ if __name__ == '__main__':
             (r"/disable_alarm", DisAlarmHandler),
             (r"/set_password", SetPasswordHandler),
             (r"/set_device_position", SetDevPosHandler),
-            (r"/set_house_status", JsonHandler),
+            (r"/set_cancel_protected", CancelProtectHandler),
             (r"/set_protect_start", SetProtectHandler),
             (r"/", StaticHandler),
         ],

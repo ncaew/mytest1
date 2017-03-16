@@ -11,7 +11,7 @@ class OicDevice(object):
     motion_device_type = ['oic.d.irintrusiondetector']
     fatal_device_type = ['oic.d.flammablegasdetector', 'oic.d.smokesensor',
                          'oic.d.waterleakagedetector']
-    alarm_device_type = []
+    alarm_device_type = ['oic.d.alarm']
 
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
                              'oic.r.sensor.smoke', 'oic.r.sensor.water']
@@ -35,9 +35,9 @@ class OicDevice(object):
 
         return link['rt']
 
-    def is_detector_alarm(self):
+    def is_detector(self):
         return self.is_invade_detector() or self.is_motion_detector() \
-               or self.is_fatal_detector() or self.is_alarmer()
+               or self.is_fatal_detector()
 
     def is_invade_detector(self):
         return self.type in OicDevice.invade_device_type
@@ -75,6 +75,7 @@ class OicDeviceManager(object):
         self._locker = threading.Lock()
         self._oic_info = {}
         self._devices = {}
+        self._alarm_devices = {}
 
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
@@ -125,7 +126,7 @@ class OicDeviceManager(object):
 
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
-                if d.is_detector_alarm():
+                if d.is_detector():
                     d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
                     self._devices[devid] = d
