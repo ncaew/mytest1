@@ -8,6 +8,7 @@ import tornado.options
 import tornado.httpclient
 import tornado.websocket
 from oicmgr import OicDeviceManager
+import threading
 
 import json
 from state import GuardState, HouseState, AlarmState
@@ -135,9 +136,11 @@ class TornadoServer(object):
 
 ##MAIN
 if __name__ == '__main__':
-    json_files = os.listdir('json')
-    print(json_files)
-    i = 0
+    k = 0
+    json_path = 'json/'
+    json_files = os.listdir(json_path)
+    num = len(json_files)
+    print(json_files, num)
 
 
     class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -149,11 +152,19 @@ if __name__ == '__main__':
 
         @staticmethod
         def send_to_all(message):
+            print(json.dumps(message))
             for c in WebSocketHandler.clients:
                 c.write_message(json.dumps(message))
 
+        def every_time(self):
+            WebSocketHandler.send_to_all({'event': 'loop'})
+            timer = threading.Timer(2, self.every_time)
+            timer.setDaemon(True)
+            timer.start()
+
         def open(self):
             WebSocketHandler.clients.add(self)
+            self.every_time()
 
         def on_close(self):
             WebSocketHandler.clients.remove(self)
@@ -161,43 +172,53 @@ if __name__ == '__main__':
         def on_message(self, message):
             pass
 
+
     class StatusHandler(tornado.web.RequestHandler):
+
         def get(self):
-            self.write(json.dumps(test_data))
+            global k
+            i = k % num
+
+            f = open(json_path + json_files[i], mode='rt')
+            self.write(f.read())
+            k += 1
+
 
     class DisAlarmHandler(tornado.web.RequestHandler):
         def get(self):
-            test_data['alarm_status'] = 'quiet'
-            self.write(json.dumps(test_data))
+            pass
 
 
     class SetPasswordHandler(tornado.web.RequestHandler):
         def get(self):
-            self.write(json.dumps(test_data))
+            pass
+
 
     class SetDevPosHandler(tornado.web.RequestHandler):
         def get(self):
-            self.write(json.dumps(test_data))
+            pass
+
 
     class StaticHandler(tornado.web.RequestHandler):
         def get(self):
             self.render('index.html')
 
+
     wapp = tornado.web.Application(
-            handlers=[
-                (r"/ws", WebSocketHandler),
-                (r"/get_status", StatusHandler),
-                (r"/disable_alarm", DisAlarmHandler),
-                (r"/set_password", SetPasswordHandler),
-                (r"/set_device_position", SetDevPosHandler),
-                (r"/set_house_status", JsonHandler),
-                (r"/set_guard", JsonHandler),
-                (r"/", StaticHandler),
-            ],
-            static_path=os.path.join(os.path.dirname(__file__), "static"),
-            template_path=os.path.join(os.path.dirname(__file__), "template"),
-            debug=True,
-        )
+        handlers=[
+            (r"/ws", WebSocketHandler),
+            (r"/get_status", StatusHandler),
+            (r"/disable_alarm", DisAlarmHandler),
+            (r"/set_password", SetPasswordHandler),
+            (r"/set_device_position", SetDevPosHandler),
+            (r"/set_house_status", JsonHandler),
+            (r"/set_guard", JsonHandler),
+            (r"/", StaticHandler),
+        ],
+        static_path=os.path.join(os.path.dirname(__file__), "static"),
+        template_path=os.path.join(os.path.dirname(__file__), "template"),
+        debug=True,
+    )
 
     app = TornadoServer()
     app.set_web_app(wapp)
