@@ -203,6 +203,18 @@ if __name__ == '__main__':
         def get(self):
             self.render('index.html')
 
+    class SetProtectHandler(tornado.web.RequestHandler):
+        def get(self):
+            g = GuardState()
+            h = HouseState()
+            pmode = self.get_argument('protect', 'unknown')
+            print(pmode)
+            if pmode == 'indoors':
+                h.ind()
+            if pmode == 'outgoing':
+                h.outg()
+            g.setup_guard()
+
 
     wapp = tornado.web.Application(
         handlers=[
@@ -212,7 +224,7 @@ if __name__ == '__main__':
             (r"/set_password", SetPasswordHandler),
             (r"/set_device_position", SetDevPosHandler),
             (r"/set_house_status", JsonHandler),
-            (r"/set_guard", JsonHandler),
+            (r"/set_protect_start", SetProtectHandler),
             (r"/", StaticHandler),
         ],
         static_path=os.path.join(os.path.dirname(__file__), "static"),

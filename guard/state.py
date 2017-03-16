@@ -95,8 +95,8 @@ class HouseState(object):
 
     states = [in_house, out_house]
     transitions = [
-        {'trigger': 'in', 'source': 'outgoing', 'dest': 'indoors'},
-        {'trigger': 'out', 'source': 'indoors', 'dest': 'outgoing'},
+        {'trigger': 'ind', 'source': 'outgoing', 'dest': 'indoors'},
+        {'trigger': 'outg', 'source': 'indoors', 'dest': 'outgoing'},
     ]
 
     def __init__(self):
