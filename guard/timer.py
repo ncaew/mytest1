@@ -13,6 +13,7 @@ class Timer(object):
         self._tmargs = None
         self._timer = threading.Timer(step, self._action)
         self._count_down = 0
+        self.remain_second = 0
 
     def start(self):
         self._count_down = self._timeout / self._step
@@ -37,7 +38,8 @@ class Timer(object):
 
     def _action(self):
         self._count_down -= 1
-        print(self._count_down * self._step)
+
+        self.remain_second = self._count_down * self._step
         if self._count_down == 0:
             self._timer.cancel()
             if self._step_action is not None:

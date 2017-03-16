@@ -2,21 +2,21 @@
 
 # coding:utf-8
 
-import tornado.httpclient
+from bstm.tornado_server import TornadoServer
+from bstm.coapserver import *
+from bstm.oicmgr import OicDeviceManager
+from bstm.singleton import *
 import threading
+import tornado
 
 
-
-
+@singleton
 class SecureMonitor(object):
     def __init__(self):
         self.tornado = TornadoServer()
         self._coapsrv = CoAPServer('224.0.1.187', 5683, multicast=True)
         self._coapsrv_thread = threading.Thread(target=self._coapservice)
-        self._devmgr = OicDeviceManager()
-        self._secure_state = SecureStateMachine()
-        self._alarm_state = AlarmStateMachine()
-        self._house_state = HouseState()
+
 
     def _coapservice(self):
         while True:

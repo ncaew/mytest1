@@ -1,7 +1,7 @@
 from coapthon.server.coap import CoAP
 from coapthon.resources.resource import Resource
 import json
-from bstm.oicmgr import *
+import oicmgr
 
 
 class CoAPServer(CoAP):
@@ -49,17 +49,20 @@ class CoAPServer(CoAP):
 
         def render_POST(self, request):
             print request.payload
-            dev = json.loads(request.payload)
+            dev = oicmgr.json.loads(request.payload)
             print dev
-            OicDeviceManager().add_device(dev)
+            oicmgr.OicDeviceManager().add_device(dev)
 
-            return self
+            return True
 
         def render_DELETE(self, request):
             print(request.uri_query)
-            OicDeviceManager.del_device(request.uri_query)
+            oicmgr.OicDeviceManager.del_device(request.uri_query)
             return True
 
 if __name__ == '__main__':
-    srv = CoAPServer('224.0.1.187', 5683, multicast=True)
-    srv.listen(10)
+    try:
+        srv = CoAPServer('224.0.1.187', 5683, multicast=True)
+        srv.listen(10)
+    except KeyboardInterrupt:
+        srv.close()
