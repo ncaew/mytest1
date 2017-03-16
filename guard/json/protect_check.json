@@ -1,6 +1,7 @@
 ﻿{
   "status": "protect_check",
-  "_comment_status": "protect_check/protect_starting/protected/unlock_protect/alert/bell_ring/bell_view",
+  "status_chs":"未设防",
+  "_comment_status": "protect_check/protect_starting/protected/unlock_protect/alert_message/bell_ring/bell_view",
   "guard_status": "unguarded",
   "_comment_guard_status": "guarded/unguarded",
   "house_status": "indoors",
@@ -48,28 +49,32 @@
       "type": "smoke",
       "position": "厨房",
       "status_code": "3",
-      "status": "未锁"
+      "status": "未锁",
+      "alert_detail": "厨房窗未关闭"
     },
     {
       "uuid": "28e941a8-8798-4b5d-a008-a98bdec72bef",
       "type": "water",
-      "position": "南卧室",
+      "position": "卫生间",
       "status_code": "4",
-      "status": "未锁"
+      "status": "漏水",
+      "alert_detail": "卫生间漏水"
     },
     {
       "uuid": "5a35623b-40e9-4506-b007-17ecf06543bc",
       "type": "gas",
-      "position": "北卧室",
+      "position": "厨房",
       "status_code": "5",
-      "status": "未锁"
+      "status": "未锁",
+      "alert_detail": "厨房燃气泄漏"
     },
     {
       "uuid": "75e1e8eb-59b4-44cb-bc77-4fee544a2f5c",
       "type": "human",
       "position": "北卧室",
       "status_code": "6",
-      "status": "未锁"
+      "status": "未锁",
+      "alert_detail": "北卧室遭到入侵"
     }
   ]
 }
