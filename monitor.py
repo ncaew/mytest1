@@ -2,10 +2,10 @@
 
 # coding:utf-8
 
-from bstm.tornado_server import TornadoServer
-from bstm.coapserver import *
-from bstm.oicmgr import OicDeviceManager
-from bstm.singleton import *
+from guard.tornado_server import TornadoServer
+from guard.coapserver import *
+from guard.oicmgr import OicDeviceManager
+from guard.singleton import *
 import threading
 import tornado
 
