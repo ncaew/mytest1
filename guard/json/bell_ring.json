@@ -80,15 +80,17 @@
       "uuid": "a1a18ab6-a5db-48fb-a431-c56880859666",
       "type": "doorbutton",
       "position": "楼宇门禁",
-      "status_code": "0",
-      "status": "呼叫"
+      "status_code": "1",
+      "status": "呼叫",
+      "video_url": ""
     },
     {
       "uuid": "b2a18ab6-a5db-48fb-a431-c56880859666",
       "type": "doorbutton",
       "position": "户门",
       "status_code": "0",
-      "status": "待机"
+      "status": "待机",
+      "video_url": ""
     }
   ]
 }
