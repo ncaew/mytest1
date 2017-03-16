@@ -10,6 +10,14 @@ from coapthon.client.helperclient import HelperClient
 import socket
 from coapthon import defines
 
+import tornado.httpserver
+import tornado.web
+import tornado.ioloop
+import tornado.options
+import tornado.httpclient
+import tornado.websocket
+import os
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,14 +39,8 @@ class ObservableResource(Resource):
         return self
 
     def update(self, first=False):
-        v = self.info['value']
-        self.info['value'] = not v
         self.payload = json.dumps(self.info)
         if not self._coap_server.stopped.isSet():
-
-            timer = threading.Timer(self.period, self.update)
-            timer.setDaemon(True)
-            timer.start()
 
             if not first and self._coap_server is not None:
                 logger.debug("Periodic Update")
@@ -51,11 +53,11 @@ class CoAPServerPlugTest(CoAP):
         CoAP.__init__(self, (host, port), multicast, starting_mid)
 
         # create logger
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
 
         # create console handler and set level to debug
         ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
+        ch.setLevel(logging.INFO)
 
         # create formatter
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -65,10 +67,15 @@ class CoAPServerPlugTest(CoAP):
 
         # add ch to logger
         logger.addHandler(ch)
+        self.reslist = {}
+        self.obs = {}
 
     def add_resources(self, res=[]):
         for r in res:
-            self.add_resource(r.path, ObservableResource(coap_server=self, info=r.info))
+            self.reslist[r.info['id']] = r.info
+            o = ObservableResource(coap_server=self, info=r.info)
+            self.obs[r.info['id']] = o
+            self.add_resource(r.path, o)
 
 
 class MyResource(object):
@@ -78,11 +85,13 @@ class MyResource(object):
 
 
 if __name__ == '__main__':
+    server = CoAPServerPlugTest('127.0.0.1', 40000)
+
     def create_resource(devid, rnum, rt):
         mr = MyResource()
         mr.path = "ResURI%d" % rnum
-        mr.info = {'id': '%s' % devid,  'rt': 'oic.r.%s' % rt, 'value': 'False'}
-        print(json.dumps(mr.path))
+        mr.info = {'id': '%s' % devid,  'rt': 'oic.r.%s' % rt, 'value': False}
+
         print(json.dumps(mr.info))
         return mr
 
@@ -183,12 +192,79 @@ if __name__ == '__main__':
         timer.setDaemon(True)
         timer.start()
 
-    server = CoAPServerPlugTest('127.0.0.1', 40000)
+
+    class StaticHandler(tornado.web.RequestHandler):
+
+        def get(self):
+            self.write('It works')
+
+    class OicHandler(tornado.web.RequestHandler):
+
+        def get(self):
+            global server
+
+            self.write(json.dumps(server.reslist))
+
+    class ChangeOicHandler(tornado.web.RequestHandler):
+
+        def get(self):
+            global server
+
+            devid = self.get_argument('id')
+            print(server.reslist[devid])
+            oldval = server.reslist[devid]['value']
+
+            server.reslist[devid]['value'] = not oldval
+            o = server.obs[devid]
+            o.payload = json.dumps(o.info)
+            server.notify(o)
+            print(oldval)
+
+            self.write('{}')
+
+
+    class WebSocketHandler(tornado.websocket.WebSocketHandler):
+        """docstring for SocketHandler"""
+        clients = set()
+
+        def check_origin(self, origin):
+            return True
+
+        @staticmethod
+        def send_to_all(message):
+            print(json.dumps(message))
+            for c in WebSocketHandler.clients:
+                c.write_message(json.dumps(message))
+
+        def open(self):
+            WebSocketHandler.clients.add(self)
+
+        def on_close(self):
+            WebSocketHandler.clients.remove(self)
+
+        def on_message(self, message):
+            pass
+
+
+
     dlist, rlist = create_devices('127.0.0.1', 40000)
     server.add_resources(rlist)
     post_devices(dlist)
+    t = threading.Thread(target=server.listen, args=(10,))
+    t.start()
+    wapp = tornado.web.Application(
+        handlers=[
+            (r"/ws", WebSocketHandler),
+            (r"/", StaticHandler),
+            (r"/get_oicinfo", OicHandler),
+            (r"/change_oicinfo", ChangeOicHandler)
+        ],
+        static_path=os.path.join(os.path.dirname(__file__), "static"),
+        debug=True,
+    )
     try:
-        server.listen(10)
+        wapp.listen(8000)
+        tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
         print "Server Shutdown"
         server.close()

@@ -1,0 +1,107 @@
+﻿
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="my_define.css">
+<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+</head>
+ 	
+<body  style="left: 0px; top: 0px; width: 800px; height: 480px; ">
+
+
+<div id="body" class="clearfix container ">
+ 
+
+<!-- popup view -->
+<div class="modal fade" id="rolePopUp">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">设备状态设置</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>设备id</th>
+              <th>状态</th>
+              <th>资源类型</th>
+            </tr>
+          </thead>
+          <tbody id="rolePopUp_device_tr">
+          
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+
+  <script type="text/javascript" >
+		
+		$(document).ready(function(){//$(function($) {
+	
+		  		//init websocket
+				
+				$('#rolePopUp').modal("show")
+			
+				
+				
+		});
+	
+	      $('#rolePopUp').on('show.bs.modal', function() {
+				$.getJSON("http://127.0.0.1:8000/get_oicinfo", function(data) {
+						var strHTML=""
+						$.each(data,function (index,val){
+							console.log ( "alert_message   draw",val.id,val.rt,val.value)
+	
+							strHTML+="<tr><td>"+val.id+"</td>"
+							strHTML+="<td> <button type='button' class='btn btn-info' onclick='alert2(\""+val.id+"\")'>"+val.value+"</button></td>"
+							strHTML+="<td>"+val.rt+"</td></tr>"
+							
+
+
+						});
+						$('#rolePopUp_device_tr').html(strHTML)
+				});		
+		  });
+		  function alert2(uuid){
+					 $.ajax( {    
+												url:"http://127.0.0.1:8000/change_oicinfo",
+												data:{    
+														 id:uuid,
+														 oldval:"",
+														 newval:""
+												},    
+												type:'get',    
+												cache:false,    
+												dataType:'json',    
+												success:function(data) {
+												    $('#rolePopUp').modal("hide");
+												    $('#rolePopUp').on('hidden.bs.modal', function () {
+                                                                    $('#rolePopUp').modal("show") ;
+
+                                                     });
+												 },    
+												 error : function() {    
+													  alert("网络连接异常！");    
+												 }    
+											});
+		  }
+		  
+	  </script>
+
+</body>
+</html>
