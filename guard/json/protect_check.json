@@ -75,6 +75,20 @@
       "status_code": "6",
       "status": "未锁",
       "alert_detail": "北卧室遭到入侵"
+    },
+    {
+      "uuid": "a1a18ab6-a5db-48fb-a431-c56880859666",
+      "type": "doorbutton",
+      "position": "楼宇门禁",
+      "status_code": "0",
+      "status": "呼叫"
+    },
+    {
+      "uuid": "b2a18ab6-a5db-48fb-a431-c56880859666",
+      "type": "doorbutton",
+      "position": "户门",
+      "status_code": "0",
+      "status": "待机"
     }
   ]
 }
