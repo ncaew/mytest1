@@ -1,0 +1,75 @@
+{
+  "status": "protect_starting",
+  "_comment_status": "protect_check/protect_starting/protected/unlock_protect/alert/bell_ring/bell_view",
+  "guard_status": "unguarded",
+  "_comment_guard_status": "guarded/unguarded",
+  "house_status": "outgoing",
+  "_comment_house_status": "outgoing/indoors",
+  "protect_stime": "2016-10-10 18:30:00",
+  "_comment_protect_stime": "yyyy-MM-dd HH:mm:ss",
+  "bell_status": "standby",
+  "_comment_bell_status": "standby/ringing/conversation",
+  "alarm_status": "noalert",
+  "_comment_alarm_status": "noalert/alert",
+  "remain_second": -1,
+  "_comment_remain_second": "-1/0/1/2/... seconds",
+  "canprotect": [
+    {
+      "indoors": "can"
+    },
+    {
+      "outgoing": "cannot"
+    }
+  ],
+  "devices_status": [
+    {
+      "uuid": "f2a18ab6-a5db-48fb-a431-c56880859666",
+      "type": "door",
+      "position": "户外门",
+      "status_code": "0",
+      "status": "锁定"
+    },
+    {
+      "uuid": "ad0ac41e-b5d4-4d8a-9a01-5dcdb0d3aabd",
+      "type": "door",
+      "position": "户内门",
+      "status_code": "1",
+      "status": "未锁"
+    },
+    {
+      "uuid": "577c3bf5-b4dd-4ae9-9fa9-aed8e084d4fb",
+      "type": "window",
+      "position": "厨房窗",
+      "status_code": "2",
+      "status": "未关闭"
+    },
+    {
+      "uuid": "3e815873-a561-4db6-a2e6-570ae4bcf71e",
+      "type": "smoke",
+      "position": "厨房",
+      "status_code": "3",
+      "status": "未锁"
+    },
+    {
+      "uuid": "28e941a8-8798-4b5d-a008-a98bdec72bef",
+      "type": "water",
+      "position": "南卧室",
+      "status_code": "4",
+      "status": "未锁"
+    },
+    {
+      "uuid": "5a35623b-40e9-4506-b007-17ecf06543bc",
+      "type": "gas",
+      "position": "北卧室",
+      "status_code": "5",
+      "status": "未锁"
+    },
+    {
+      "uuid": "75e1e8eb-59b4-44cb-bc77-4fee544a2f5c",
+      "type": "human",
+      "position": "北卧室",
+      "status_code": "6",
+      "status": "未锁"
+    }
+  ]
+}
