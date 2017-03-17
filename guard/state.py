@@ -128,10 +128,15 @@ class AlarmState(object):
                                initial='noalert', ignore_invalid_triggers=True)
 
     def on_alarm(self):
+        from oicmgr import OicDeviceManager
         print('on_alarm')
+        OicDeviceManager().setup_alarm(True)
+
 
     def on_quiet(self):
+        from oicmgr import OicDeviceManager
         print('on_quiet')
+        OicDeviceManager().setup_alarm(False)
 
 if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)

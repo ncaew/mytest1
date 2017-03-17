@@ -3,6 +3,7 @@ from coapthon.utils import parse_uri
 import json
 from state import *
 from singleton import *
+import time
 
 
 class OicDevice(object):
@@ -77,6 +78,46 @@ class OicDeviceManager(object):
         self._devices = {}
         self._alarm_devices = {}
 
+    def setup_alarm(self, on, mode='alarm', seconds=6001):
+        alarm_uri = ''
+        fire_alarm_uri = ''
+        clock_uri = ''
+        for devid in self._alarm_devices.keys():
+            oic = self._oic_info[devid]
+            for link in oic['links']:
+                if link['href'].find('/AlarmSwitchResURI') > 0:
+                    alarm_uri = link['href']
+                if link['href'].find('/FireAlarmResURI') > 0:
+                    fire_alarm_uri = link['href']
+                if link['href'].find('/ClockResURI') > 0:
+                    clock_uri = link['href']
+
+            if on and seconds > 0 and len(clock_uri) > 0:
+                p = dict(id=devid, datetime=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                         countdown=seconds)
+                host, port, uri = parse_uri(clock_uri)
+                client = HelperClient(server=(host, port))
+                response = client.post(uri, json.dumps(p))
+                print(response.pretty_print())
+                client.stop()
+
+            if mode == 'alarm':
+                if len(alarm_uri) > 0:
+                    p = dict(id=devid, value=on)
+                    host, port, uri = parse_uri(alarm_uri)
+                    client = HelperClient(server=(host, port))
+                    response = client.post(uri, json.dumps(p))
+                    print(response.pretty_print())
+                    client.stop()
+            elif mode == 'fire':
+                if len(fire_alarm_uri) > 0:
+                    p = dict(id=devid, value=on)
+                    host, port, uri = parse_uri(fire_alarm_uri)
+                    client = HelperClient(server=(host, port))
+                    response = client.post(uri, json.dumps(p))
+                    print(response.pretty_print())
+                    client.stop()
+
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
         devid = info['id']
@@ -130,6 +171,9 @@ class OicDeviceManager(object):
                     d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
                     self._devices[devid] = d
+                if d.is_alarmer():
+                    self._oic_info[devid] = oicinfo
+                    self._alarm_devices[devid] = d
 
         except Exception as e:
             print(e.args)
@@ -181,7 +225,4 @@ if __name__ == '__main__':
             i -= 1
 
 
-    t1 = threading.Thread(target=thread_get_singleton, args=('thread1',))
-    t2 = threading.Thread(target=thread_get_singleton, args=('thread2',))
-    t1.start()
-    t2.start()
+    OicDeviceManager().setup_alarm(True)

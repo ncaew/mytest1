@@ -250,4 +250,7 @@ if __name__ == '__main__':
     app = TornadoServer()
     app.set_web_app(wapp)
     app.webapp.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        tornado.ioloop.IOLoop.instance().stop()

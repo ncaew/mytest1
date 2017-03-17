@@ -33,4 +33,7 @@ if __name__ == '__main__':
     sm = SecureMonitor()
     sm.start_coap_service()
     sm.tornado.webapp.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
+    try:
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        tornado.ioloop.IOLoop.instance().stop()
