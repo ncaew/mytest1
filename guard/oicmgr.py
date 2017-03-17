@@ -50,6 +50,7 @@ class OicDevice(object):
         return self.type in OicDevice.fatal_device_type
 
     def is_alarmer(self):
+        print(self.type)
         return self.type in OicDevice.alarm_device_type
 
     def observe_resources(self, oicinfo, cb):
@@ -123,19 +124,24 @@ class OicDeviceManager(object):
         devid = info['id']
         rt = info['rt']
         state = info['value']
+        if state in ['true', 'false']:
+            state = state == 'true'
         if devid in self._oic_info and devid in self._devices:
             dev = self._devices[devid]
             if rt in dev.res_state:
                 old_state = dev.res_state[rt]['value']
+                if old_state in ['true', 'false']:
+                    old_state = old_state == 'true'
             else:
                 old_state = False
 
             dev.res_state[rt] = info
+            print(old_state, state)
             if old_state is False and state is True:
                 WebSocketHandler.send_to_all(json.dumps(dev.res_state))
                 if dev.is_invade_detector():
                     GuardState().invade()
-                if dev.is_motion_detector() and HouseState().state == "out_house":
+                if dev.is_motion_detector() and HouseState().state == "outgoing":
                     GuardState().invade()
                 if dev.is_fatal_detector():
                     AlarmState().be_alarm()
