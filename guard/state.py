@@ -33,14 +33,14 @@ class GuardState(object):
         self.to_protect_timer = None
         self.remain_second = 0
 
-    def on_guard_every_time(self):
+    def on_guard_every_time(self, args):
         from tornado_server import WebSocketHandler
         info = {'event': 'guard_timer update'}
         self.remain_second = self.to_protect_timer.remain_second
         print(self.remain_second)
         WebSocketHandler.send_to_all(json.dumps(info))
 
-    def timeout_to_guard(self):
+    def timeout_to_guard(self, args):
         from tornado_server import WebSocketHandler
         print('on_timeout')
         self.remain_second = -1

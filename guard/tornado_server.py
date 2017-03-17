@@ -105,7 +105,7 @@ class StatusHandler(tornado.web.RequestHandler):
         self.write(json.dumps(info))
 
 
-class SetProtectHandler(tornado.web.RequestHandler):
+class SetProtectStartHandler(tornado.web.RequestHandler):
     def get(self):
         g = GuardState()
         h = HouseState()
@@ -136,6 +136,32 @@ class CancelProtectHandler(tornado.web.RequestHandler):
         self.write('{"result":"OK"}')
 
 
+class StopAlertHandler(tornado.web.RequestHandler):
+    def get(self):
+        alert_id = self.get_argument('alertid', '')
+        print("StopAlertHandler", alert_id)
+        AlarmState().be_quiet()
+        self.write('{"result": "OK"}')
+
+
+class SetProtectHandler(tornado.web.RequestHandler):
+    def get(self):
+        result = self.get_argument('result', '')
+        print("SetProtectHandler", result)
+        GuardState().setup_guard()
+        self.write('{"result": "OK"}')
+
+
+class BellHandler(tornado.web.RequestHandler):
+    def get(self):
+        bellid = self.get_argument('bellid', '')
+        action = self.get_argument('action', '')
+        print("SetProtectHandler", bellid, action)
+
+
+        self.write('{"result": "OK"}')
+
+
 class TornadoServer(object):
     """ Tornado web and websocket server"""
 
@@ -144,11 +170,13 @@ class TornadoServer(object):
             handlers=[
                 (r"/ws", WebSocketHandler),
                 (r"/get_status", StatusHandler),
-                (r"/disable_alarm", JsonHandler),
+                (r"/stop_alert", StopAlertHandler),
                 (r"/set_password", JsonHandler),
                 (r"/set_device_position", JsonHandler),
                 (r"/set_cancel_protected", CancelProtectHandler),
-                (r"/set_protect_start", SetProtectHandler),
+                (r"/set_protect_start", SetProtectStartHandler),
+                (r"/set_protect", SetProtectHandler),
+                (r"/bell_do", BellHandler),
                 (r"/", StaticHandler),
             ],
             static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -209,12 +237,6 @@ if __name__ == '__main__':
             self.write(f.read())
             k += 1
 
-
-    class DisAlarmHandler(tornado.web.RequestHandler):
-        def get(self):
-            pass
-
-
     class SetPasswordHandler(tornado.web.RequestHandler):
         def get(self):
             pass
@@ -235,11 +257,13 @@ if __name__ == '__main__':
         handlers=[
             (r"/ws", WebSocketHandler),
             (r"/get_status", StatusHandler),
-            (r"/disable_alarm", DisAlarmHandler),
+            (r"/stop_alert", StopAlertHandler),
             (r"/set_password", SetPasswordHandler),
             (r"/set_device_position", SetDevPosHandler),
             (r"/set_cancel_protected", CancelProtectHandler),
             (r"/set_protect_start", SetProtectHandler),
+            (r"/set_protect", SetProtectHandler),
+            (r"/bell_do", BellHandler),
             (r"/", StaticHandler),
         ],
         static_path=os.path.join(os.path.dirname(__file__), "static"),
