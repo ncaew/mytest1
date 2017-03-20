@@ -123,7 +123,7 @@ class OicDeviceManager(object):
 
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
-        from state import GuardState, AlarmState, HouseState
+        from state import GuardState, AlarmState, HouseState,StateControl
         devid = info['id']
         rt = info['rt']
         state = info['value']
@@ -147,7 +147,7 @@ class OicDeviceManager(object):
                 if dev.is_motion_detector() and HouseState().state == "outgoing":
                     GuardState().invade()
                 if dev.is_fatal_detector():
-                    AlarmState().be_alarm()
+                    StateControl().alert()
 
             if old_state != state:
                 info['old_value'] = old_state

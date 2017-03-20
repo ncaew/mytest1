@@ -154,21 +154,17 @@ class StateControl(object):
 
     def __init__(self):
         self.q = Queue.Queue()
+        self.state = 'protected'
 
     def update_status(self, status=None, timeout=-1):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
-        info = {'status': ''}
+
         if status is None:
-            if g.state in ['guarded', 'invaded'] and a.state == 'noalert':
-                info['status'] = 'protected'
-            if a.state == 'alert':
-                info['status'] = 'alert'
-            if g.state == 'unguarded' and a.state == 'noalert':
-                info['status'] = 'protect_check'
+            info = {'status': self.state}
         else:
-            info['status'] = status
+            info = {'status': status}
 
         if g.state in ['guarded', 'invaded']:
             info['guard_status'] = 'guarded'
@@ -214,16 +210,31 @@ class StateControl(object):
 
     def cancel_protect(self, action, password):
         print(action, password)
-        GuardState().remove_guard()
-        self.update_status('unlock_protect', 30)
+        if action == 'start':
+            self.update_status('unlock_protect', 30)
+        elif action == 'ok':
+            GuardState().remove_guard()
+            self.update_status('protect_check')
+        elif action == 'cancel':
+            self.update_status('protected')
 
     def stop_alert(self, alertid):
         print(alertid)
         AlarmState().be_quiet()
+        self.update_status('protect_check')
 
-    def set_protect(self):
-        GuardState().setup_guard()
-        self.update_status('protected')
+    def alert(self):
+        AlarmState().be_alarm()
+        self.update_status('alert_message')
+
+    def set_protect(self, result):
+        if result == 'cancel':
+            HouseState().ind()
+            GuardState().remove_guard()
+            self.update_status('protect_check')
+        else:
+            GuardState().setup_guard()
+            self.update_status('protected')
 
     def bell_do(self, bellid, action):
         print(bellid, action)

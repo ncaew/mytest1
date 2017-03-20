@@ -150,7 +150,7 @@ class SetProtectHandler(BaseHandler):
         result = self.get_argument('result', '')
         print("SetProtectHandler", result)
 
-        StateControl().set_protect()
+        StateControl().set_protect(result)
 
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
