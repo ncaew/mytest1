@@ -200,13 +200,16 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         print(mode)
-        if mode == 'indoors':
+        if mode == 'home':
             h.ind()
         if mode == 'outgoing':
             h.outg()
         g.setup_guard()
 
-        self.update_status('protect_starting', 30)
+        if mode == 'home':
+            self.update_status('protected')
+        else:
+            self.update_status('protect_starting', 30)
 
     def cancel_protect(self, action, password):
         print(action, password)
