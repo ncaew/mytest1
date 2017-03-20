@@ -102,10 +102,7 @@ class StatusHandler(tornado.web.RequestHandler):
         can.append(ind)
         can.append(out)
         info['canprotect'] = can
-        eventinfo = dict(handler=self.__class__.__name__, action='', result='OK')
-        event = dict(event='StatusChanged', info=eventinfo)
 
-        WebSocketHandler.send_to_all(event)
         self.write(info)
 
 
