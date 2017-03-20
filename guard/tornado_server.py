@@ -67,17 +67,37 @@ class JsonHandler(tornado.web.RequestHandler):
         '''
 
 
-class StatusHandler(tornado.web.RequestHandler):
+class BaseHandler(tornado.web.RequestHandler):
+    def set_default_headers(self):
+        self.set_header('Access-Control-Allow-Origin', '*')
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header('Access-Control-Max-Age', 1000)
+        # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
+        self.set_header('Access-Control-Allow-Headers', '*')
+        self.set_header('Content-type', 'application/json')
+
+
+class StatusHandler(BaseHandler):
+
+    def set_default_headers(self):
+        self.set_header('Access-Control-Allow-Origin', '*')
+        self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        self.set_header('Access-Control-Max-Age', 1000)
+        # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
+        self.set_header('Access-Control-Allow-Headers', '*')
+        self.set_header('Content-type', 'application/json')
+
     def get(self):
         if StateControl().q.empty():
-            StateControl().update_status(None)
+            print("q EEEEEEEEEEEEEEEEEEEEEEEEEEEMPTY")
+            StateControl().update_status()
 
         info = StateControl().get_status()
         print(info)
         self.write(info)
 
 
-class SetProtectStartHandler(tornado.web.RequestHandler):
+class SetProtectStartHandler(BaseHandler):
     def get(self):
 
         mode = self.get_argument('protect', 'unknown')
@@ -90,12 +110,12 @@ class SetProtectStartHandler(tornado.web.RequestHandler):
         self.write('{"result":"OK"}')
 
 
-class StaticHandler(tornado.web.RequestHandler):
+class StaticHandler(BaseHandler):
     def get(self):
         self.render('index.html')
 
 
-class CancelProtectHandler(tornado.web.RequestHandler):
+class CancelProtectHandler(BaseHandler):
     def get(self):
 
         action = self.get_argument('action', 'unknown')
@@ -111,7 +131,7 @@ class CancelProtectHandler(tornado.web.RequestHandler):
         self.write('{"result":"OK"}')
 
 
-class StopAlertHandler(tornado.web.RequestHandler):
+class StopAlertHandler(BaseHandler):
     def get(self):
         alert_id = self.get_argument('alertid', '')
         print("StopAlertHandler", alert_id)
@@ -125,7 +145,7 @@ class StopAlertHandler(tornado.web.RequestHandler):
         self.write('{"result": "OK"}')
 
 
-class SetProtectHandler(tornado.web.RequestHandler):
+class SetProtectHandler(BaseHandler):
     def get(self):
         result = self.get_argument('result', '')
         print("SetProtectHandler", result)
@@ -139,7 +159,7 @@ class SetProtectHandler(tornado.web.RequestHandler):
         self.write('{"result": "OK"}')
 
 
-class BellHandler(tornado.web.RequestHandler):
+class BellHandler(BaseHandler):
     def get(self):
         bellid = self.get_argument('bellid', '')
         action = self.get_argument('action', '')
@@ -219,7 +239,7 @@ if __name__ == '__main__':
             pass
 
 
-    class StatusHandler(tornado.web.RequestHandler):
+    class StatusHandler(BaseHandler):
 
         def get(self):
             global k
@@ -229,17 +249,17 @@ if __name__ == '__main__':
             self.write(f.read())
             k += 1
 
-    class SetPasswordHandler(tornado.web.RequestHandler):
+    class SetPasswordHandler(BaseHandler):
         def get(self):
             pass
 
 
-    class SetDevPosHandler(tornado.web.RequestHandler):
+    class SetDevPosHandler(BaseHandler):
         def get(self):
             pass
 
 
-    class StaticHandler(tornado.web.RequestHandler):
+    class StaticHandler(BaseHandler):
         def get(self):
             self.render('index.html')
 
