@@ -135,8 +135,8 @@ class CancelProtectHandler(tornado.web.RequestHandler):
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
         print(passwd)
-        if action == 'cancel':
-            g.remove_guard()
+
+        g.remove_guard()
 
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
         event = dict(event='StatusChanged', info=info)
