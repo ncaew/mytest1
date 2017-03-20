@@ -123,7 +123,7 @@ class OicDeviceManager(object):
 
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
-        from state import *
+        from state import GuardState, AlarmState, HouseState
         devid = info['id']
         rt = info['rt']
         state = info['value']

@@ -183,9 +183,11 @@ class StateControl(object):
         can = []
         ind = {'indoors': 'cannot'}
         out = {'outgoing': 'cannot'}
+        #if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
         if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
             ind = {'indoors': 'can'}
             out = {'outgoing': 'cannot'}
+        #if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
         if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
             ind = {'indoors': 'cannot'}
             out = {'outgoing': 'can'}
