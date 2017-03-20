@@ -7,11 +7,11 @@ import tornado.ioloop
 import tornado.options
 import tornado.httpclient
 import tornado.websocket
-from oicmgr import OicDeviceManager
+
 import threading
 
 import json
-from state import GuardState, HouseState, AlarmState
+from state import StateControl
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -69,54 +69,20 @@ class JsonHandler(tornado.web.RequestHandler):
 
 class StatusHandler(tornado.web.RequestHandler):
     def get(self):
-        g = GuardState()
-        h = HouseState()
-        a = AlarmState()
-        info = {'status': ''}
-        if g.state in ['guarded', 'invaded'] and a.state == 'noalert':
-            info['status'] = 'protected'
-        if a.state == 'alert':
-            info['status'] = 'alert'
-        if g.state == 'unguarded' and a.state == 'noalert':
-            info['status'] = 'protect_check'
-        if g.state in ['guarded', 'invaded']:
-            info['guard_status'] = 'guarded'
-        else:
-            info['guard_status'] = 'unguarded'
+        if StateControl().q.empty():
+            StateControl().update_status(None)
 
-        info['house_status'] = h.state
-        info['alarm_status'] = a.state
-        info['bell_status'] = 'standby'
-        info['remain_second'] = g.remain_second
-        info['devices_status'] = OicDeviceManager().get_devices()
-        can = []
-        ind = {'indoors': 'cannot'}
-        out = {'outgoing': 'cannot'}
-        if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
-            ind = {'indoors': 'can'}
-            out = {'outgoing': 'cannot'}
-        if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
-            ind = {'indoors': 'cannot'}
-            out = {'outgoing': 'can'}
-
-        can.append(ind)
-        can.append(out)
-        info['canprotect'] = can
-
+        info = StateControl().get_status()
+        print(info)
         self.write(info)
 
 
 class SetProtectStartHandler(tornado.web.RequestHandler):
     def get(self):
-        g = GuardState()
-        h = HouseState()
-        pmode = self.get_argument('protect', 'unknown')
-        print(pmode)
-        if pmode == 'indoors':
-            h.ind()
-        if pmode == 'outgoing':
-            h.outg()
-        g.setup_guard()
+
+        mode = self.get_argument('protect', 'unknown')
+        StateControl().set_protect_start(mode)
+
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
 
@@ -131,12 +97,12 @@ class StaticHandler(tornado.web.RequestHandler):
 
 class CancelProtectHandler(tornado.web.RequestHandler):
     def get(self):
-        g = GuardState()
+
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
         print(passwd)
 
-        g.remove_guard()
+        StateControl().cancel_protect(action=action, password=passwd)
 
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
         event = dict(event='StatusChanged', info=info)
@@ -149,7 +115,9 @@ class StopAlertHandler(tornado.web.RequestHandler):
     def get(self):
         alert_id = self.get_argument('alertid', '')
         print("StopAlertHandler", alert_id)
-        AlarmState().be_quiet()
+
+        StateControl().stop_alert(alertid=alert_id)
+
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
 
@@ -161,7 +129,9 @@ class SetProtectHandler(tornado.web.RequestHandler):
     def get(self):
         result = self.get_argument('result', '')
         print("SetProtectHandler", result)
-        GuardState().setup_guard()
+
+        StateControl().set_protect()
+
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
 
@@ -174,6 +144,8 @@ class BellHandler(tornado.web.RequestHandler):
         bellid = self.get_argument('bellid', '')
         action = self.get_argument('action', '')
         print("SetProtectHandler", bellid, action)
+
+        StateControl().bell_do(bellid=bellid, action=action)
 
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
         event = dict(event='StatusChanged', info=info)

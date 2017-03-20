@@ -9,6 +9,8 @@ from singleton import *
 import logging
 from transitions import logger
 import json
+import Queue
+from oicmgr import OicDeviceManager
 
 
 @singleton
@@ -145,6 +147,85 @@ class AlarmState(object):
         from oicmgr import OicDeviceManager
         print('on_quiet')
         OicDeviceManager().setup_alarm(False)
+
+
+@singleton
+class StateControl(object):
+
+    def __init__(self):
+        self.q = Queue.Queue()
+
+    def update_status(self, status=None):
+        g = GuardState()
+        h = HouseState()
+        a = AlarmState()
+        info = {'status': ''}
+        if status is None:
+            if g.state in ['guarded', 'invaded'] and a.state == 'noalert':
+                info['status'] = 'protected'
+            if a.state == 'alert':
+                info['status'] = 'alert'
+            if g.state == 'unguarded' and a.state == 'noalert':
+                info['status'] = 'protect_check'
+        else:
+            info['status'] = status
+
+        if g.state in ['guarded', 'invaded']:
+            info['guard_status'] = 'guarded'
+        else:
+            info['guard_status'] = 'unguarded'
+
+        info['house_status'] = h.state
+        info['alarm_status'] = a.state
+        info['bell_status'] = 'standby'
+        info['remain_second'] = g.remain_second
+        info['devices_status'] = OicDeviceManager().get_devices()
+        can = []
+        ind = {'indoors': 'cannot'}
+        out = {'outgoing': 'cannot'}
+        if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
+            ind = {'indoors': 'can'}
+            out = {'outgoing': 'cannot'}
+        if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
+            ind = {'indoors': 'cannot'}
+            out = {'outgoing': 'can'}
+
+        can.append(ind)
+        can.append(out)
+        info['canprotect'] = can
+        self.q.put(info)
+
+    def get_status(self):
+        return self.q.get(True)
+
+    def set_protect_start(self, mode):
+        g = GuardState()
+        h = HouseState()
+        print(mode)
+        if mode == 'indoors':
+            h.ind()
+        if mode == 'outgoing':
+            h.outg()
+        g.setup_guard()
+
+        self.update_status('protect_starting')
+
+    def cancel_protect(self, action, password):
+        print(action, password)
+        GuardState().remove_guard()
+        self.update_status('unlock_protect')
+
+    def stop_alert(self, alertid):
+        print(alertid)
+        AlarmState().be_quiet()
+
+    def set_protect(self):
+        GuardState().setup_guard()
+        self.update_status('protected')
+
+    def bell_do(self, bellid, action):
+        print(bellid, action)
+
 
 if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
