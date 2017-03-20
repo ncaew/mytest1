@@ -155,7 +155,7 @@ class StateControl(object):
     def __init__(self):
         self.q = Queue.Queue()
 
-    def update_status(self, status=None):
+    def update_status(self, status=None, timeout=-1):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
@@ -178,17 +178,17 @@ class StateControl(object):
         info['house_status'] = h.state
         info['alarm_status'] = a.state
         info['bell_status'] = 'standby'
-        info['remain_second'] = g.remain_second
+        info['remain_second'] = timeout
         info['devices_status'] = OicDeviceManager().get_devices()
         can = []
         ind = {'indoors': 'cannot'}
         out = {'outgoing': 'cannot'}
         #if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
-        if h.state == 'outgoing' and OicDeviceManager().all_devices_quiet():
+        if h.state == 'outgoing':
             ind = {'indoors': 'can'}
             out = {'outgoing': 'cannot'}
         #if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
-        if h.state == 'indoors' and OicDeviceManager().all_devices_quiet():
+        if h.state == 'indoors':
             ind = {'indoors': 'cannot'}
             out = {'outgoing': 'can'}
 
@@ -210,12 +210,12 @@ class StateControl(object):
             h.outg()
         g.setup_guard()
 
-        self.update_status('protect_starting')
+        self.update_status('protect_starting', 30)
 
     def cancel_protect(self, action, password):
         print(action, password)
         GuardState().remove_guard()
-        self.update_status('unlock_protect')
+        self.update_status('unlock_protect', 30)
 
     def stop_alert(self, alertid):
         print(alertid)
