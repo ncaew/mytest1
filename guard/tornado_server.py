@@ -102,7 +102,11 @@ class StatusHandler(tornado.web.RequestHandler):
         can.append(ind)
         can.append(out)
         info['canprotect'] = can
-        self.write(json.dumps(info))
+        eventinfo = dict(handler=self.__class__.__name__, action='', result='OK')
+        event = dict(event='StatusChanged', info=eventinfo)
+
+        WebSocketHandler.send_to_all(event)
+        self.write(info)
 
 
 class SetProtectStartHandler(tornado.web.RequestHandler):
@@ -116,6 +120,10 @@ class SetProtectStartHandler(tornado.web.RequestHandler):
         if pmode == 'outgoing':
             h.outg()
         g.setup_guard()
+        info = dict(handler=self.__class__.__name__, action='', result='OK')
+        event = dict(event='StatusChanged', info=info)
+
+        WebSocketHandler.send_to_all(event)
         self.write('{"result":"OK"}')
 
 
@@ -133,6 +141,10 @@ class CancelProtectHandler(tornado.web.RequestHandler):
         if action == 'cancel':
             g.remove_guard()
 
+        info = dict(handler=self.__class__.__name__, action=action, result='OK')
+        event = dict(event='StatusChanged', info=info)
+
+        WebSocketHandler.send_to_all(event)
         self.write('{"result":"OK"}')
 
 
@@ -141,6 +153,10 @@ class StopAlertHandler(tornado.web.RequestHandler):
         alert_id = self.get_argument('alertid', '')
         print("StopAlertHandler", alert_id)
         AlarmState().be_quiet()
+        info = dict(handler=self.__class__.__name__, action='', result='OK')
+        event = dict(event='StatusChanged', info=info)
+
+        WebSocketHandler.send_to_all(event)
         self.write('{"result": "OK"}')
 
 
@@ -149,6 +165,10 @@ class SetProtectHandler(tornado.web.RequestHandler):
         result = self.get_argument('result', '')
         print("SetProtectHandler", result)
         GuardState().setup_guard()
+        info = dict(handler=self.__class__.__name__, action='', result='OK')
+        event = dict(event='StatusChanged', info=info)
+
+        WebSocketHandler.send_to_all(event)
         self.write('{"result": "OK"}')
 
 
@@ -158,7 +178,10 @@ class BellHandler(tornado.web.RequestHandler):
         action = self.get_argument('action', '')
         print("SetProtectHandler", bellid, action)
 
+        info = dict(handler=self.__class__.__name__, action=action, result='OK')
+        event = dict(event='StatusChanged', info=info)
 
+        WebSocketHandler.send_to_all(event)
         self.write('{"result": "OK"}')
 
 
@@ -250,7 +273,6 @@ if __name__ == '__main__':
     class StaticHandler(tornado.web.RequestHandler):
         def get(self):
             self.render('index.html')
-
 
 
     wapp = tornado.web.Application(

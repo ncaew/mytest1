@@ -35,18 +35,21 @@ class GuardState(object):
 
     def on_guard_every_time(self, args):
         from tornado_server import WebSocketHandler
-        info = {'event': 'guard_timer update'}
+
         self.remain_second = self.to_protect_timer.remain_second
+        info = dict(type='ToProtect', seconds=self.remain_second)
+        event = dict(event='CountDown', info=info)
         print(self.remain_second)
-        WebSocketHandler.send_to_all(json.dumps(info))
+        WebSocketHandler.send_to_all(event)
 
     def timeout_to_guard(self, args):
         from tornado_server import WebSocketHandler
         print('on_timeout')
         self.remain_second = -1
         GuardState().setup_guard()
-        info = {'event': 'guard_timer timeout'}
-        WebSocketHandler.send_to_all(json.dumps(info))
+        info = dict(type='ToProtect')
+        event = dict(event='Timeout', info=info)
+        WebSocketHandler.send_to_all(event)
 
     def on_guarded(self):
         print('on_guarded')
@@ -61,6 +64,8 @@ class GuardState(object):
 
     def on_unguarded(self):
         print('on_unguarded')
+        if self.to_alarm_timer is not None:
+            self.to_alarm_timer.cancel()
         AlarmState().be_quiet()
 
     def on_alarm_every_time(self, args):
@@ -68,16 +73,19 @@ class GuardState(object):
         print('-------------------on_every_time')
         info = {'event': 'alarm_timer update'}
         self.remain_second = self.to_alarm_timer.remain_second
+        info = dict(type='ToAlarm', seconds=self.remain_second)
+        event = dict(event='CountDown', info=info)
         print(self.remain_second)
-        WebSocketHandler.send_to_all(json.dumps(info))
+        WebSocketHandler.send_to_all(event)
 
     def timeout_to_alarm(self, args):
         from tornado_server import WebSocketHandler
         print('on_timeout')
         self.remain_second = -1
         AlarmState().be_alarm()
-        info = {'event': 'alarm_timer timeout'}
-        WebSocketHandler.send_to_all(json.dumps(info))
+        info = dict(type='ToAlarm')
+        event = dict(event='Timeout', info=info)
+        WebSocketHandler.send_to_all(event)
 
     def on_invaded(self):
         print('on_invaded')

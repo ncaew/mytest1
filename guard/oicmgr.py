@@ -58,6 +58,8 @@ class OicDevice(object):
             print(link['rt'])
             if link['rt'].find('oic.r.') >= 0 and \
                             link['rt'] in OicDevice.observe_resource_type:
+                rt_info = dict(id=oicinfo['di'], rt=link['rt'], value=False)
+                self.res_state[link['rt']] = rt_info
                 path = link['href']
                 host, port, uri = parse_uri(path)
                 client = HelperClient(server=(host, port))
@@ -138,7 +140,7 @@ class OicDeviceManager(object):
             dev.res_state[rt] = info
             print(old_state, state)
             if old_state is False and state is True:
-                WebSocketHandler.send_to_all(json.dumps(dev.res_state))
+
                 if dev.is_invade_detector():
                     GuardState().invade()
                 if dev.is_motion_detector() and HouseState().state == "outgoing":
@@ -146,9 +148,10 @@ class OicDeviceManager(object):
                 if dev.is_fatal_detector():
                     AlarmState().be_alarm()
 
-            if old_state is True and state is False:
-                print("state update")
-                WebSocketHandler.send_to_all(json.dumps(dev.res_state))
+            if old_state != state:
+                info['old_value'] = old_state
+                oic_event = dict(event='OICNotify', info=info)
+                WebSocketHandler.send_to_all(oic_event)
             return dev
 
     def observe_callback(self, response):
