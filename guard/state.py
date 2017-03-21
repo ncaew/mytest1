@@ -192,6 +192,10 @@ class StateControl(object):
             ind = {'indoors': 'cannot'}
             out = {'outgoing': 'can'}
 
+        if g.state == 'unguarded':
+            ind = {'indoors': 'can'}
+            out = {'outgoing': 'can'}
+
         can.append(ind)
         can.append(out)
         info['canprotect'] = can
@@ -210,13 +214,14 @@ class StateControl(object):
             h.outg()
         g.setup_guard()
 
-        if mode == 'home':
+        if mode == 'indoors':
             self.update_status('protected')
         else:
             self.update_status('protect_starting', 30)
 
-    def cancel_protect(self, action, password):
-        print(action, password)
+    def cancel_protect(self, mode, action, password):
+        print(mode, action, password)
+        HouseState().ind()
         if action == 'start':
             self.update_status('unlock_protect', 30)
         elif action == 'ok':
