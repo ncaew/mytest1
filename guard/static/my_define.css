@@ -1,0 +1,1762 @@
+
+html {
+	color: #000;
+	background: #FFF
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+	margin: 0;
+	padding: 0
+}
+body, input {
+	background: #FFF
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+fieldset, img {
+	border: 0
+}
+address, caption, cite, code, dfn, em, strong, th, var {
+	font-style: normal;
+	font-weight: 400
+}
+li {
+	list-style: none
+}
+caption, th {
+	text-align: left
+}
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+	font-weight: 400
+}
+q:before, q:after {
+	content: ''
+}
+abbr, acronym {
+	border: 0;
+	font-variant: normal
+}
+sup {
+	vertical-align: text-top
+}
+sub {
+	vertical-align: text-bottom
+}
+input, textarea, select {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit
+}
+input, textarea, select {
+*font-size:100%
+}
+legend {
+	color: #000
+}
+body, button, input, select, textarea {
+	font: 18px "Microsoft YaHei", tahoma, arial, "À¼Í¤ºÚ";
+	color: #56baca
+
+}
+input::-ms-clear {
+display:none
+}
+a {
+	color: #06c;
+	text-decoration: none
+}
+a:hover, a:active, a:focus {
+	color: #06c;
+	text-decoration: underline
+}
+.global-clearfix:after {
+	content: '.';
+	display: block;
+	visibility: hidden;
+	height: 0;
+	line-height: 0;
+	font-size: 0;
+	clear: both
+}
+.global-clearfix {
+	zoom: 1
+}
+.global-clear {
+	clear: both
+}
+.global-bold {
+	font-weight: 700
+}
+.global-center {
+	text-align: center
+}
+.global-gray2 {
+	color: #AAB2BF
+}
+.global-float-left {
+	float: left
+}
+.global-float-right {
+	float: right
+}
+.global-uploader {
+	position: absolute;
+	top: 10px;
+	left: 22px;
+	opacity: 0;
+	height: 34px;
+	width: 115px;
+	display: block
+}
+.global-pdl-30 {
+	padding-left: 30px
+}
+.global-pdl-25 {
+	padding-left: 25px
+}
+.global-ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis
+}
+.global-disabled, .global-disabled:hover, .global-disabled:active {
+	filter: alpha(opacity=50);
+	-ms-filter: "alpha(opacity=50)";
+	opacity: .5;
+	color: #ccc;
+	cursor: default!important
+}
+.evtRedPackGuide {
+	width: 180px;
+	height: 70px;
+	position: absolute;
+	top: 50px;
+	right: 0;
+	float: right;
+	z-index: 999;
+	background: url(//yun.baidu.com/ppres/static/images/eventRedPack.jpg) no-repeat scroll 0 0
+}
+.evtRedPackGuide .closeGuide {
+	display: inline-block;
+	height: 20px;
+	width: 20px;
+	float: right;
+	position: relative
+}
+.module-personal .personal-wrapper .img-data .personal-name .personal-name-list .person-time-detail {
+	font-family: tahoma, arial, "ËÎÌå"
+}
+.abtn, .bbtn, .cbtn, .dbtn, .ibtn, .ubtn, .mbtn, .sbtn, .obtn, .lbtn, .new-dbtn, .new-sbtn, .green-sbtn, .green-btn, .gray-btn {
+	color: #4d90eb;
+	display: inline-block;
+	_width: 35px;
+	white-space: nowrap;
+	outline: 0;
+	text-decoration: none;
+	border: 1px solid #c0d9fe;
+	border-radius: 4px
+}
+.abtn b, .cbtn b, .dbtn b, .ibtn b, .ubtn b, .sbtn b, .obtn b, .new-dbtn b, .new-sbtn b, .green-sbtn b, .green-btn b, .gray-btn b {
+	font-weight: 100;
+	display: block;
+*display:inline-block;
+	height: 32px;
+	line-height: 32px;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer
+}
+.new-sbtn, .green-sbtn {
+	background-position: 0 -918px;
+	font-size: 12px;
+	height: 34px;
+	line-height: 34px;
+	padding-left: 35px;
+	position: relative;
+	margin-right: 10px
+}
+.green-btn {
+	background-position: 0 -1748px;
+	font-size: 12px;
+	height: 25px;
+	line-height: 25px;
+	padding-left: 10px;
+	position: relative;
+	margin-right: 10px
+}
+.green-btn b {
+	background-position: right -1748px;
+	padding-right: 10px;
+	height: 25px;
+	line-height: 25px;
+	color: #fff
+}
+.gray-btn {
+	background-position: 0 -1832px;
+	font-size: 12px;
+	height: 25px;
+	line-height: 25px;
+	padding-left: 10px;
+	position: relative;
+	margin-right: 10px
+}
+.gray-btn b {
+	background-position: right -1832px;
+	padding-right: 10px;
+	height: 25px;
+	line-height: 25px;
+	color: #767b7e
+}
+.green-sbtn {
+	background-position: 0 -1368px
+}
+.new-sbtn b, .green-sbtn b {
+	background-position: right -918px;
+	color: #fff;
+	padding-right: 10px;
+	height: 34px;
+	line-height: 34px
+}
+.new-sbtn:hover {
+	background-position: 0 -955px
+}
+.new-sbtn:hover b {
+	background-position: right -955px
+}
+.new-sbtn:active {
+	background-position: 0 -991px
+}
+.green-sbtn b {
+	background-position: right -1368px
+}
+.new-dbtn {
+	background-position: 0 -1028px;
+	text-decoration: none;
+	font-size: 12px;
+	height: 34px;
+	line-height: 34px;
+	padding-left: 35px;
+	position: relative;
+	margin-right: 10px
+}
+.new-dbtn:hover b, .new-dbtn:hover, .new-dbtn:active b, .new-dbtn:active, .new-sbtn:hover b, .new-sbtn:active b {
+	background-position: right -955px;
+	text-decoration: none
+}
+.new-sbtn:active b {
+	background-position: right -991px
+}
+.new-dbtn:hover {
+	background-position: 0 -1065px;
+	color: #77afff!important;
+	border: 1px solid #c0d9fe
+}
+.new-dbtn:active {
+	background-position: 0 -1101px
+}
+.new-dbtn b {
+	background-position: right -1028px;
+	padding-right: 10px;
+	height: 34px;
+	line-height: 34px;
+	text-decoration: none
+}
+.new-dbtn:hover b {
+	background-position: right -1065px
+}
+.new-dbtn:active b {
+	background-position: right -1101px
+}
+.new-dbtn em, .new-sbtn em {
+	position: absolute;
+	left: 10px;
+	top: 9px;
+	font-size: 16px
+}
+.bbtn b, .mbtn b {
+	font-weight: 100;
+	display: block;
+	line-height: 28px;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer
+}
+.img-dialog .bbtn b, .img-dialog .mbtn b {
+	font-weight: 100;
+	display: block;
+	line-height: 28px;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer
+}
+.lbtn {
+	text-align: center;
+	padding-left: 25px;
+	position: relative
+}
+.lbtn b {
+	color: #fff;
+	font-weight: 100;
+	display: block;
+	line-height: 26px;
+	line-height: 29px\9;
+	height: 28px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_sprit.gif?t=1484116398040) no-repeat right -601px;
+	text-decoration: none;
+	padding-right: 15px;
+	font-size: 12px;
+	cursor: pointer
+}
+.abtn {
+	font-size: 14px;
+	padding-left: 27px;
+	height: 32px;
+	line-height: 32px
+}
+.abtn b {
+	padding-right: 27px
+}
+.bbtn {
+	background-position: 0 -144px;
+	font-size: 12px;
+	height: 28px;
+	line-height: 28px;
+	position: relative;
+	padding-left: 25px
+}
+.printbtn .bbtn {
+	_padding-right: 10px
+}
+.mbtn {
+	background-position: 0 -144px;
+	font-size: 12px;
+	height: 28px;
+	line-height: 28px;
+	padding-left: 16px;
+	position: relative
+}
+.bbtn b {
+	background-position: right -144px;
+	color: #666;
+	padding-right: 10px;
+	height: 28px;
+	line-height: 28px
+}
+.mbtn b {
+	color: #666;
+	padding-right: 26px;
+	background-position: right -144px;
+	height: 28px;
+	line-height: 28px
+}
+.cbtn {
+	font-size: 12px;
+	padding-left: 20px;
+	height: 42px;
+	line-height: 41px
+}
+.cbtn b {
+	color: #fff;
+	padding-right: 20px
+}
+.dbtn {
+	font-size: 14px;
+	padding-left: 30px;
+	height: 32px;
+	line-height: 32px;
+	margin: 0 4px
+}
+.dbtn b {
+	padding-right: 30px
+}
+.bterror-dialog .dbtn {
+	padding-left: 20px
+}
+.bterror-dialog .dbtn b {
+	padding-right: 20px;
+	color: #3e3e3e;
+	font-weight: 700
+}
+.ibtn {
+	font-size: 14px;
+	line-height: 40px;
+	padding: 0 0 0 41px;
+	position: relative
+}
+.ibtn b {
+	padding-right: 15px
+}
+.ibtn em {
+	position: absolute;
+	left: 19px;
+	top: 9px
+}
+.obtn {
+	font-size: 14px;
+	line-height: 40px;
+	padding: 0 0 0 51px;
+	position: relative
+}
+.obtn b {
+	color: #333;
+	padding-right: 40px
+}
+.ubtn {
+	display: block;
+	font-size: 14px;
+	padding-left: 50px;
+	height: 42px;
+	line-height: 41px;
+	position: relative;
+	width: 100px
+}
+.ubtn b {
+	color: #fff;
+	padding-right: 45px;
+	height: 42px
+}
+.sbtn {
+	font-size: 14px;
+	padding-left: 30px;
+	height: 32px;
+	line-height: 32px;
+	position: relative;
+	background-color: #3b8cff;
+	border: 1px solid #3b8cff
+}
+.sbtn:hover {
+	background-color: #4e97ff;
+	border: 1px solid #4e97ff
+}
+.sbtn b {
+	background-position: right -440px;
+	color: #fff;
+	padding-right: 30px
+}
+.abtn:link, .bbtn:link, .dbtn:link, .ibtn:link, .cbtn:link, .mbtn:link, .sbtn:link, .obtn:link, .lbtn:link, .abtn:visited, .bbtn:visited, .dbtn:visited, .ibtn:visited, .cbtn:visited, .mbtn:visited, .sbtn:visited, .obtn:visited, .lbtn:visited, .abtn:hover, .bbtn:hover, .dbtn:hover, .ibtn:hover, .cbtn:hover, .mbtn:hover, .sbtn:hover, .obtn:hover, .lbtn:hover, .abtn:active, .bbtn:active, .dbtn:active, .ibtn:active, .cbtn:active, .mbtn:active, .sbtn:active, .obtn:active, .lbtn:active, .new-dbtn:hover, .new-sbtn:hover {
+	zoom: 1;
+	text-decoration: none
+}
+.abtn:hover, .ibtn:hover, .dbtn:hover {
+	color: #5996e6;
+	border: 1px solid #5996e6
+}
+.abtn:hover b, .ibtn:hover b, .dbtn:hover b {
+	background-position: right -47px
+}
+.b-img-over .obtn {
+	background-position: 0 -94px
+}
+.b-img-over .obtn b {
+	background-position: right -94px
+}
+.abtn:active, .ibtn:active, .dbtn:active {
+	background-position: 0 -94px
+}
+.abtn:active b, .ibtn:active b, .dbtn:active b {
+	background-position: right -94px
+}
+.bbtn:hover, .bbtn-hover, .mbtn:hover {
+	background-position: 0 -180px
+}
+.bbtn:hover b, .bbtn-hover b, .mbtn:hover b {
+	background-position: right -180px
+}
+.bbtn:active, .bbtn-active, .mbtn:active {
+	background-position: 0 -216px
+}
+.bbtn:active b, .bbtn-active b, .mbtn:active b {
+	background-position: right -216px
+}
+.lbtn:hover, .lbtn-hover {
+	background-position: 0 -639px
+}
+.lbtn:hover b, .lbtn-hover b {
+	background-position: right -639px
+}
+.lbtn:active, .lbtn-active {
+	background-position: 0 -678px
+}
+.lbtn:active b, .lbtn-active b {
+	background-position: right -678px
+}
+.cbtn:hover {
+	background-position: 0 -323px
+}
+.cbtn:hover b {
+	background-position: right -323px
+}
+.cbtn:active {
+	background-position: 0 -379px
+}
+.cbtn:active b {
+	background-position: right -379px
+}
+.sbtn:hover b {
+}
+.sbtn:active {
+	background-position: 0 -553px
+}
+.sbtn:active b {
+	background-position: right -553px
+}
+.btn-icon {
+	display: block;
+	height: 20px;
+	width: 20px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_icon.gif?t=1484116398040) no-repeat
+}
+.icon-creat-file {
+	background-position: -159px -20px
+}
+.icon-download {
+	background-position: -159px -39px
+}
+.icon-share-qr {
+	background-position: -208px -441px
+}
+.icon-share-save {
+	background-position: -208px -299px
+}
+.icon-share-save:hover {
+	background-position: -182px -153px
+}
+#shareqr b {
+	width: 1px;
+	padding: 0;
+	text-indent: -999em;
+	overflow: hidden;
+	display: block
+}
+.tui_icon, .share_icon, .sina_icon, .save_icon, .download_icon, .quick_save_icon {
+	top: 5px;
+	left: 10px;
+	position: absolute;
+	display: block;
+	height: 20px;
+	width: 20px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/button/thumb_icon.gif?t=1484116398040) no-repeat
+}
+.tui_icon {
+	background-position: 0 -69px;
+	top: -3px;
+	left: -16px
+}
+.save_icon {
+	background-position: -46px -116px
+}
+.quick_save_icon {
+	background-position: -23px -116px
+}
+.download_icon {
+	background-position: -22px -140px
+}
+.share_icon {
+	background-position: -68px 4px
+}
+.share_icon {
+	background-position: -68px 4px
+}
+.global-btn {
+	color: #333;
+	background: url(/yun-static/common/images/btn_sprit.gif) no-repeat 0 0;
+	display: inline-block;
+	_width: 35px;
+	white-space: nowrap;
+	outline: 0;
+	text-decoration: none!important;
+	background-position: 0 -144px;
+	font-size: 12px;
+	height: 28px;
+	line-height: 28px;
+	padding-left: 35px;
+	position: relative;
+	margin-right: 6px;
+	vertical-align: middle;
+	_margin: 6px 2px;
+	cursor: pointer
+}
+.global-btn .ico {
+	top: 5px;
+	left: 10px;
+	position: absolute;
+	display: block;
+	height: 20px;
+	width: 20px;
+	background: url(/yun-static/common/images/btn_icon.gif) no-repeat;
+	background-position: -159px -234px;
+	cursor: pointer
+}
+.global-btn .btn-val {
+	font-weight: 100;
+	display: block;
+	line-height: 28px;
+	background: url(/yun-static/common/images/btn_sprit.gif) #F2F6FF no-repeat right 0;
+	text-decoration: none;
+	text-align: center;
+	cursor: pointer;
+	background-position: right -144px;
+	color: #666;
+	padding-right: 10px;
+	height: 28px;
+	line-height: 28px
+}
+.global-btn:hover {
+	background-position: 0 -180px
+}
+.global-btn:active {
+	background-position: 0 -216px
+}
+.global-btn:hover .btn-val {
+	background-position: right -180px
+}
+.global-btn:active .btn-val {
+	background-position: right -216px
+}
+.global-btn-disable {
+	opacity: .5;
+	filter: alpha(opacity=50)
+}
+.global-btn-disable, .global-btn-disable .ico, .global-btn-disable .btn-val {
+	cursor: default;
+	color: #666!important
+}
+.global-btn-download .ico {
+	background-position: -159px -39px
+}
+.global-btn-download:hover .icon-disable {
+	background-position: -159px -39px!important
+}
+.global-btn-download:hover .ico {
+	background-position: -182px -39px
+}
+.global-btn-delete .ico {
+	background-position: -156px -130px
+}
+.global-btn-delete:hover .icon-disable {
+	background-position: -156px -130px!important
+}
+.global-btn-delete:hover .ico {
+	background-position: -179px -130px
+}
+.global-btn-transfer .ico {
+	background-position: -159px -153px
+}
+.global-btn-transfer:hover .icon-disable {
+	background-position: -159px -153px!important
+}
+.global-btn-transfer:hover .ico {
+	background-position: -182px -153px
+}
+.thumb-grid {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/fileIcons/gridFileIcon.png?t=1484116398040) 0 0;
+	width: 92px;
+	height: 92px
+}
+.grid-file-image {
+	background-position: 0 0
+}
+.grid-file-visio {
+	background-position: -766px 0
+}
+.grid-file-pdf {
+	background-position: -919px 0
+}
+.grid-file-doc, .grid-file-word {
+	background-position: -460px 0
+}
+.grid-file-excel {
+	background-position: -307px 0
+}
+.grid-file-txt {
+	background-position: -1072px 0
+}
+.grid-file-audio {
+	background-position: -1837px 0
+}
+.grid-file-video {
+	background-position: -1684px 0
+}
+.grid-file-ppt {
+	background-position: -613px 0
+}
+.grid-file-ipa {
+	background-position: -1531px 0
+}
+.grid-file-app {
+	background-position: -1378px 0
+}
+.grid-file-zip {
+	background-position: -154px 0
+}
+.grid-file-android {
+	background-position: -1225px 0
+}
+.grid-file-bt {
+	background-position: -1990px 0
+}
+.grid-folder-normal {
+	background-position: -448px 0
+}
+.grid-folder-apps {
+	background-position: -448px 0
+}
+.grid-folder-backup {
+	background-position: -448px 0
+}
+.grid-folder-muti {
+	background-position: -448px 0
+}
+.list-icon {
+	display: inline-block;
+	zoom: 1;
+	vertical-align: middle;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/fileIcons/listIcon.gif?t=1484116398040) -416px -80px;
+	width: 26px;
+	height: 22px
+}
+.list-file-pic, .list-file-image {
+	background-position: 0 -80px
+}
+.list-file-vsd {
+	background-position: -32px -80px
+}
+.list-file-pdf {
+	background-position: -64px -80px
+}
+.list-file-doc, .list-file-word, .list-file-docx {
+	background-position: -96px -80px
+}
+.list-file-excel, .list-file-xls, .list-file-xlsx {
+	background-position: -128px -80px
+}
+.list-file-txt {
+	background-position: -160px -80px
+}
+.list-file-audio, .list-file-mus, .list-file-mp3 {
+	background-position: -192px -80px
+}
+.list-file-video, .list-file-mov {
+	background-position: -224px -80px
+}
+.list-file-ppt, .list-file-pptx {
+	background-position: -256px -80px
+}
+.list-file-ipa {
+	background-position: -288px -80px
+}
+.list-file-app, .list-file-dmg {
+	background-position: -320px -80px
+}
+.list-file-zip, .list-file-rar {
+	background-position: -352px -80px
+}
+.list-file-dwg, .list-file-dws, .list-file-dwt, .list-file-dxf {
+	background-position: 0 -102px
+}
+.list-file-apk {
+	background-position: -384px -80px
+}
+.list-file-psd {
+	background-position: -512px -80px
+}
+.list-file-epub {
+	background-position: -416px -80px
+}
+.list-file-bt, .list-file-torrent {
+	background-position: -448px -80px
+}
+.list-folder-normal {
+	background-position: 0 0
+}
+.list-folder-apps {
+	background-position: -38px 0
+}
+.list-folder-backup {
+	background-position: -448px -80px
+}
+.list-folder-muti {
+	background-position: -38px -24px
+}
+.global-icon-16 {
+	display: inline-block;
+	width: 26px;
+	height: 26px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/sprite_list_icon.gif?t=1484116398040) 9999px 9999px no-repeat;
+	background-position: -421px -83px
+}
+.global-icon-16-multi {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Multi_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-shouchang {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Collection_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-yingyong_child, .global-icon-16-yingyong {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MyData_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-beifen {
+	background-position: -121px -3px
+}
+.global-icon-16-doc, .global-icon-16-docx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Word_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-xls, .global-icon-16-xlsx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Excel_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-ppt, .global-icon-16-pptx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PPT_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-vsd {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Visio_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-pdf {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PDF_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-apk {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Android_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-dws, .global-icon-16-dwt, .global-icon-16-dxf, .global-icon-16-dwg {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/CAD_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-exe, .global-icon-16-msi, .global-icon-16-dmg {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/EXE_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-ipa {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Apple_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-zip {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/ZIP_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-rar {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/ZIP_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-psd {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PS_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-key {
+	background-position: -550px -83px
+}
+.global-icon-16-ai {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/AI_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-txt {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Text_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-torrent {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/BT_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-dir {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Folder_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-mmap {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MMAP_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-xmind {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Xmind_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-mm {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MM_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-numbers {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Numbers_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-pages {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Pages_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-key {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Keynote_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-jpg, .global-icon-16-jpeg, .global-icon-16-gif, .global-icon-16-bmp, .global-icon-16-png, .global-icon-16-jpe, .global-icon-16-cur, .global-icon-16-svg, .global-icon-16-svgz, .global-icon-16-tif, .global-icon-16-tiff, .global-icon-16-ico {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Picture_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-wma, .global-icon-16-wav, .global-icon-16-mp3, .global-icon-16-aac, .global-icon-16-ra, .global-icon-16-ram, .global-icon-16-mp2, .global-icon-16-ogg, .global-icon-16-aif, .global-icon-16-mpega, .global-icon-16-amr, .global-icon-16-mid, .global-icon-16-midi, .global-icon-16-m4a {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Music_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-wmv, .global-icon-16-rmvb, .global-icon-16-mpeg4, .global-icon-16-mpeg2, .global-icon-16-flv, .global-icon-16-avi, .global-icon-16-3gp, .global-icon-16-mpga, .global-icon-16-qt, .global-icon-16-rm, .global-icon-16-wmz, .global-icon-16-wmd, .global-icon-16-wvx, .global-icon-16-wmx, .global-icon-16-wm, .global-icon-16-swf, .global-icon-16-mpg, .global-icon-16-mp4, .global-icon-16-mkv, .global-icon-16-mpeg, .global-icon-16-mov, .global-icon-16-asf {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Video_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-woff, .global-icon-16-ttf, .global-icon-16-eot {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Fonts_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-16-php, .global-icon-16-java, .global-icon-16-js, .global-icon-16-css, .global-icon-16-html, .global-icon-16-htm, .global-icon-16-c {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Code_24.png?t=1484116398040) center no-repeat
+}
+.global-icon-30 {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/sprite_list_icon30.png?t=1484116398040) 9999px 9999px no-repeat;
+	background-position: -560px 0
+}
+.global-icon-30-multi {
+	background-position: -280px -50px
+}
+.global-icon-30-shouchang {
+	background-position: -80px -100px
+}
+.global-icon-30-yingyong_child, .global-icon-30-yingyong {
+	background-position: -2px -100px
+}
+.global-icon-30-beifen {
+}
+.global-icon-30-doc, .global-icon-30-docx {
+	background-position: -80px 0
+}
+.global-icon-30-xls, .global-icon-30-xlsx {
+	background-position: -120px 0
+}
+.global-icon-30-ppt, .global-icon-30-pptx {
+	background-position: -280px 0
+}
+.global-icon-30-vsd {
+	background-position: 0 0
+}
+.global-icon-30-pdf {
+	background-position: -40px 0
+}
+.global-icon-30-apk {
+	background-position: -400px 0
+}
+.global-icon-30-dws, .global-icon-30-dwt, .global-icon-30-dxf, .global-icon-30-dwg {
+	background-position: -160px -50px
+}
+.global-icon-30-exe, .global-icon-30-msi, .global-icon-30-dmg {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/EXE_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-30-ipa {
+	background-position: -320px 0
+}
+.global-icon-30-zip, .global-icon-30-rar {
+	background-position: -40px -50px
+}
+.global-icon-30-psd {
+	background-position: -520px 0
+}
+.global-icon-30-key {
+}
+.global-icon-30-ai {
+	background-position: -520px 0
+}
+.global-icon-30-txt {
+}
+.global-icon-30-torrent {
+	background-position: -440px 0
+}
+.global-icon-30-dir {
+	background-position: -202px -100px
+}
+.global-icon-30-jpg, .global-icon-30-jpeg, .global-icon-30-gif, .global-icon-30-bmp, .global-icon-30-png, .global-icon-30-jpe, .global-icon-30-cur, .global-icon-30-svg, .global-icon-30-svgz, .global-icon-30-tif, .global-icon-30-tiff, .global-icon-30-ico {
+	background-position: 0 -50px
+}
+.global-icon-30-wma, .global-icon-30-wav, .global-icon-30-mp3, .global-icon-30-aac, .global-icon-30-ra, .global-icon-30-ram, .global-icon-30-mp2, .global-icon-30-ogg, .global-icon-30-aif, .global-icon-30-mpega, .global-icon-30-amr, .global-icon-30-mid, .global-icon-30-midi, .global-icon-30-m4a {
+	background-position: -200px 0
+}
+.global-icon-30-wmv, .global-icon-30-rmvb, .global-icon-30-mpeg4, .global-icon-30-mpeg2, .global-icon-30-flv, .global-icon-30-avi, .global-icon-30-3gp, .global-icon-30-mpga, .global-icon-30-qt, .global-icon-30-rm, .global-icon-30-wmz, .global-icon-30-wmd, .global-icon-30-wvx, .global-icon-30-wmx, .global-icon-30-wm, .global-icon-30-swf, .global-icon-30-mpg, .global-icon-30-mp4, .global-icon-30-mkv, .global-icon-30-mpeg, .global-icon-30-mov, .global-icon-30-asf {
+	background-position: -240px 0
+}
+.global-icon-62 {
+	display: inline-block;
+	width: 92px;
+	height: 92px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/property_icon_101.png?t=1484116398040) 9999px 9999px no-repeat;
+	background-position: -0px -0px
+}
+.global-icon-62-multi {
+}
+.global-icon-62-shouchang {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Collection_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-yingyong_child, .global-icon-62-yingyong {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MyData_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-beifen {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/spritenew-f.gif?t=1484116398040) 9999px 9999px no-repeat;
+	background-position: -339px 0
+}
+.global-icon-62-doc, .global-icon-62-docx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Word_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-xls, .global-icon-62-xlsx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Excel_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-ppt, .global-icon-62-pptx {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PPT_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-vsd {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Visio_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-pdf {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PDF_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-apk {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Android_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-dws, .global-icon-62-dwt, .global-icon-62-dxf, .global-icon-62-dwg {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/CAD_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-exe, .global-icon-62-msi {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/EXE_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-dmg {
+	background-position: -2602px -0px
+}
+.global-icon-62-ipa {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Apple_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-zip {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/ZIP_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-rar {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/ZIP_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-psd {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/PS_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-key {
+	background-position: -2447px -0px
+}
+.global-icon-62-ai {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/AI_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-txt {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Text_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-torrent {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/BT_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-dir {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Folder_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-mmap {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MMAP_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-xmind {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Xmind_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-mm {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/MM_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-numbers {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Numbers_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-pages {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Pages_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-key {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Keynote_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-jpg, .global-icon-62-jpeg, .global-icon-62-gif, .global-icon-62-bmp, .global-icon-62-png, .global-icon-62-jpe, .global-icon-62-cur, .global-icon-62-svg, .global-icon-62-svgz, .global-icon-62-tif, .global-icon-62-tiff, .global-icon-62-ico {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Picture_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-wma, .global-icon-62-wav, .global-icon-62-mp3, .global-icon-62-aac, .global-icon-62-ra, .global-icon-62-ram, .global-icon-62-mp2, .global-icon-62-ogg, .global-icon-62-aif, .global-icon-62-mpega, .global-icon-62-amr, .global-icon-62-mid, .global-icon-62-midi, .global-icon-62-m4a {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Music_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-wmv, .global-icon-62-rmvb, .global-icon-62-mpeg4, .global-icon-62-mpeg2, .global-icon-62-flv, .global-icon-62-avi, .global-icon-62-3gp, .global-icon-62-mpga, .global-icon-62-qt, .global-icon-62-rm, .global-icon-62-wmz, .global-icon-62-wmd, .global-icon-62-wvx, .global-icon-62-wmx, .global-icon-62-wm, .global-icon-62-swf, .global-icon-62-mpg, .global-icon-62-mp4, .global-icon-62-mkv, .global-icon-62-mpeg, .global-icon-62-mov, .global-icon-62-asf {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Video_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-woff, .global-icon-62-ttf, .global-icon-62-eot {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Fonts_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-php, .global-icon-62-java, .global-icon-62-js, .global-icon-62-css, .global-icon-62-html, .global-icon-62-htm, .global-icon-62-c {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/Code_54.png?t=1484116398040) center no-repeat
+}
+.global-icon-62-multi {
+	background-position: -2902px -2px
+}
+.global-icon-transfer, .global-icon-download, .global-icon-videoplay-save, .global-icon-delete, .global-icon-share-cancel, .global-icon-share-qr, .global-icon-checkbox {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/clouddisk-ui/btn_icon.gif?t=1484116398040) no-repeat;
+	background-position: -421px -83px
+}
+.global-icon-transfer {
+	background-position: -207px -299px
+}
+.global-icon-transfer:hover {
+	background-position: -181px -153px
+}
+.global-icon-download {
+	background-position: -208px -210px
+}
+.global-icon-videoplay-save {
+	top: 7px;
+	background-position: -175px -511px
+}
+.global-icon-download:hover {
+	background-position: -182px -39px
+}
+.global-icon-share-cancel {
+	background-position: -158px -254px
+}
+.global-icon-share-cancel:hover {
+	background-position: -179px -254px
+}
+.global-icon-share-qr {
+	background-position: -208px -441px
+}
+.global-icon-share-qr:hover {
+	background-position: -230px -441px
+}
+.global-icon-delete {
+	background-position: -205px -276px
+}
+.global-icon-delete:hover {
+	background-position: -179px -130px
+}
+.global-icon-checkbox {
+	width: 14px;
+	height: 14px;
+	line-height: 14px;
+	font-size: 0;
+	zoom: 1;
+	background-position: -113px 0
+}
+.on .global-icon-checkbox {
+	background-position: -113px -19px
+}
+.dialog-panel {
+	background: #fff;
+	width: 480px;
+	z-index: 1000;
+	position: absolute;
+	display: none;
+	border-radius: 4px;
+	overflow: hidden
+}
+.dialog-panel .header {
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	zoom: 1;
+	background-color: #f2f6fd;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom: 1px solid #c4dbfe
+}
+.dialog-panel .header .close {
+	position: absolute;
+	cursor: pointer;
+	height: 20px;
+	right: 10px;
+	top: 12px;
+	width: 20px;
+	text-align: center;
+	line-height: 20px;
+	font-size: 12px
+}
+.dialog-panel .header .title {
+	text-indent: 1em;
+	color: #4d4d4d;
+	font-size: 14px;
+	height: 42px;
+	line-height: 42px;
+	font-weight: 200
+}
+.dialog-panel .content {
+	padding: 22px;
+	background: #fff;
+	line-height: 24px
+}
+.dialog-panel .footer {
+	position: relative;
+	z-index: 1;
+	zoom: 1
+}
+.b-panel {
+	background: #FFF;
+	position: absolute;
+	left: 0;
+	top: 0;
+	_display: inline
+}
+.b-dialog {
+	left: 300px;
+	top: 100px;
+	z-index: 998;
+	display: none;
+	background: #fff;
+	border-radius: 4px;
+	overflow: hidden
+}
+.b-canvas {
+	z-index: 890;
+	background: #000;
+	-ms-filter: "alpha(opacity=50)"!important;
+filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50)!important;
+	-moz-opacity: .5!important;
+	-khtml-opacity: .5!important;
+	opacity: .5!important
+}
+.form-flds input {
+	padding: 3px;
+	height: 18px
+}
+.form-flds dd {
+	font-size: 12px;
+	overflow: hidden
+}
+.dlg-control {
+	position: absolute;
+	top: 0;
+	left: 0
+}
+.dlg-inner-bd {
+	background: none repeat scroll 0 0 #FFF;
+	height: 200px;
+	margin: 0 11px;
+	overflow-x: auto;
+	overflow-y: auto;
+	_width: 494px
+}
+.dlg-hd {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	/*border-bottom: 1px solid #c4dbfe*/
+}
+.dlg-hd h3 {
+	text-indent: 1em;
+	color: #424e67;
+	font-size: 14px;
+	font-weight: 200
+}
+.dlg-hd h3 strong {
+	font-weight: 700
+}
+.dlg-hd .dlg-cnr-min, .dlg-hd .dlg-cnr-r {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_icon.gif?t=1484116398040) no-repeat scroll -109px -111px transparent;
+	cursor: pointer;
+	height: 20px;
+	right: 10px;
+	top: 10px;
+	width: 20px
+}
+.dlg-ft {
+	zoom: 1
+}
+.dlg-ft .dlg-cnr-r {
+	right: 0;
+	top: 58px;
+	height: 3px
+}
+.dlg-hd h3, .dlg-cnr {
+	height: 42px;
+	line-height: 42px
+}
+.dlg-cnr {
+	background: none repeat scroll 0 0 #FFF;
+	font-size: 12px;
+	position: absolute;
+	width: 3px;
+	z-index: 2;
+	_width: 6px
+}
+.dlg-hd .dlg-cnr-l {
+	height: 3px;
+	left: 0;
+	_background: 0 0;
+_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://s1.pan.bdstatic.com/yun-static/common-cdn/images/dlg_hd_l.png?t=1484116398040", sizingMethod="scale")
+}
+.dlg-hd .dlg-cnr-min, .dlg-hd .dlg-cnr-r {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_icon.gif?t=1484116398040) no-repeat scroll -109px -111px transparent;
+	cursor: pointer;
+	height: 20px;
+	right: 10px;
+	top: 10px;
+	width: 20px
+}
+.dlg-hd .dlg-music-min, .dlg-hd .dlg-music-close, .dlg-music-min .dlg-cnr-min {
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_icon.gif?t=1484116398040) no-repeat;
+	cursor: pointer;
+	height: 20px;
+	width: 20px
+}
+.dlg-hd .dlg-music-min {
+	background-position: -109px -58px;
+	right: 35px;
+	top: 12px
+}
+.dlg-music-min .dlg-hd .dlg-music-min {
+	background-position: -109px -38px;
+	right: 35px;
+	top: 12px
+}
+.dlg-hd .dlg-music-close {
+	background-position: -110px -75px;
+	right: 10px;
+	top: 10px
+}
+.dlg-hd .pageWarm {
+	background: #fcfcfc;
+	border-color: #b8cdc6;
+	border-image: none;
+	border-style: solid;
+	border-width: 1px 0 0;
+	clear: both;
+	height: 20px;
+	padding: 3px 20px
+}
+.pageWarm .tit-img {
+	display: block;
+	float: left;
+	width: 12px;
+	height: 18px;
+	margin: 2px 5px 0 0;
+	background: url(http://s1.pan.bdstatic.com/yun-static/common-cdn/images/btn_icon.gif?t=1484116398040) no-repeat scroll -45px 0 transparent
+}
+.pageWarm .dlink {
+	color: #00f;
+	cursor: pointer;
+	font-weight: 100
+}
+.b-canvas {
+	z-index: 899;
+	background: #000;
+	-ms-filter: "alpha(opacity=50)";
+	filter: alpha(opacity=50);
+	-moz-opacity: .5;
+	-khtml-opacity: .5;
+	opacity: .5
+}
+.b-panel {
+	position: absolute;
+	left: 0;
+	top: 0
+}
+
+
+
+
+/*copy from ssouce1*/
+.btn>.glyphicon {
+	margin-right: 3px;
+}
+.pagination.square {
+	margin: 0;/* È¥³ýÍâ±ß¾à */
+}
+.pagination.square>li>a, .pagination.square>li>span {
+	margin: 0 5px;
+	border: 1px solid #dddddd;/* ÉèÖÃËùÓÐµÄ±ß¿ò¶¼Îª1ÏñËØ */
+}
+.pagination.square>li:first-child>a, .pagination.square>li:first-child>span, .pagination.square>li:last-child>a, .pagination.square>li:last-child>span {
+	margin-left: 0px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 0px;/* È¡ÏûÔ²½Ç */
+}
+.pagination.red>li>a, .pagination.red>li>span {
+	color: #f00;
+	border: 1px solid #f00;
+}
+.pagination.red>li>a:hover, .pagination.red>li>span:hover, .pagination.red>li>a:focus, .pagination.red>li>span:focus {
+	background-color: #fdd5d5;
+}
+.pagination.red>.active>a, .pagination.red>.active>span, .pagination.red>.active>a:hover, .pagination.red>.active>span:hover, .pagination.red>.active>a:focus, .pagination.red>.active>span:focus {
+	color: #ffffff;
+	background-color: #f00;
+	border-color: #f00;
+}
+.pagination.red>.disabled>span, .pagination.red>.disabled>span:hover, .pagination.red>.disabled>span:focus, .pagination.red>.disabled>a, .pagination.red>.disabled>a:hover, .pagination.red>.disabled>a:focus {
+	color: #fdd5d5;
+	background-color: #ffffff;
+	border-color: #f00;
+}
+.pagination.green>li>a, .pagination.green>li>span {
+	color: #5aa414;
+	border: 1px solid #5aa414;
+}
+.pagination.green>li>a:hover, .pagination.green>li>span:hover, .pagination.green>li>a:focus, .pagination.green>li>span:focus {
+	background-color: #d8edc3;
+}
+.pagination.green>.active>a, .pagination.green>.active>span, .pagination.green>.active>a:hover, .pagination.green>.active>span:hover, .pagination.green>.active>a:focus, .pagination.green>.active>span:focus {
+	color: #ffffff;
+	background-color: #5aa414;
+	border-color: #5aa414;
+}
+.pagination.green>.disabled>span, .pagination.green>.disabled>span:hover, .pagination.green>.disabled>span:focus, .pagination.green>.disabled>a, .pagination.green>.disabled>a:hover, .pagination.green>.disabled>a:focus {
+	color: #d8edc3;
+	background-color: #ffffff;
+	border-color: #5aa414;
+}
+.table {
+	margin-bottom: 10px;
+}
+
+.bggroud-icon {
+	background-image: url(bg.png) ;
+}
+
+
+.pi-pilog-icon {
+	display: inline-block;
+*display:inline;
+	width: 117px;
+	height: 18px;
+	background: url(images/logo.png) no-repeat;
+	background-size: contain;
+	margin-right: 5px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 15px
+}
+
+.pi-flat-btn ,
+.pi-flat-btn:hover,
+.pi-flat-btn:focus ,
+.pi-flat-btn.active:focus{
+	display: inline;
+	height: 25px;
+	background-color:#000;
+
+	border: 0px
+	border-top-color: initial;
+    border-top-style: initial;
+    border-top-width: 0px;
+    border-right-color: initial;
+    border-right-style: initial;
+    border-right-width: 0px;
+    border-bottom-color: initial;
+    border-bottom-style: initial;
+    border-bottom-width: 0px;
+    border-left-color: initial;
+    border-left-style: initial;
+    border-left-width: 0px;
+
+	margin-right: 5px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 15px
+}
+
+
+.pi-device-icon {
+	display: inline-block;
+*display:inline;
+	height: 16px;
+	background: url(images/icon_device.png) no-repeat;
+	background-size: contain;
+	margin-left: 8px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	/*margin-top: 15px*/
+}
+.pi-password-icon {
+	display: inline-block;
+	height: 16px;
+	background: url(images/icon_password.png) no-repeat;
+	background-size: contain;
+	margin-left: 8px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	/*margin-top: 15px*/
+}
+
+
+
+.pi-exit-icon {
+	display: inline-block;
+*display:inline;
+
+	height: 25px;
+	background: url(images/icon_exit.png) no-repeat;
+	background-size: contain;
+	margin-right: 5px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 15px
+}
+
+
+/*----------------icon button section   start*/
+.pi-out-icon{
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_out_normal.png) no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+.pi-out-icon:active{
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_out_hover.png) no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+
+.pi-home-icon {
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_in_normal.png)  no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top:26px
+}
+
+.pi-home-icon:active {
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_in_hover.png)  no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+
+.pi-cancel_hover-icon {
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_cancel_normal.png)   no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+.pi-cancel_hover-icon:active {
+	display: block;
+	width: 114px!important;
+	height: 114px!important;
+	background: url(images/button_cancel_hover.png)   no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+
+
+.pi-stop-alerm-icon{
+	display: block;
+	width: 114px;
+	height: 144px;
+	background: url(images/button_stop_alarm_normal.png)  no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+.pi-stop-alerm-icon:active{
+	display: block;
+	width: 114px;
+	height: 144px;
+	background: url(images/button_stop_alarm_hover.png)  no-repeat!important;
+	background-position: center;
+	background-size: 140px 140px;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 26px
+}
+
+
+
+
+.pi-talk-icon2 {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	background: url(images/button_talk_normal.png)  no-repeat!important;
+	background-position: center;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 10px
+}
+.pi-talk-icon2:active {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	background: url(images/button_talk_hover.png)  no-repeat!important;
+	background-position: center;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 10px
+}
+
+.pi-open_door-icon2 {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	background: url(images/button_open_door_normal.png) no-repeat!important;
+	background-position: center!important;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top:10px;
+}
+.pi-open_door-icon2:active {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	background: url(images/button_open_door_hover.png) no-repeat!important;
+	background-position: center!important;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top:10px;
+}
+
+
+
+.pi-cancel_hover-icon2 {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	
+	background: url(images/button_cancel_normal.png) no-repeat!important;
+	background-position: center!important;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 10px
+}
+.pi-cancel_hover-icon2:active {
+	display: block;
+	width: 88px!important;
+	height: 88px!important;
+	background: url(images/button_cancel_hover.png) no-repeat!important;
+	background-position: center!important;
+	margin-right: 0px;
+	position: relative;
+	float: left;
+	zoom: 1;
+	margin-top: 10px
+}
+
+/*----------------icon button section   end*/
+
+
+#warnning_sets { width: 460px; position:relative; top: 20px;  z-index: 1;  float: left;}
+#warnning_sets ul { width: 460px; }
+#warnning_sets li { width: 144px; height: 120px; float: left;  text-align: center; /* color: #fff;*/ cursor: pointer;line-height: 30px;  margin: 0 1px 4px 0; }
+.protect_check_warnning_block {
+	width: 50px;
+	height: 50px;
+	margin:auto; 
+	text-align: center;
+	/*
+	border: 1; 
+	border-color: #00FF00; 
+	border-style: solid; 
+	border-width: 3px; 
+	*/
+}
+.protect_check_WB_status{
+	font: 20px "À¼Í¤ºÚ";
+	color:"#56baca";
+	margin:auto;
+}
+.protect_check_WB_position{
+	font: 14px "À¼Í¤ºÚ";
+	color:"#5d858d";
+	margin:auto;
+}
+.protect_check_WB_ok{
+	width: 460px!important;
+	font: 28px "À¼Í¤ºÚ";
+	color:"#56baca";
+	margin:60px 0 0 0!important;
+
+	text-align: center;
+}
+.protect_starting_status
+.alert_message_explain
+.protected_status{
+	font: 24px "À¼Í¤ºÚ";
+	color:"#5d858d";
+	margin:auto;
+}
+.protect_starting_timeremain{
+	font: 60px "À¼Í¤ºÚ";
+	color:"#5d858d";
+	margin:auto;
+}
+.unlock_protect_remain_seconds{
+	font: 72px "À¼Í¤ºÚ";
+	color:"#5d858d";
+	margin:auto;
+}
+.bell_ring_description{
+	font: 28px "À¼Í¤ºÚ";
+	color:"#ffffff";
+	margin:auto;
+}
+
+.pi-door_unlock {
+	display:block;
+	background: url(images/icon_gate_lock.png) no-repeat;
+	
+
+	position: relative;
+	float: none;
+	/*margin-right: 5px;
+	margin-top: 15px
+	*/
+	zoom: 1;
+	
+}
+
+
+.panel-pi {
+  border-color: #000;
+}
+.panel-pi > .panel-heading {
+  color: #343434;
+  background-color: #343434;
+  border-color: #000;
+}
+.panel-pi > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #343434;
+}
+.panel-pi > .panel-heading .badge {
+  color: #343434;
+  background-color: #343434;
+}
+.panel-pi > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #343434;
+}
+
+.input {border:0 #FFFFFF; background-color:#fff;} 
