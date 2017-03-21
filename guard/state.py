@@ -91,7 +91,9 @@ class GuardState(object):
 
     def on_invaded(self):
         print('on_invaded')
+
         if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
+            StateControl().update_status('unlock_protect', 30)
             self.to_alarm_timer = Timer(1, 30)
             self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
             self.to_alarm_timer.set_timeout_action(self.timeout_to_alarm, self)
@@ -141,7 +143,7 @@ class AlarmState(object):
         from oicmgr import OicDeviceManager
         print('on_alarm')
         OicDeviceManager().setup_alarm(True)
-        self.update_status('alert_message')
+        StateControl().update_status('alert_message')
 
 
     def on_quiet(self):
@@ -202,7 +204,7 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         print(mode)
-        if mode == 'home':
+        if mode == 'indoors':
             h.ind()
         if mode == 'outgoing':
             h.outg()
@@ -233,7 +235,6 @@ class StateControl(object):
         self.update_status('alert_message')
 
     def invade(self):
-        self.update_status('unlock_protect', 30)
         GuardState().invade()
 
     def set_protect(self, result):
