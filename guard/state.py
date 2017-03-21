@@ -91,7 +91,9 @@ class GuardState(object):
 
     def on_invaded(self):
         print('on_invaded')
+
         if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
+            StateControl().update_status('unlock_protect', 30)
             self.to_alarm_timer = Timer(1, 30)
             self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
             self.to_alarm_timer.set_timeout_action(self.timeout_to_alarm, self)
@@ -141,6 +143,7 @@ class AlarmState(object):
         from oicmgr import OicDeviceManager
         print('on_alarm')
         OicDeviceManager().setup_alarm(True)
+        StateControl().update_status('alert_message')
 
 
     def on_quiet(self):
@@ -164,6 +167,7 @@ class StateControl(object):
         if status is None:
             info = {'status': self.state}
         else:
+            self.state = status
             info = {'status': status}
 
         if g.state in ['guarded', 'invaded']:
@@ -188,6 +192,10 @@ class StateControl(object):
             ind = {'indoors': 'cannot'}
             out = {'outgoing': 'can'}
 
+        if g.state == 'unguarded':
+            ind = {'indoors': 'can'}
+            out = {'outgoing': 'can'}
+
         can.append(ind)
         can.append(out)
         info['canprotect'] = can
@@ -200,19 +208,20 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         print(mode)
-        if mode == 'home':
+        if mode == 'indoors':
             h.ind()
         if mode == 'outgoing':
             h.outg()
         g.setup_guard()
 
-        if mode == 'home':
+        if mode == 'indoors':
             self.update_status('protected')
         else:
             self.update_status('protect_starting', 30)
 
-    def cancel_protect(self, action, password):
-        print(action, password)
+    def cancel_protect(self, mode, action, password):
+        print(mode, action, password)
+        HouseState().ind()
         if action == 'start':
             self.update_status('unlock_protect', 30)
         elif action == 'ok':
@@ -229,6 +238,9 @@ class StateControl(object):
     def alert(self):
         AlarmState().be_alarm()
         self.update_status('alert_message')
+
+    def invade(self):
+        GuardState().invade()
 
     def set_protect(self, result):
         if result == 'cancel':

@@ -143,9 +143,9 @@ class OicDeviceManager(object):
             if old_state is False and state is True:
 
                 if dev.is_invade_detector():
-                    GuardState().invade()
+                    StateControl().invade()
                 if dev.is_motion_detector() and HouseState().state == "outgoing":
-                    GuardState().invade()
+                    StateControl().invade()
                 if dev.is_fatal_detector():
                     StateControl().alert()
 
