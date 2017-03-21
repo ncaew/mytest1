@@ -141,6 +141,7 @@ class AlarmState(object):
         from oicmgr import OicDeviceManager
         print('on_alarm')
         OicDeviceManager().setup_alarm(True)
+        self.update_status('alert_message')
 
 
     def on_quiet(self):
@@ -164,6 +165,7 @@ class StateControl(object):
         if status is None:
             info = {'status': self.state}
         else:
+            self.state = status
             info = {'status': status}
 
         if g.state in ['guarded', 'invaded']:
@@ -229,6 +231,10 @@ class StateControl(object):
     def alert(self):
         AlarmState().be_alarm()
         self.update_status('alert_message')
+
+    def invade(self):
+        self.update_status('unlock_protect', 30)
+        GuardState().invade()
 
     def set_protect(self, result):
         if result == 'cancel':
