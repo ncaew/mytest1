@@ -213,6 +213,16 @@ class OicDeviceManager(object):
             l.append(a)
         return l
 
+    def update_device_alias(self, devid, alias):
+        result = True
+        if devid in self._devices:
+            d = self._devices[devid]
+            d.position = alias
+        else:
+            result = False
+
+        return result
+
     def all_devices_quiet(self):
         for d in self._devices.values():
             if d.res_state.values() is not None:
