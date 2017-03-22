@@ -1,22 +1,22 @@
-    <html>  
-    <head>  
-    <script type="text/javascript">  
-    var ws = new WebSocket("ws://localhost:8000/chat");  
-    ws.onmessage = function(event) {  
-        console.log(event);  
-    }  
-    function send() {  
-        ws.send(document.getElementById('chat').value );  
-    }  
+    <html>
+    <head>
+    <script type="text/javascript">
+    var ws = new WebSocket("ws://localhost:8000/chat");
+    ws.onmessage = function(event) {
+        console.log(event);
+    }
+    function send() {
+        ws.send(document.getElementById('chat').value );
+    }
 
-    </script>  
-    </head>  
-      
-    <body>  
-        <div>  
-            hello  
-            <input id="chat">  
-            <button  onclick="send()"></button>   
-        </div>      
-    </body>  
-    </html>  
+    </script>
+    </head>
+
+    <body>
+        <div>
+            hello
+            <input id="chat">
+            <button  onclick="send()"></button>
+        </div>
+    </body>
+    </html>

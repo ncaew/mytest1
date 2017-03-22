@@ -159,7 +159,7 @@ class StateControl(object):
         self.q = Queue.Queue()
         self.state = 'protected'
 
-    def update_status(self, status=None, timeout=-1):
+    def update_status(self, status=None, timeout=30):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
