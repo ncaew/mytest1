@@ -16,6 +16,6 @@ guard deploy:<br/>
     cd guard/
     git clone https://github.com/ncaew/mytest1 
 
-    http://blog.csdn.net/wangqiuyun/article/details/46966839
+    sudo tcpdump -i eth0 -nn greater 81 and less 83 and src port 51880 and dst port 51880 and src net 192.168 and '(udp[46:2] = 0x0c00)' -l | grep UDP
     
 
