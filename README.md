@@ -8,9 +8,9 @@ guard deploy:<br/>
     sudo leafpad /mnt/config.txt 
     sudo reboot 
     
-    sudo leafpad /etc/apt/sources.list
     sudo apt-get update 
     sudo apt-get install vim htop iftop vlc mplayer iperf 
+    sudo apt-get install unclutter firefox-esr-l10n-zh-cn
     sudo pip install tornado coapthon transitions 
     mkdir guard
     cd guard/
