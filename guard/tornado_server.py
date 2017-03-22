@@ -116,8 +116,9 @@ class StaticHandler(BaseHandler):
 
 
 class CancelProtectHandler(BaseHandler):
+    count =0
     def get(self):
-
+        CancelProtectHandler.count += 1
         mode = self.get_argument('mode', 'unknown')
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
@@ -126,7 +127,7 @@ class CancelProtectHandler(BaseHandler):
         StateControl().cancel_protect(mode=mode, action=action, password=passwd)
 
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
-        event = dict(event='StatusChanged', info=info)
+        event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
 
         WebSocketHandler.send_to_all(event)
         self.write('{"result":"OK"}')
