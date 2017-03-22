@@ -109,11 +109,11 @@ function win_protect_check_init() {
         //document.getElementById("protect_check_btn_indoors").disabled="";
         if (debug_log_detail==1)console.log("protect_check set protect_check_btn_ both can")
         $('#protect_check_btn_outgoing').on('click', function() {
-			audio_system_play("sounds/click.ogg");
+			audio_system_play_click();
             win_protect_check_private_func_submit("out")
         });
         $('#protect_check_btn_indoors').on('click', function() {
-			audio_system_play("sounds/click.ogg");
+			audio_system_play_click();
             win_protect_check_private_func_submit("home")
         });
     } else {
@@ -123,12 +123,12 @@ function win_protect_check_init() {
                 if (debug_log_detail==1)console.log("protect_check set protect_check_btn_" + protect_mode, can_value)
                 if (can_value == 'cannot') {
                     $('#protect_check_btn_' + protect_mode).on('click', function() {
-						audio_system_play("sounds/error.ogg");
+						audio_system_play_error();
                         Popup_info_pop("不能进行设备设防状态，请检查设备情况。", "show", 1000);
                     });
                 } else
                     $('#protect_check_btn_' + protect_mode).on('click', function() {
-						audio_system_play("sounds/click.ogg");
+						audio_system_play_click();
                         win_protect_check_private_func_submit(protect_mode)
                     });
             });
@@ -141,7 +141,7 @@ function win_protect_check_init() {
 }
 function win_protect_check_stop() {
 	//关闭声音
-	audio_system_load("");
+	audio_system_stop_all();
 
 	$('#protect_check_btn_outgoing').off('click');
 	$('#protect_check_btn_indoors').off('click');
@@ -203,12 +203,13 @@ function win_protect_starting_check_or_show(data) {
     win_protect_starting_init_time_remained = data.remain_second;
 
     win_protect_starting_protectmode = data.house_status_chs;
-	if (data.house_status == "outgoing")
-		win_protected_protectmode = "外出";
+	if (data.house_status == "outgoing") 
+		win_protect_starting_protectmode = "外出";
 	else if (data.house_status == "indoors")
-		win_protected_protectmode = "居家";
+		win_protect_starting_protectmode = "居家";
 	else
-		win_protected_protectmode = "未知";
+		win_protect_starting_protectmode = "未知";
+	//console.error("data.house_status_chs() data.house_status() win_protect_starting_protectmode() ")
 
 	win_protect_starting_init("");
 	if (ui_state_current_shown == 'protect_starting') return 0;
@@ -224,13 +225,13 @@ function win_protect_starting_check_or_show(data) {
 function win_protect_starting_init(ispart) {
     $('#protect_starting_status').html("即将进入" + win_protect_starting_protectmode + "保护模式");
 	$('#protect_starting_btn-cancel').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
         win_protect_starting_submit("cancel")
     });
 	if (ispart=="all")
 	{
 		$('#protect_starting_timeremain').html("<font face='兰亭黑' >"+win_protect_starting_init_time_remained+"</font>" );
-		audio_system_play("sounds/time_warning.ogg");
+		audio_system_play_time_warning();
 		win_protect_starting_inittime = (new Date().getTime()) / 1000;
 		win_protect_starting_timer = window.setTimeout(function() {
 			win_protect_starting_timer_event();
@@ -243,7 +244,7 @@ function win_protect_starting_stop() {
     $('#protect_starting_status').html();
     $('#protect_starting_timeremain').html();
     $('#protect_starting_btn-cancel').off('click');
-    audio_system_load("");
+    audio_system_stop_all();
 	window.clearTimeout(win_protect_starting_timer);
 
 
@@ -284,7 +285,8 @@ function win_protected_check_or_show(data) {
 function win_protected_init() {
     $('#protected_status').html("已设防，" + win_protected_protectmode + "模式 ");
     $('#protected_btn-cancel').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		//console.error("one two three");
+		audio_system_play_click();
         win_unlock_protect_submit("start", "");
     });
 }
@@ -332,32 +334,40 @@ function win_unlock_protect_submit(okorcancel, passwd) {
 function win_unlock_protect_timer_event() {
     now_time = (new Date().getTime()) / 1000
     total_remain = Math.floor(win_unlock_protect_remain_seconds - (now_time - win_unlock_protect_inittime))
-    if (debug_log_detail==1)console.log("in win_unlock_protect ", total_remain);
+    console.error("in win_unlock_protect ", total_remain);
     $('#unlock_protect_remain_seconds').html(total_remain);
     if (total_remain > 0) {
         win_unlock_protect_timer = window.setTimeout(function() {
             win_unlock_protect_timer_event();
         }, 1000);
-    } else
+    } else{
+		console.error(" win_unlock_protect_submit cancel", total_remain);
         win_unlock_protect_submit("cancel", "");
+	}
 }
 
 function win_unlock_protect_check_or_show(data) {
     //分析 wininit 的参数'status': 'unlock_protect', 'timer_remain': 60,
     win_unlock_protect_protectmode = data.protect_mode;
     win_unlock_protect_remain_seconds = data.remain_second;
-
+	//console.error("unlock_protect timer remained  init value is " + data.remain_second)
+	$('#unlock_protect_remain_seconds').html(win_unlock_protect_remain_seconds);
 	if (ui_state_current_shown == 'unlock_protect') return 0;
 
 
     $('#' + data.status).on('shown.bs.modal', function() {
-        virual_password_keyboard_init("win_unlock_protect_input", function(pw) {
-            win_unlock_protect_submit("ok", pw);
-        });
-        win_unlock_protect_inittime = (new Date().getTime()) / 1000;
+
+		win_unlock_protect_inittime = (new Date().getTime()) / 1000;
         win_unlock_protect_timer = window.setTimeout(function() {
             win_unlock_protect_timer_event();
-        }, 1000);
+        }, 500);
+
+        virual_password_keyboard_init("win_unlock_protect_input", function(pw) {
+			win_unlock_protect_stop();
+            win_unlock_protect_submit("ok", pw);
+			
+        });
+
 
 		system_close_last_window('unlock_protect');
 
@@ -366,9 +376,10 @@ function win_unlock_protect_check_or_show(data) {
     return 1;
 }
 function win_unlock_protect_stop() {
-		 virual_password_keyboard_close();
+		window.clearTimeout(win_unlock_protect_timer);
+		virual_password_keyboard_close();
 
-		 window.clearTimeout(win_unlock_protect_timer);
+		 
 }
 
 
@@ -422,7 +433,7 @@ function win_alert_message_check_or_show(data) {
 
 	$('#alert_message_explain').html(win_alert_message_explain);
     $('#alert_message_btn-stopalert').on('click', function() {
-			audio_system_play("sounds/click.ogg");
+			audio_system_play_click();
             win_alert_message_submit(win_alert_message_alertid);
         });
 
@@ -430,7 +441,7 @@ function win_alert_message_check_or_show(data) {
 
     $('#' + data.status).on('shown.bs.modal', function() {
 
-		audio_system_play_loop("sounds/alerm.ogg");
+		audio_system_play_alerm();
         system_close_last_window('alert_message');
     });
     $('#' + data.status).on('show.bs.modal', function() {
@@ -481,22 +492,22 @@ function win_bell_ring_check_or_show(data) {
 	$('#bell_ring_description').html(win_bell_ring_description + "呼叫……");
 
 	$('#bell_ring_startstream').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
 		win_bell_ring_submit(win_bell_ring_bellid, "startstream");
 	});
 	$('#bell_ring_opendoor').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
 		win_bell_ring_submit(win_bell_ring_bellid, "opendoor");
 	});
 	$('#bell_ring_reject').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
 		win_bell_ring_submit(win_bell_ring_bellid, "reject");
 	});
 
     
 	if (ui_state_current_shown == 'bell_ring') return 0;
     $('#' + data.status).on('shown.bs.modal', function() {
-		audio_system_play_loop("sounds/bell_ring.ogg");
+		audio_system_play_bell_ring();
         system_close_last_window('bell_ring');
     });
 	$('#' + data.status).on('show.bs.modal', function() {
@@ -525,11 +536,11 @@ function win_bell_view_check_or_show(data) {
 
 	//使用和相同的url submit
 	$('#bell_view_opendoor').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
 		win_bell_ring_submit(win_bell_view_bellid, "opendoor");
 	});
 	$('#bell_view_reject').on('click', function() {
-		audio_system_play("sounds/click.ogg");
+		audio_system_play_click();
 		win_bell_ring_submit(win_bell_view_bellid, "reject");
 	});
 
