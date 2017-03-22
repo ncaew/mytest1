@@ -160,6 +160,32 @@ class SetProtectHandler(BaseHandler):
         self.write('{"result": "OK"}')
 
 
+class SetDevAliasHandler(BaseHandler):
+    def get(self):
+        from oicmgr import OicDeviceManager
+        result = 'OK'
+        devid = self.get_argument('uuid', '')
+        oldname = self.get_argument('oldname', '')
+        newname = self.get_argument('newname', '')
+
+        if devid == '':
+            result = 'NOK'
+        if newname == '':
+            result = 'NOK'
+        if oldname != newname and newname != '':
+            result = 'OK' if OicDeviceManager().update_device_alias(devid, newname) else 'NOK'
+
+        info = {'result': result, 'devices_status': OicDeviceManager().get_devices()}
+        self.write(json.dumps(info))
+
+
+class GetDevicesListHandler(BaseHandler):
+    def get(self):
+        from oicmgr import OicDeviceManager
+        info = {'devices_status': OicDeviceManager().get_devices()}
+        self.write(json.dumps(info))
+
+
 class BellHandler(BaseHandler):
     def get(self):
         bellid = self.get_argument('bellid', '')
@@ -185,10 +211,11 @@ class TornadoServer(object):
                 (r"/get_status", StatusHandler),
                 (r"/stop_alert", StopAlertHandler),
                 (r"/set_password", JsonHandler),
-                (r"/set_device_position", JsonHandler),
                 (r"/set_cancel_protected", CancelProtectHandler),
                 (r"/set_protect_start", SetProtectStartHandler),
                 (r"/set_protect", SetProtectHandler),
+                (r"/get_deviceslist", GetDevicesListHandler),
+                (r"/set_device_alias", SetDevAliasHandler),
                 (r"/bell_do", BellHandler),
                 (r"/", StaticHandler),
             ],
@@ -255,11 +282,6 @@ if __name__ == '__main__':
             pass
 
 
-    class SetDevPosHandler(BaseHandler):
-        def get(self):
-            pass
-
-
     class StaticHandler(BaseHandler):
         def get(self):
             self.render('index.html')
@@ -271,10 +293,11 @@ if __name__ == '__main__':
             (r"/get_status", StatusHandler),
             (r"/stop_alert", StopAlertHandler),
             (r"/set_password", SetPasswordHandler),
-            (r"/set_device_position", SetDevPosHandler),
             (r"/set_cancel_protected", CancelProtectHandler),
             (r"/set_protect_start", SetProtectHandler),
             (r"/set_protect", SetProtectHandler),
+            (r"/get_deviceslist", GetDevicesListHandler),
+            (r"/set_device_alias", SetDevAliasHandler),
             (r"/bell_do", BellHandler),
             (r"/", StaticHandler),
         ],
