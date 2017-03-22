@@ -217,7 +217,7 @@ class StateControl(object):
         if mode == 'indoors':
             self.update_status('protected')
         else:
-            self.update_status('protect_starting', 30)
+            self.update_status('protect_starting', 60)
 
     def cancel_protect(self, mode, action, password):
         print(mode, action, password)
