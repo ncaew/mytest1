@@ -16,6 +16,6 @@ guard deploy:<br/>
     cd guard/
     git clone https://github.com/ncaew/mytest1 
 
-    
+    http://blog.csdn.net/wangqiuyun/article/details/46966839
     
 
