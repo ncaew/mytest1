@@ -13,7 +13,7 @@ class PwManager(object):
     def update_passwd(old, new):
         ret = True
         if old == PwManager.get_passwd_hash():
-            print("TODO,  update passwd")
+            print("TODO,  update and save passwd")
         else:
             ret = False
 
