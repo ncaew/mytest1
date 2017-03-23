@@ -2,7 +2,7 @@ import hashlib
 import ConfigParser
 
 
-class PswManager(object):
+class PwManager(object):
     @staticmethod
     def get_passwd_hash():
         ini_config = ConfigParser.ConfigParser()
@@ -30,7 +30,7 @@ class PswManager(object):
 
 
 if __name__ == '__main__':
-    pswm = PswManager()
+    pswm = PwManager()
     print 'Get: '
     print pswm.get_passwd_hash()
     print '\n'
