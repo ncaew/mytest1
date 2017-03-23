@@ -202,7 +202,7 @@ class ChangePWHandler(BaseHandler):
         oldpw = self.get_argument('oldpw', '') #in hash code form
         newpw = self.get_argument('newpw', '')
 
-        res = PwManager.update_passwd(oldpw, newpw)
+        res = 'OK' if PwManager.update_passwd(oldpw, newpw) else 'NOK'
         info = {'result': res}
         self.write(json.dumps(info))
 
