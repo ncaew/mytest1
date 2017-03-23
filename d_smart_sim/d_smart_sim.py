@@ -267,5 +267,6 @@ if __name__ == '__main__':
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
         print "Server Shutdown"
+        tornado.ioloop.IOLoop.instance().stop()
         server.close()
         print "Exiting..."

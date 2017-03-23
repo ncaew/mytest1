@@ -187,6 +187,26 @@ class GetDevicesListHandler(BaseHandler):
         self.write(json.dumps(info))
 
 
+class GetPWHandler(BaseHandler):
+    def get(self):
+        from passwd import PwManager
+        pw = PwManager.get_passwd_hash()
+
+        info = {'protect_pw': pw}
+        self.write(json.dumps(info))
+
+
+class ChangePWHandler(BaseHandler):
+    def get(self):
+        from passwd import PwManager
+        oldpw = self.get_argument('oldpw', '') #in hash code form
+        newpw = self.get_argument('newpw', '')
+
+        res = PwManager.update_passwd(oldpw, newpw)
+        info = {'result': res}
+        self.write(json.dumps(info))
+
+
 class BellHandler(BaseHandler):
     def get(self):
         bellid = self.get_argument('bellid', '')
@@ -215,13 +235,14 @@ class TornadoServer(object):
                 (r"/set_cancel_protected", CancelProtectHandler),
                 (r"/set_protect_start", SetProtectStartHandler),
                 (r"/set_protect", SetProtectHandler),
-                (r"/get_deviceslist", GetDevicesListHandler),
+                (r"/get_devices_list", GetDevicesListHandler),
                 (r"/set_device_alias", SetDevAliasHandler),
+                (r"/get_protect_pw", GetPWHandler),
+                (r"/ch_passwd", ChangePWHandler),
                 (r"/bell_do", BellHandler),
                 (r"/", StaticHandler),
             ],
             static_path=os.path.join(os.path.dirname(__file__), "static"),
-            template_path=os.path.join(os.path.dirname(__file__), "template"),
             debug=True,
         )
 
@@ -297,13 +318,14 @@ if __name__ == '__main__':
             (r"/set_cancel_protected", CancelProtectHandler),
             (r"/set_protect_start", SetProtectHandler),
             (r"/set_protect", SetProtectHandler),
-            (r"/get_deviceslist", GetDevicesListHandler),
+            (r"/get_devices_list", GetDevicesListHandler),
             (r"/set_device_alias", SetDevAliasHandler),
+            (r"/get_protect_pw", GetPWHandler),
+            (r"/ch_passwd", ChangePWHandler),
             (r"/bell_do", BellHandler),
             (r"/", StaticHandler),
         ],
         static_path=os.path.join(os.path.dirname(__file__), "static"),
-        template_path=os.path.join(os.path.dirname(__file__), "template"),
         debug=True,
     )
 
