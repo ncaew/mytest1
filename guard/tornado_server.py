@@ -189,8 +189,8 @@ class GetDevicesListHandler(BaseHandler):
 
 class GetPWHandler(BaseHandler):
     def get(self):
-        from passwd import PswManager
-        pw = PswManager.get_passwd_hash()
+        from passwd import PwManager
+        pw = PwManager.get_passwd_hash()
 
         info = {'protect_pw': pw}
         self.write(json.dumps(info))
@@ -198,11 +198,11 @@ class GetPWHandler(BaseHandler):
 
 class ChangePWHandler(BaseHandler):
     def get(self):
-        from passwd import PswManager
+        from passwd import PwManager
         oldpw = self.get_argument('oldpw', '') #in hash code form
         newpw = self.get_argument('newpw', '')
 
-        res = PswManager.update_passwd(oldpw, newpw)
+        res = 'OK' if PwManager.update_passwd(oldpw, newpw) else 'NOK'
         info = {'result': res}
         self.write(json.dumps(info))
 

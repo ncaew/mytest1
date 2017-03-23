@@ -169,6 +169,7 @@ function win_protect_starting_submit(type) {
         },
         type: 'get',
         cache: false,
+		async: false,
         dataType: 'json',
         success: function(data) {
             	console.warn("submit retrun:"+ JSON.stringify(data));
@@ -189,9 +190,10 @@ function win_protect_starting_timer_event() {
     if (total_remain > 0) {
         win_protect_starting_timer = window.setTimeout(function() {
             win_protect_starting_timer_event();
-        }, 1000);
-    } else
+        }, 500);
+    } else{
         win_protect_starting_submit("ok");
+	}
 
 
 }
@@ -305,15 +307,20 @@ var win_unlock_protect_protectmode;
 var win_unlock_protect_remain_seconds;
 var win_unlock_protect_timer;
 var win_unlock_protect_inittime;
-
+var win_unlock_protect_is_colsed=1;
 function win_unlock_protect_submit(okorcancel, passwd) {
-    //time_stamp = Math.floor((new Date().getTime()) / 60000);
-	
+    
+	time_stamp = Math.floor((new Date().getTime()) / 60000);
+	time_stamp= String(time_stamp);
+	passwd= passwd + time_stamp;
+	console.log(passwd);
+	passwd=hex_md5(passwd).toLowerCase()
     $.ajax({
         url: "http://"+g_vars_domain_prefix+"/set_cancel_protected",
         data: {
             mode: win_protected_protectmode,
             action: okorcancel,
+			systime:time_stamp,
             passwd: passwd
         },
         type: 'get',
@@ -334,13 +341,13 @@ function win_unlock_protect_submit(okorcancel, passwd) {
 function win_unlock_protect_timer_event() {
     now_time = (new Date().getTime()) / 1000
     total_remain = Math.floor(win_unlock_protect_remain_seconds - (now_time - win_unlock_protect_inittime))
-    console.error("in win_unlock_protect ", total_remain);
+    console.log("in win_unlock_protect ", total_remain);
     $('#unlock_protect_remain_seconds').html(total_remain);
-    if (total_remain > 0) {
+    if (win_unlock_protect_is_colsed==0 && total_remain > 0) {
         win_unlock_protect_timer = window.setTimeout(function() {
             win_unlock_protect_timer_event();
-        }, 1000);
-    } else{
+        }, 500);
+    } else if (win_unlock_protect_is_colsed == 0)	{
 		console.error(" win_unlock_protect_submit cancel", total_remain);
         win_unlock_protect_submit("cancel", "");
 	}
@@ -352,6 +359,8 @@ function win_unlock_protect_check_or_show(data) {
     win_unlock_protect_remain_seconds = data.remain_second;
 	//console.error("unlock_protect timer remained  init value is " + data.remain_second)
 	$('#unlock_protect_remain_seconds').html(win_unlock_protect_remain_seconds);
+
+	win_unlock_protect_is_colsed=0;
 	if (ui_state_current_shown == 'unlock_protect') return 0;
 
 
@@ -376,11 +385,15 @@ function win_unlock_protect_check_or_show(data) {
     return 1;
 }
 function win_unlock_protect_stop() {
+		console.log("win_unlock_protect_stop invoked!");
+		win_unlock_protect_is_colsed =1;
 		window.clearTimeout(win_unlock_protect_timer);
-		virual_password_keyboard_close();
-
-		 
+		$('#unlock_protect_remain_seconds').html();
+		audio_system_stop_all();
+		virual_password_keyboard_close(); 
 }
+
+
 
 
 
