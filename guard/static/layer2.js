@@ -463,8 +463,10 @@ function win_alert_message_check_or_show(data) {
     return 1;
 }
 function win_alert_message_stop() {
+	audio_system_stop_all();
 	$('#alert_message_explain').html();
     $('#alert_message_btn-stopalert').off('click');
+	
 }
 
 ///////////////      case "bell_ring":
