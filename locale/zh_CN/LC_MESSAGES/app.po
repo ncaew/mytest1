@@ -1,0 +1,1583 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: guard/passwd.py:7 guard/oicmgr.py:85 guard/oicmgr.py:86 guard/oicmgr.py:87
+#: guard/static.bak/tornado_server.py:201
+#: guard/static.bak/tornado_server.py:273
+#: guard/static.bak/tornado_server.py:279 guard/state.py:260
+#: guard/tornado_server.py:106 guard/tornado_server.py:138
+#: guard/tornado_server.py:143 guard/tornado_server.py:152
+#: guard/tornado_server.py:157 guard/tornado_server.py:168
+#: guard/tornado_server.py:169 guard/tornado_server.py:170
+#: guard/tornado_server.py:172 guard/tornado_server.py:174
+#: guard/tornado_server.py:176 guard/tornado_server.py:202
+#: guard/tornado_server.py:203 guard/tornado_server.py:212
+#: guard/tornado_server.py:213
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-23 17:39+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: guard/passwd.py:16
+msgid "TODO,  update and save passwd"
+msgstr ""
+
+#: guard/coapserver.py:8
+msgid "receive muticast post/delete to oic/rd"
+msgstr ""
+
+#: guard/coapserver.py:12
+msgid "self.add_resource('oic/rd', BasicResource())"
+msgstr ""
+
+#: guard/coapserver.py:13
+msgid "oic/"
+msgstr ""
+
+#: guard/coapserver.py:14
+msgid "oic/rd/"
+msgstr ""
+
+#: guard/coapserver.py:17
+msgid "oic/ resource not impl"
+msgstr ""
+
+#: guard/coapserver.py:18
+msgid "DirResource"
+msgstr ""
+
+#: guard/coapserver.py:38
+msgid "oic/rd resource "
+msgstr ""
+
+#: guard/coapserver.py:39
+msgid "RdResource"
+msgstr ""
+
+#: guard/coapserver.py:63 guard/oicmgr.py:237
+#: guard/static.bak/tornado_server.py:29 guard/state.py:288 guard/timer.py:56
+#: guard/tornado_server.py:254
+msgid "__main__"
+msgstr ""
+
+#: guard/coapserver.py:65
+msgid "224.0.1.187"
+msgstr ""
+
+#: guard/oicmgr.py:10
+msgid "Oic device info "
+msgstr ""
+
+#: guard/oicmgr.py:11
+msgid "oic.d.magnetismdetector"
+msgstr "门/窗磁"
+
+#: guard/oicmgr.py:12
+msgid "oic.d.irintrusiondetector"
+msgstr "人体感应"
+
+#: guard/oicmgr.py:13
+msgid "oic.d.flammablegasdetector"
+msgstr "可燃气感"
+
+#: guard/oicmgr.py:13
+msgid "oic.d.smokesensor"
+msgstr "烟感"
+
+#: guard/oicmgr.py:14
+msgid "oic.d.waterleakagedetector"
+msgstr "漏水感应"
+
+#: guard/oicmgr.py:15
+msgid "oic.d.alarm"
+msgstr ""
+
+#: guard/oicmgr.py:17
+msgid "oic.r.sensor.motion"
+msgstr ""
+
+#: guard/oicmgr.py:17
+msgid "oic.r.sensor.contact"
+msgstr ""
+
+#: guard/oicmgr.py:17
+msgid "oic.r.sensor.carbonmonoxide"
+msgstr ""
+
+#: guard/oicmgr.py:18
+msgid "oic.r.sensor.smoke"
+msgstr ""
+
+#: guard/oicmgr.py:18
+msgid "oic.r.sensor.water"
+msgstr ""
+
+#: guard/oicmgr.py:21 guard/oicmgr.py:61 guard/oicmgr.py:176
+msgid "di"
+msgstr ""
+
+#: guard/oicmgr.py:22
+msgid "n"
+msgstr ""
+
+#: guard/oicmgr.py:33 guard/oicmgr.py:57 guard/oicmgr.py:90
+msgid "links"
+msgstr ""
+
+#: guard/oicmgr.py:34 guard/oicmgr.py:37 guard/oicmgr.py:58 guard/oicmgr.py:59
+#: guard/oicmgr.py:60 guard/oicmgr.py:61 guard/oicmgr.py:62 guard/oicmgr.py:128
+#: guard/tornado_server.py:298
+msgid "rt"
+msgstr ""
+
+#: guard/oicmgr.py:34
+msgid "oic.d."
+msgstr ""
+
+#: guard/oicmgr.py:59
+msgid "oic.r."
+msgstr ""
+
+#: guard/oicmgr.py:63 guard/oicmgr.py:91 guard/oicmgr.py:92 guard/oicmgr.py:93
+#: guard/oicmgr.py:94 guard/oicmgr.py:95 guard/oicmgr.py:96
+msgid "href"
+msgstr ""
+
+#: guard/oicmgr.py:78
+msgid "OicDeviceManager"
+msgstr ""
+
+#: guard/oicmgr.py:84 guard/oicmgr.py:107
+msgid "alarm"
+msgstr ""
+
+#: guard/oicmgr.py:91
+msgid "/AlarmSwitchResURI"
+msgstr ""
+
+#: guard/oicmgr.py:93
+msgid "/FireAlarmResURI"
+msgstr ""
+
+#: guard/oicmgr.py:95
+msgid "/ClockResURI"
+msgstr ""
+
+#: guard/oicmgr.py:99
+msgid "%Y-%m-%dT%H:%M:%SZ"
+msgstr ""
+
+#: guard/oicmgr.py:115
+msgid "fire"
+msgstr ""
+
+#: guard/oicmgr.py:127 guard/oicmgr.py:162
+msgid "id"
+msgstr ""
+
+#: guard/oicmgr.py:129 guard/oicmgr.py:135 guard/oicmgr.py:208
+#: guard/oicmgr.py:229
+msgid "value"
+msgstr ""
+
+#: guard/oicmgr.py:130 guard/oicmgr.py:131 guard/oicmgr.py:136
+#: guard/oicmgr.py:137
+msgid "true"
+msgstr ""
+
+#: guard/oicmgr.py:130 guard/oicmgr.py:136
+msgid "false"
+msgstr ""
+
+#: guard/oicmgr.py:147 guard/static.bak/tornado_server.py:53
+#: guard/static.bak/tornado_server.py:114
+#: guard/static.bak/tornado_server.py:130
+#: guard/static.bak/tornado_server.py:192
+#: guard/static.bak/tornado_server.py:210
+#: guard/static.bak/tornado_server.py:288
+#: guard/static.bak/tornado_server.py:349
+#: guard/static.bak/tornado_server.py:364
+#: guard/static.bak/tornado_server.py:443
+#: guard/static.bak/tornado_server.py:519 guard/state.py:60 guard/state.py:108
+#: guard/state.py:112 guard/state.py:113 guard/state.py:119 guard/state.py:188
+#: guard/state.py:190 guard/state.py:192 guard/state.py:196 guard/state.py:200
+#: guard/state.py:219
+msgid "outgoing"
+msgstr ""
+
+#: guard/oicmgr.py:153
+msgid "old_value"
+msgstr ""
+
+#: guard/oicmgr.py:154
+msgid "OICNotify"
+msgstr ""
+
+#: guard/oicmgr.py:204 guard/static.bak/tornado_server.py:58
+#: guard/static.bak/tornado_server.py:65 guard/static.bak/tornado_server.py:72
+#: guard/static.bak/tornado_server.py:79 guard/static.bak/tornado_server.py:86
+#: guard/static.bak/tornado_server.py:93 guard/static.bak/tornado_server.py:100
+#: guard/static.bak/tornado_server.py:135
+#: guard/static.bak/tornado_server.py:142
+#: guard/static.bak/tornado_server.py:149
+#: guard/static.bak/tornado_server.py:156
+#: guard/static.bak/tornado_server.py:163
+#: guard/static.bak/tornado_server.py:170
+#: guard/static.bak/tornado_server.py:177
+#: guard/static.bak/tornado_server.py:215
+#: guard/static.bak/tornado_server.py:222
+#: guard/static.bak/tornado_server.py:229
+#: guard/static.bak/tornado_server.py:236
+#: guard/static.bak/tornado_server.py:243
+#: guard/static.bak/tornado_server.py:250
+#: guard/static.bak/tornado_server.py:257
+#: guard/static.bak/tornado_server.py:293
+#: guard/static.bak/tornado_server.py:300
+#: guard/static.bak/tornado_server.py:307
+#: guard/static.bak/tornado_server.py:314
+#: guard/static.bak/tornado_server.py:321
+#: guard/static.bak/tornado_server.py:328
+#: guard/static.bak/tornado_server.py:335
+#: guard/static.bak/tornado_server.py:369
+#: guard/static.bak/tornado_server.py:378
+#: guard/static.bak/tornado_server.py:385
+#: guard/static.bak/tornado_server.py:392
+#: guard/static.bak/tornado_server.py:399
+#: guard/static.bak/tornado_server.py:406
+#: guard/static.bak/tornado_server.py:413
+#: guard/static.bak/tornado_server.py:448
+#: guard/static.bak/tornado_server.py:455
+#: guard/static.bak/tornado_server.py:462
+#: guard/static.bak/tornado_server.py:469
+#: guard/static.bak/tornado_server.py:476
+#: guard/static.bak/tornado_server.py:483
+#: guard/static.bak/tornado_server.py:490
+#: guard/static.bak/tornado_server.py:524
+#: guard/static.bak/tornado_server.py:531
+#: guard/static.bak/tornado_server.py:538
+#: guard/static.bak/tornado_server.py:545
+#: guard/static.bak/tornado_server.py:552
+#: guard/static.bak/tornado_server.py:559
+#: guard/static.bak/tornado_server.py:566 guard/tornado_server.py:168
+msgid "uuid"
+msgstr ""
+
+#: guard/oicmgr.py:205 guard/static.bak/tornado_server.py:59
+#: guard/static.bak/tornado_server.py:66 guard/static.bak/tornado_server.py:73
+#: guard/static.bak/tornado_server.py:80 guard/static.bak/tornado_server.py:87
+#: guard/static.bak/tornado_server.py:94 guard/static.bak/tornado_server.py:101
+#: guard/static.bak/tornado_server.py:136
+#: guard/static.bak/tornado_server.py:143
+#: guard/static.bak/tornado_server.py:150
+#: guard/static.bak/tornado_server.py:157
+#: guard/static.bak/tornado_server.py:164
+#: guard/static.bak/tornado_server.py:171
+#: guard/static.bak/tornado_server.py:178
+#: guard/static.bak/tornado_server.py:216
+#: guard/static.bak/tornado_server.py:223
+#: guard/static.bak/tornado_server.py:230
+#: guard/static.bak/tornado_server.py:237
+#: guard/static.bak/tornado_server.py:244
+#: guard/static.bak/tornado_server.py:251
+#: guard/static.bak/tornado_server.py:258
+#: guard/static.bak/tornado_server.py:294
+#: guard/static.bak/tornado_server.py:301
+#: guard/static.bak/tornado_server.py:308
+#: guard/static.bak/tornado_server.py:315
+#: guard/static.bak/tornado_server.py:322
+#: guard/static.bak/tornado_server.py:329
+#: guard/static.bak/tornado_server.py:336
+#: guard/static.bak/tornado_server.py:370
+#: guard/static.bak/tornado_server.py:379
+#: guard/static.bak/tornado_server.py:386
+#: guard/static.bak/tornado_server.py:393
+#: guard/static.bak/tornado_server.py:400
+#: guard/static.bak/tornado_server.py:407
+#: guard/static.bak/tornado_server.py:414
+#: guard/static.bak/tornado_server.py:449
+#: guard/static.bak/tornado_server.py:456
+#: guard/static.bak/tornado_server.py:463
+#: guard/static.bak/tornado_server.py:470
+#: guard/static.bak/tornado_server.py:477
+#: guard/static.bak/tornado_server.py:484
+#: guard/static.bak/tornado_server.py:491
+#: guard/static.bak/tornado_server.py:525
+#: guard/static.bak/tornado_server.py:532
+#: guard/static.bak/tornado_server.py:539
+#: guard/static.bak/tornado_server.py:546
+#: guard/static.bak/tornado_server.py:553
+#: guard/static.bak/tornado_server.py:560
+#: guard/static.bak/tornado_server.py:567
+msgid "type"
+msgstr ""
+
+#: guard/oicmgr.py:206 guard/static.bak/tornado_server.py:60
+#: guard/static.bak/tornado_server.py:67 guard/static.bak/tornado_server.py:74
+#: guard/static.bak/tornado_server.py:81 guard/static.bak/tornado_server.py:88
+#: guard/static.bak/tornado_server.py:95 guard/static.bak/tornado_server.py:102
+#: guard/static.bak/tornado_server.py:137
+#: guard/static.bak/tornado_server.py:144
+#: guard/static.bak/tornado_server.py:151
+#: guard/static.bak/tornado_server.py:158
+#: guard/static.bak/tornado_server.py:165
+#: guard/static.bak/tornado_server.py:172
+#: guard/static.bak/tornado_server.py:179
+#: guard/static.bak/tornado_server.py:217
+#: guard/static.bak/tornado_server.py:224
+#: guard/static.bak/tornado_server.py:231
+#: guard/static.bak/tornado_server.py:238
+#: guard/static.bak/tornado_server.py:245
+#: guard/static.bak/tornado_server.py:252
+#: guard/static.bak/tornado_server.py:259
+#: guard/static.bak/tornado_server.py:295
+#: guard/static.bak/tornado_server.py:302
+#: guard/static.bak/tornado_server.py:309
+#: guard/static.bak/tornado_server.py:316
+#: guard/static.bak/tornado_server.py:323
+#: guard/static.bak/tornado_server.py:330
+#: guard/static.bak/tornado_server.py:337
+#: guard/static.bak/tornado_server.py:371
+#: guard/static.bak/tornado_server.py:380
+#: guard/static.bak/tornado_server.py:387
+#: guard/static.bak/tornado_server.py:394
+#: guard/static.bak/tornado_server.py:401
+#: guard/static.bak/tornado_server.py:408
+#: guard/static.bak/tornado_server.py:415
+#: guard/static.bak/tornado_server.py:450
+#: guard/static.bak/tornado_server.py:457
+#: guard/static.bak/tornado_server.py:464
+#: guard/static.bak/tornado_server.py:471
+#: guard/static.bak/tornado_server.py:478
+#: guard/static.bak/tornado_server.py:485
+#: guard/static.bak/tornado_server.py:492
+#: guard/static.bak/tornado_server.py:526
+#: guard/static.bak/tornado_server.py:533
+#: guard/static.bak/tornado_server.py:540
+#: guard/static.bak/tornado_server.py:547
+#: guard/static.bak/tornado_server.py:554
+#: guard/static.bak/tornado_server.py:561
+#: guard/static.bak/tornado_server.py:568
+msgid "position"
+msgstr ""
+
+#: guard/oicmgr.py:211 guard/static.bak/tornado_server.py:61
+#: guard/static.bak/tornado_server.py:68 guard/static.bak/tornado_server.py:75
+#: guard/static.bak/tornado_server.py:82 guard/static.bak/tornado_server.py:89
+#: guard/static.bak/tornado_server.py:96 guard/static.bak/tornado_server.py:103
+#: guard/static.bak/tornado_server.py:138
+#: guard/static.bak/tornado_server.py:145
+#: guard/static.bak/tornado_server.py:152
+#: guard/static.bak/tornado_server.py:159
+#: guard/static.bak/tornado_server.py:166
+#: guard/static.bak/tornado_server.py:173
+#: guard/static.bak/tornado_server.py:180
+#: guard/static.bak/tornado_server.py:218
+#: guard/static.bak/tornado_server.py:225
+#: guard/static.bak/tornado_server.py:232
+#: guard/static.bak/tornado_server.py:239
+#: guard/static.bak/tornado_server.py:246
+#: guard/static.bak/tornado_server.py:253
+#: guard/static.bak/tornado_server.py:260
+#: guard/static.bak/tornado_server.py:296
+#: guard/static.bak/tornado_server.py:303
+#: guard/static.bak/tornado_server.py:310
+#: guard/static.bak/tornado_server.py:317
+#: guard/static.bak/tornado_server.py:324
+#: guard/static.bak/tornado_server.py:331
+#: guard/static.bak/tornado_server.py:338
+#: guard/static.bak/tornado_server.py:372
+#: guard/static.bak/tornado_server.py:381
+#: guard/static.bak/tornado_server.py:388
+#: guard/static.bak/tornado_server.py:395
+#: guard/static.bak/tornado_server.py:402
+#: guard/static.bak/tornado_server.py:409
+#: guard/static.bak/tornado_server.py:416
+#: guard/static.bak/tornado_server.py:451
+#: guard/static.bak/tornado_server.py:458
+#: guard/static.bak/tornado_server.py:465
+#: guard/static.bak/tornado_server.py:472
+#: guard/static.bak/tornado_server.py:479
+#: guard/static.bak/tornado_server.py:486
+#: guard/static.bak/tornado_server.py:493
+#: guard/static.bak/tornado_server.py:527
+#: guard/static.bak/tornado_server.py:534
+#: guard/static.bak/tornado_server.py:541
+#: guard/static.bak/tornado_server.py:548
+#: guard/static.bak/tornado_server.py:555
+#: guard/static.bak/tornado_server.py:562
+#: guard/static.bak/tornado_server.py:569
+msgid "status_code"
+msgstr ""
+
+#: guard/oicmgr.py:212 guard/static.bak/tornado_server.py:34
+#: guard/static.bak/tornado_server.py:62 guard/static.bak/tornado_server.py:69
+#: guard/static.bak/tornado_server.py:76 guard/static.bak/tornado_server.py:83
+#: guard/static.bak/tornado_server.py:90 guard/static.bak/tornado_server.py:97
+#: guard/static.bak/tornado_server.py:104
+#: guard/static.bak/tornado_server.py:110
+#: guard/static.bak/tornado_server.py:139
+#: guard/static.bak/tornado_server.py:146
+#: guard/static.bak/tornado_server.py:153
+#: guard/static.bak/tornado_server.py:160
+#: guard/static.bak/tornado_server.py:167
+#: guard/static.bak/tornado_server.py:174
+#: guard/static.bak/tornado_server.py:181
+#: guard/static.bak/tornado_server.py:188
+#: guard/static.bak/tornado_server.py:219
+#: guard/static.bak/tornado_server.py:226
+#: guard/static.bak/tornado_server.py:233
+#: guard/static.bak/tornado_server.py:240
+#: guard/static.bak/tornado_server.py:247
+#: guard/static.bak/tornado_server.py:254
+#: guard/static.bak/tornado_server.py:261
+#: guard/static.bak/tornado_server.py:267
+#: guard/static.bak/tornado_server.py:297
+#: guard/static.bak/tornado_server.py:304
+#: guard/static.bak/tornado_server.py:311
+#: guard/static.bak/tornado_server.py:318
+#: guard/static.bak/tornado_server.py:325
+#: guard/static.bak/tornado_server.py:332
+#: guard/static.bak/tornado_server.py:339
+#: guard/static.bak/tornado_server.py:345
+#: guard/static.bak/tornado_server.py:373
+#: guard/static.bak/tornado_server.py:382
+#: guard/static.bak/tornado_server.py:389
+#: guard/static.bak/tornado_server.py:396
+#: guard/static.bak/tornado_server.py:403
+#: guard/static.bak/tornado_server.py:410
+#: guard/static.bak/tornado_server.py:417
+#: guard/static.bak/tornado_server.py:424
+#: guard/static.bak/tornado_server.py:452
+#: guard/static.bak/tornado_server.py:459
+#: guard/static.bak/tornado_server.py:466
+#: guard/static.bak/tornado_server.py:473
+#: guard/static.bak/tornado_server.py:480
+#: guard/static.bak/tornado_server.py:487
+#: guard/static.bak/tornado_server.py:494
+#: guard/static.bak/tornado_server.py:500
+#: guard/static.bak/tornado_server.py:528
+#: guard/static.bak/tornado_server.py:535
+#: guard/static.bak/tornado_server.py:542
+#: guard/static.bak/tornado_server.py:549
+#: guard/static.bak/tornado_server.py:556
+#: guard/static.bak/tornado_server.py:563
+#: guard/static.bak/tornado_server.py:570 guard/state.py:171 guard/state.py:174
+msgid "status"
+msgstr ""
+
+#: guard/oicmgr.py:212
+msgid "lock"
+msgstr "已锁"
+
+#: guard/oicmgr.py:212
+msgid "unlock"
+msgstr "未锁"
+
+#: guard/static.bak/tornado_server.py:18 guard/static.bak/tornado_server.py:577
+#: guard/tornado_server.py:18 guard/tornado_server.py:263
+msgid "docstring for SocketHandler"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:34 guard/state.py:237 guard/state.py:258
+#: guard/state.py:279
+msgid "protect_check"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:35 guard/static.bak/tornado_server.py:111
+#: guard/static.bak/tornado_server.py:189
+#: guard/static.bak/tornado_server.py:268
+#: guard/static.bak/tornado_server.py:346
+#: guard/static.bak/tornado_server.py:425
+#: guard/static.bak/tornado_server.py:501
+msgid "_comment_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:35 guard/static.bak/tornado_server.py:111
+#: guard/static.bak/tornado_server.py:189
+#: guard/static.bak/tornado_server.py:268
+#: guard/static.bak/tornado_server.py:346
+#: guard/static.bak/tornado_server.py:425
+#: guard/static.bak/tornado_server.py:501
+msgid ""
+"protect_check/protect_starting/protected/unlock_protect/alert/bell_ring/"
+"bell_view"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:36 guard/static.bak/tornado_server.py:112
+#: guard/static.bak/tornado_server.py:190
+#: guard/static.bak/tornado_server.py:269
+#: guard/static.bak/tornado_server.py:347
+#: guard/static.bak/tornado_server.py:426
+#: guard/static.bak/tornado_server.py:502 guard/state.py:177 guard/state.py:179
+msgid "guard_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:36 guard/static.bak/tornado_server.py:112
+#: guard/static.bak/tornado_server.py:269 guard/state.py:21 guard/state.py:28
+#: guard/state.py:29 guard/state.py:179 guard/state.py:198
+msgid "unguarded"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:37 guard/static.bak/tornado_server.py:113
+#: guard/static.bak/tornado_server.py:191
+#: guard/static.bak/tornado_server.py:270
+#: guard/static.bak/tornado_server.py:348
+#: guard/static.bak/tornado_server.py:427
+#: guard/static.bak/tornado_server.py:503
+msgid "_comment_guard_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:37 guard/static.bak/tornado_server.py:113
+#: guard/static.bak/tornado_server.py:191
+#: guard/static.bak/tornado_server.py:270
+#: guard/static.bak/tornado_server.py:348
+#: guard/static.bak/tornado_server.py:427
+#: guard/static.bak/tornado_server.py:503
+msgid "guarded/unguarded"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:38 guard/static.bak/tornado_server.py:114
+#: guard/static.bak/tornado_server.py:192
+#: guard/static.bak/tornado_server.py:271
+#: guard/static.bak/tornado_server.py:349
+#: guard/static.bak/tornado_server.py:428
+#: guard/static.bak/tornado_server.py:504 guard/state.py:181
+msgid "house_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:38 guard/static.bak/tornado_server.py:50
+#: guard/static.bak/tornado_server.py:127
+#: guard/static.bak/tornado_server.py:207
+#: guard/static.bak/tornado_server.py:271
+#: guard/static.bak/tornado_server.py:285
+#: guard/static.bak/tornado_server.py:361
+#: guard/static.bak/tornado_server.py:428
+#: guard/static.bak/tornado_server.py:440
+#: guard/static.bak/tornado_server.py:504
+#: guard/static.bak/tornado_server.py:516 guard/state.py:107 guard/state.py:112
+#: guard/state.py:113 guard/state.py:187 guard/state.py:191 guard/state.py:194
+#: guard/state.py:195 guard/state.py:199 guard/state.py:217 guard/state.py:223
+msgid "indoors"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:39 guard/static.bak/tornado_server.py:116
+#: guard/static.bak/tornado_server.py:194
+#: guard/static.bak/tornado_server.py:272
+#: guard/static.bak/tornado_server.py:350
+#: guard/static.bak/tornado_server.py:429
+#: guard/static.bak/tornado_server.py:505
+msgid "_comment_house_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:39 guard/static.bak/tornado_server.py:116
+#: guard/static.bak/tornado_server.py:194
+#: guard/static.bak/tornado_server.py:272
+#: guard/static.bak/tornado_server.py:350
+#: guard/static.bak/tornado_server.py:429
+#: guard/static.bak/tornado_server.py:505
+msgid "outgoing/indoors"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:40 guard/static.bak/tornado_server.py:117
+#: guard/static.bak/tornado_server.py:195
+#: guard/static.bak/tornado_server.py:273
+#: guard/static.bak/tornado_server.py:351
+#: guard/static.bak/tornado_server.py:430
+#: guard/static.bak/tornado_server.py:506
+msgid "protect_stime"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:40 guard/static.bak/tornado_server.py:117
+#: guard/static.bak/tornado_server.py:195
+#: guard/static.bak/tornado_server.py:351
+#: guard/static.bak/tornado_server.py:430
+#: guard/static.bak/tornado_server.py:506
+msgid "2016-10-10 18:30:00"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:41 guard/static.bak/tornado_server.py:118
+#: guard/static.bak/tornado_server.py:196
+#: guard/static.bak/tornado_server.py:274
+#: guard/static.bak/tornado_server.py:352
+#: guard/static.bak/tornado_server.py:431
+#: guard/static.bak/tornado_server.py:507
+msgid "_comment_protect_stime"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:41 guard/static.bak/tornado_server.py:118
+#: guard/static.bak/tornado_server.py:196
+#: guard/static.bak/tornado_server.py:274
+#: guard/static.bak/tornado_server.py:352
+#: guard/static.bak/tornado_server.py:431
+#: guard/static.bak/tornado_server.py:507
+msgid "yyyy-MM-dd HH:mm:ss"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:42 guard/static.bak/tornado_server.py:119
+#: guard/static.bak/tornado_server.py:197
+#: guard/static.bak/tornado_server.py:275
+#: guard/static.bak/tornado_server.py:353
+#: guard/static.bak/tornado_server.py:432
+#: guard/static.bak/tornado_server.py:508 guard/state.py:183
+msgid "bell_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:42 guard/static.bak/tornado_server.py:119
+#: guard/static.bak/tornado_server.py:197
+#: guard/static.bak/tornado_server.py:275
+#: guard/static.bak/tornado_server.py:353 guard/state.py:183
+msgid "standby"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:43 guard/static.bak/tornado_server.py:120
+#: guard/static.bak/tornado_server.py:198
+#: guard/static.bak/tornado_server.py:276
+#: guard/static.bak/tornado_server.py:354
+#: guard/static.bak/tornado_server.py:433
+#: guard/static.bak/tornado_server.py:509
+msgid "_comment_bell_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:43 guard/static.bak/tornado_server.py:120
+#: guard/static.bak/tornado_server.py:198
+#: guard/static.bak/tornado_server.py:276
+#: guard/static.bak/tornado_server.py:354
+#: guard/static.bak/tornado_server.py:433
+#: guard/static.bak/tornado_server.py:509
+msgid "standby/ringing/conversation"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:44 guard/static.bak/tornado_server.py:121
+#: guard/static.bak/tornado_server.py:199
+#: guard/static.bak/tornado_server.py:277
+#: guard/static.bak/tornado_server.py:355
+#: guard/static.bak/tornado_server.py:434
+#: guard/static.bak/tornado_server.py:510
+#: guard/static.bak/tornado_server.py:614 guard/state.py:182
+msgid "alarm_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:44 guard/static.bak/tornado_server.py:121
+#: guard/static.bak/tornado_server.py:199
+#: guard/static.bak/tornado_server.py:277
+#: guard/static.bak/tornado_server.py:434
+#: guard/static.bak/tornado_server.py:510 guard/state.py:131 guard/state.py:135
+#: guard/state.py:136 guard/state.py:142 guard/state.py:239
+msgid "noalert"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:45 guard/static.bak/tornado_server.py:122
+#: guard/static.bak/tornado_server.py:200
+#: guard/static.bak/tornado_server.py:278
+#: guard/static.bak/tornado_server.py:356
+#: guard/static.bak/tornado_server.py:435
+#: guard/static.bak/tornado_server.py:511
+msgid "_comment_alarm_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:45 guard/static.bak/tornado_server.py:122
+#: guard/static.bak/tornado_server.py:200
+#: guard/static.bak/tornado_server.py:278
+#: guard/static.bak/tornado_server.py:356
+#: guard/static.bak/tornado_server.py:435
+#: guard/static.bak/tornado_server.py:511
+msgid "noalert/alert"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:46 guard/static.bak/tornado_server.py:123
+#: guard/static.bak/tornado_server.py:203
+#: guard/static.bak/tornado_server.py:281
+#: guard/static.bak/tornado_server.py:436
+#: guard/static.bak/tornado_server.py:512 guard/state.py:184
+msgid "remain_second"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:47 guard/static.bak/tornado_server.py:124
+#: guard/static.bak/tornado_server.py:204
+#: guard/static.bak/tornado_server.py:282
+#: guard/static.bak/tornado_server.py:358
+#: guard/static.bak/tornado_server.py:437
+#: guard/static.bak/tornado_server.py:513
+msgid "_comment_remain_second"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:47 guard/static.bak/tornado_server.py:124
+#: guard/static.bak/tornado_server.py:204
+#: guard/static.bak/tornado_server.py:282
+#: guard/static.bak/tornado_server.py:358
+#: guard/static.bak/tornado_server.py:437
+#: guard/static.bak/tornado_server.py:513
+msgid "-1/0/1/2/... seconds"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:48 guard/static.bak/tornado_server.py:125
+#: guard/static.bak/tornado_server.py:205
+#: guard/static.bak/tornado_server.py:283
+#: guard/static.bak/tornado_server.py:359
+#: guard/static.bak/tornado_server.py:438
+#: guard/static.bak/tornado_server.py:514 guard/state.py:204
+msgid "canprotect"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:50 guard/static.bak/tornado_server.py:127
+#: guard/static.bak/tornado_server.py:207
+#: guard/static.bak/tornado_server.py:210
+#: guard/static.bak/tornado_server.py:440
+#: guard/static.bak/tornado_server.py:516 guard/state.py:191 guard/state.py:196
+#: guard/state.py:199 guard/state.py:200
+msgid "can"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:53 guard/static.bak/tornado_server.py:130
+#: guard/static.bak/tornado_server.py:285
+#: guard/static.bak/tornado_server.py:288
+#: guard/static.bak/tornado_server.py:361
+#: guard/static.bak/tornado_server.py:364
+#: guard/static.bak/tornado_server.py:443
+#: guard/static.bak/tornado_server.py:519 guard/state.py:187 guard/state.py:188
+#: guard/state.py:192 guard/state.py:195
+msgid "cannot"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:56 guard/static.bak/tornado_server.py:133
+#: guard/static.bak/tornado_server.py:213
+#: guard/static.bak/tornado_server.py:291
+#: guard/static.bak/tornado_server.py:367
+#: guard/static.bak/tornado_server.py:446
+#: guard/static.bak/tornado_server.py:522 guard/state.py:185
+#: guard/tornado_server.py:179 guard/tornado_server.py:186
+msgid "devices_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:58 guard/static.bak/tornado_server.py:135
+#: guard/static.bak/tornado_server.py:215
+#: guard/static.bak/tornado_server.py:293
+#: guard/static.bak/tornado_server.py:369
+#: guard/static.bak/tornado_server.py:448
+#: guard/static.bak/tornado_server.py:524
+msgid "f2a18ab6-a5db-48fb-a431-c56880859666"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:59 guard/static.bak/tornado_server.py:66
+#: guard/static.bak/tornado_server.py:136
+#: guard/static.bak/tornado_server.py:143
+#: guard/static.bak/tornado_server.py:216
+#: guard/static.bak/tornado_server.py:223
+#: guard/static.bak/tornado_server.py:294
+#: guard/static.bak/tornado_server.py:301
+#: guard/static.bak/tornado_server.py:370
+#: guard/static.bak/tornado_server.py:379
+#: guard/static.bak/tornado_server.py:449
+#: guard/static.bak/tornado_server.py:456
+#: guard/static.bak/tornado_server.py:525
+#: guard/static.bak/tornado_server.py:532
+msgid "door"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:60 guard/static.bak/tornado_server.py:137
+#: guard/static.bak/tornado_server.py:217
+#: guard/static.bak/tornado_server.py:295
+#: guard/static.bak/tornado_server.py:371
+#: guard/static.bak/tornado_server.py:450
+#: guard/static.bak/tornado_server.py:526
+msgid "户外门"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:61 guard/static.bak/tornado_server.py:138
+#: guard/static.bak/tornado_server.py:218
+#: guard/static.bak/tornado_server.py:296
+#: guard/static.bak/tornado_server.py:372
+#: guard/static.bak/tornado_server.py:451
+#: guard/static.bak/tornado_server.py:527
+msgid "0"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:62 guard/static.bak/tornado_server.py:139
+#: guard/static.bak/tornado_server.py:219
+#: guard/static.bak/tornado_server.py:297
+#: guard/static.bak/tornado_server.py:373
+#: guard/static.bak/tornado_server.py:452
+#: guard/static.bak/tornado_server.py:528
+msgid "锁定"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:65 guard/static.bak/tornado_server.py:142
+#: guard/static.bak/tornado_server.py:222
+#: guard/static.bak/tornado_server.py:300
+#: guard/static.bak/tornado_server.py:378
+#: guard/static.bak/tornado_server.py:455
+#: guard/static.bak/tornado_server.py:531
+msgid "ad0ac41e-b5d4-4d8a-9a01-5dcdb0d3aabd"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:67 guard/static.bak/tornado_server.py:144
+#: guard/static.bak/tornado_server.py:224
+#: guard/static.bak/tornado_server.py:302
+#: guard/static.bak/tornado_server.py:380
+#: guard/static.bak/tornado_server.py:457
+#: guard/static.bak/tornado_server.py:533
+msgid "户内门"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:68 guard/static.bak/tornado_server.py:145
+#: guard/static.bak/tornado_server.py:225
+#: guard/static.bak/tornado_server.py:303
+#: guard/static.bak/tornado_server.py:381
+#: guard/static.bak/tornado_server.py:458
+#: guard/static.bak/tornado_server.py:534
+msgid "1"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:69 guard/static.bak/tornado_server.py:83
+#: guard/static.bak/tornado_server.py:90 guard/static.bak/tornado_server.py:97
+#: guard/static.bak/tornado_server.py:104
+#: guard/static.bak/tornado_server.py:146
+#: guard/static.bak/tornado_server.py:160
+#: guard/static.bak/tornado_server.py:167
+#: guard/static.bak/tornado_server.py:174
+#: guard/static.bak/tornado_server.py:181
+#: guard/static.bak/tornado_server.py:226
+#: guard/static.bak/tornado_server.py:240
+#: guard/static.bak/tornado_server.py:247
+#: guard/static.bak/tornado_server.py:254
+#: guard/static.bak/tornado_server.py:261
+#: guard/static.bak/tornado_server.py:304
+#: guard/static.bak/tornado_server.py:318
+#: guard/static.bak/tornado_server.py:325
+#: guard/static.bak/tornado_server.py:332
+#: guard/static.bak/tornado_server.py:339
+#: guard/static.bak/tornado_server.py:382
+#: guard/static.bak/tornado_server.py:396
+#: guard/static.bak/tornado_server.py:403
+#: guard/static.bak/tornado_server.py:410
+#: guard/static.bak/tornado_server.py:417
+#: guard/static.bak/tornado_server.py:459
+#: guard/static.bak/tornado_server.py:473
+#: guard/static.bak/tornado_server.py:480
+#: guard/static.bak/tornado_server.py:487
+#: guard/static.bak/tornado_server.py:494
+#: guard/static.bak/tornado_server.py:535
+#: guard/static.bak/tornado_server.py:549
+#: guard/static.bak/tornado_server.py:556
+#: guard/static.bak/tornado_server.py:563
+#: guard/static.bak/tornado_server.py:570
+msgid "未锁"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:72 guard/static.bak/tornado_server.py:149
+#: guard/static.bak/tornado_server.py:229
+#: guard/static.bak/tornado_server.py:307
+#: guard/static.bak/tornado_server.py:385
+#: guard/static.bak/tornado_server.py:462
+#: guard/static.bak/tornado_server.py:538
+msgid "577c3bf5-b4dd-4ae9-9fa9-aed8e084d4fb"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:73 guard/static.bak/tornado_server.py:150
+#: guard/static.bak/tornado_server.py:230
+#: guard/static.bak/tornado_server.py:308
+#: guard/static.bak/tornado_server.py:386
+#: guard/static.bak/tornado_server.py:463
+#: guard/static.bak/tornado_server.py:539
+msgid "window"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:74 guard/static.bak/tornado_server.py:151
+#: guard/static.bak/tornado_server.py:231
+#: guard/static.bak/tornado_server.py:309
+#: guard/static.bak/tornado_server.py:387
+#: guard/static.bak/tornado_server.py:464
+#: guard/static.bak/tornado_server.py:540
+msgid "厨房窗"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:75 guard/static.bak/tornado_server.py:152
+#: guard/static.bak/tornado_server.py:232
+#: guard/static.bak/tornado_server.py:310
+#: guard/static.bak/tornado_server.py:388
+#: guard/static.bak/tornado_server.py:465
+#: guard/static.bak/tornado_server.py:541
+msgid "2"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:76 guard/static.bak/tornado_server.py:153
+#: guard/static.bak/tornado_server.py:233
+#: guard/static.bak/tornado_server.py:311
+#: guard/static.bak/tornado_server.py:389
+#: guard/static.bak/tornado_server.py:466
+#: guard/static.bak/tornado_server.py:542
+msgid "未关闭"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:79 guard/static.bak/tornado_server.py:156
+#: guard/static.bak/tornado_server.py:236
+#: guard/static.bak/tornado_server.py:314
+#: guard/static.bak/tornado_server.py:392
+#: guard/static.bak/tornado_server.py:469
+#: guard/static.bak/tornado_server.py:545
+msgid "3e815873-a561-4db6-a2e6-570ae4bcf71e"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:80 guard/static.bak/tornado_server.py:157
+#: guard/static.bak/tornado_server.py:237
+#: guard/static.bak/tornado_server.py:315
+#: guard/static.bak/tornado_server.py:393
+#: guard/static.bak/tornado_server.py:470
+#: guard/static.bak/tornado_server.py:546
+msgid "smoke"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:81 guard/static.bak/tornado_server.py:158
+#: guard/static.bak/tornado_server.py:238
+#: guard/static.bak/tornado_server.py:316
+#: guard/static.bak/tornado_server.py:394
+#: guard/static.bak/tornado_server.py:471
+#: guard/static.bak/tornado_server.py:547
+msgid "厨房"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:82 guard/static.bak/tornado_server.py:159
+#: guard/static.bak/tornado_server.py:239
+#: guard/static.bak/tornado_server.py:317
+#: guard/static.bak/tornado_server.py:395
+#: guard/static.bak/tornado_server.py:472
+#: guard/static.bak/tornado_server.py:548
+msgid "3"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:86 guard/static.bak/tornado_server.py:163
+#: guard/static.bak/tornado_server.py:243
+#: guard/static.bak/tornado_server.py:321
+#: guard/static.bak/tornado_server.py:399
+#: guard/static.bak/tornado_server.py:476
+#: guard/static.bak/tornado_server.py:552
+msgid "28e941a8-8798-4b5d-a008-a98bdec72bef"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:87 guard/static.bak/tornado_server.py:164
+#: guard/static.bak/tornado_server.py:244
+#: guard/static.bak/tornado_server.py:322
+#: guard/static.bak/tornado_server.py:400
+#: guard/static.bak/tornado_server.py:477
+#: guard/static.bak/tornado_server.py:553
+msgid "water"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:88 guard/static.bak/tornado_server.py:165
+#: guard/static.bak/tornado_server.py:245
+#: guard/static.bak/tornado_server.py:323
+#: guard/static.bak/tornado_server.py:401
+#: guard/static.bak/tornado_server.py:478
+#: guard/static.bak/tornado_server.py:554
+msgid "南卧室"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:89 guard/static.bak/tornado_server.py:166
+#: guard/static.bak/tornado_server.py:246
+#: guard/static.bak/tornado_server.py:324
+#: guard/static.bak/tornado_server.py:402
+#: guard/static.bak/tornado_server.py:479
+#: guard/static.bak/tornado_server.py:555
+msgid "4"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:93 guard/static.bak/tornado_server.py:170
+#: guard/static.bak/tornado_server.py:250
+#: guard/static.bak/tornado_server.py:328
+#: guard/static.bak/tornado_server.py:406
+#: guard/static.bak/tornado_server.py:483
+#: guard/static.bak/tornado_server.py:559
+msgid "5a35623b-40e9-4506-b007-17ecf06543bc"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:94 guard/static.bak/tornado_server.py:171
+#: guard/static.bak/tornado_server.py:251
+#: guard/static.bak/tornado_server.py:329
+#: guard/static.bak/tornado_server.py:407
+#: guard/static.bak/tornado_server.py:484
+#: guard/static.bak/tornado_server.py:560
+msgid "gas"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:95 guard/static.bak/tornado_server.py:102
+#: guard/static.bak/tornado_server.py:172
+#: guard/static.bak/tornado_server.py:179
+#: guard/static.bak/tornado_server.py:252
+#: guard/static.bak/tornado_server.py:259
+#: guard/static.bak/tornado_server.py:330
+#: guard/static.bak/tornado_server.py:337
+#: guard/static.bak/tornado_server.py:408
+#: guard/static.bak/tornado_server.py:415
+#: guard/static.bak/tornado_server.py:485
+#: guard/static.bak/tornado_server.py:492
+#: guard/static.bak/tornado_server.py:561
+#: guard/static.bak/tornado_server.py:568
+msgid "北卧室"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:96 guard/static.bak/tornado_server.py:173
+#: guard/static.bak/tornado_server.py:253
+#: guard/static.bak/tornado_server.py:331
+#: guard/static.bak/tornado_server.py:409
+#: guard/static.bak/tornado_server.py:486
+#: guard/static.bak/tornado_server.py:562
+msgid "5"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:100
+#: guard/static.bak/tornado_server.py:177
+#: guard/static.bak/tornado_server.py:257
+#: guard/static.bak/tornado_server.py:335
+#: guard/static.bak/tornado_server.py:413
+#: guard/static.bak/tornado_server.py:490
+#: guard/static.bak/tornado_server.py:566
+msgid "75e1e8eb-59b4-44cb-bc77-4fee544a2f5c"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:101
+#: guard/static.bak/tornado_server.py:178
+#: guard/static.bak/tornado_server.py:258
+#: guard/static.bak/tornado_server.py:336
+#: guard/static.bak/tornado_server.py:414
+#: guard/static.bak/tornado_server.py:491
+#: guard/static.bak/tornado_server.py:567
+msgid "human"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:103
+#: guard/static.bak/tornado_server.py:180
+#: guard/static.bak/tornado_server.py:260
+#: guard/static.bak/tornado_server.py:338
+#: guard/static.bak/tornado_server.py:416
+#: guard/static.bak/tornado_server.py:493
+#: guard/static.bak/tornado_server.py:569
+msgid "6"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:110 guard/state.py:226 guard/state.py:266
+msgid "protect_starting"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:115
+#: guard/static.bak/tornado_server.py:193
+msgid "house_status_chs"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:115
+#: guard/static.bak/tornado_server.py:193
+msgid "外出"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:188 guard/state.py:162 guard/state.py:224
+#: guard/state.py:245 guard/state.py:282
+msgid "protected"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:190
+#: guard/static.bak/tornado_server.py:347
+#: guard/static.bak/tornado_server.py:426
+#: guard/static.bak/tornado_server.py:502 guard/state.py:20 guard/state.py:27
+#: guard/state.py:28 guard/state.py:29 guard/state.py:35 guard/state.py:176
+#: guard/state.py:177 guard/state.py:244
+msgid "guarded"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:201
+#: guard/static.bak/tornado_server.py:279
+msgid "alert_reason"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:202
+#: guard/static.bak/tornado_server.py:280
+#: guard/static.bak/tornado_server.py:375
+msgid "_comment_alert_reason"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:202
+#: guard/static.bak/tornado_server.py:280
+#: guard/static.bak/tornado_server.py:375
+msgid "用中文描述报警的原因"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:267 guard/state.py:98 guard/state.py:232
+#: guard/state.py:252 guard/state.py:265
+msgid "unlock_protect"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:345 guard/state.py:148 guard/state.py:242
+#: guard/state.py:247 guard/state.py:265 guard/state.py:268
+msgid "alert_message"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:355 guard/state.py:130 guard/state.py:135
+#: guard/state.py:136
+msgid "alert"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:357
+msgid "remaind"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:374
+msgid "alert_detail"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:374
+msgid "厨房窗 未关闭"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:424
+msgid "bell_ring"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:432
+msgid "ringing"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:500
+msgid "bell_view"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:508
+msgid "conversation"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:595
+#, possible-python-format
+msgid "@on_message message is %s"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:601 guard/tornado_server.py:72
+#: guard/tornado_server.py:83
+msgid "Access-Control-Allow-Origin"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:601
+#: guard/static.bak/tornado_server.py:605 guard/tornado_server.py:72
+#: guard/tornado_server.py:76 guard/tornado_server.py:83
+#: guard/tornado_server.py:87
+msgid "*"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:602 guard/tornado_server.py:73
+#: guard/tornado_server.py:84
+msgid "Access-Control-Allow-Methods"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:602 guard/tornado_server.py:73
+#: guard/tornado_server.py:84
+msgid "POST, GET, OPTIONS"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:603 guard/tornado_server.py:74
+#: guard/tornado_server.py:85
+msgid "Access-Control-Max-Age"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:605 guard/tornado_server.py:76
+#: guard/tornado_server.py:87
+msgid "Access-Control-Allow-Headers"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:606 guard/tornado_server.py:77
+#: guard/tornado_server.py:88
+msgid "Content-type"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:606 guard/tornado_server.py:77
+#: guard/tornado_server.py:88
+msgid "application/json"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:614
+msgid "quiet"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:627
+msgid "Default.html"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:633 guard/tornado_server.py:231
+#: guard/tornado_server.py:314
+msgid "/ws"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:634 guard/tornado_server.py:232
+#: guard/tornado_server.py:315
+msgid "/get_status"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:635
+msgid "/disable_alarm"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:636 guard/tornado_server.py:234
+#: guard/tornado_server.py:317
+msgid "/set_password"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:637
+msgid "/set_device_position"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:638
+msgid "/static"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:641
+msgid "../WebSite1"
+msgstr ""
+
+#: guard/static.bak/tornado_server.py:646 guard/tornado_server.py:245
+#: guard/tornado_server.py:328
+msgid "static"
+msgstr ""
+
+#: guard/state.py:20 guard/state.py:59
+msgid "on_guarded"
+msgstr ""
+
+#: guard/state.py:21 guard/state.py:70
+msgid "on_unguarded"
+msgstr ""
+
+#: guard/state.py:22 guard/state.py:27 guard/state.py:28 guard/state.py:176
+#: guard/state.py:246 guard/state.py:251
+msgid "invaded"
+msgstr ""
+
+#: guard/state.py:22 guard/state.py:95
+msgid "on_invaded"
+msgstr ""
+
+#: guard/state.py:27 guard/state.py:28 guard/state.py:29 guard/state.py:112
+#: guard/state.py:113 guard/state.py:135 guard/state.py:136
+msgid "trigger"
+msgstr ""
+
+#: guard/state.py:27
+msgid "invade"
+msgstr ""
+
+#: guard/state.py:27 guard/state.py:28 guard/state.py:29 guard/state.py:112
+#: guard/state.py:113 guard/state.py:135 guard/state.py:136
+msgid "source"
+msgstr ""
+
+#: guard/state.py:27 guard/state.py:28 guard/state.py:29 guard/state.py:112
+#: guard/state.py:113 guard/state.py:135 guard/state.py:136
+msgid "dest"
+msgstr ""
+
+#: guard/state.py:28
+msgid "remove_guard"
+msgstr ""
+
+#: guard/state.py:29
+msgid "setup_guard"
+msgstr ""
+
+#: guard/state.py:44 guard/state.py:54
+msgid "ToProtect"
+msgstr ""
+
+#: guard/state.py:45 guard/state.py:81
+msgid "CountDown"
+msgstr ""
+
+#: guard/state.py:51 guard/state.py:87
+msgid "on_timeout"
+msgstr ""
+
+#: guard/state.py:55 guard/state.py:91
+msgid "Timeout"
+msgstr ""
+
+#: guard/state.py:77
+msgid "-------------------on_every_time"
+msgstr ""
+
+#: guard/state.py:78 guard/tornado_server.py:276
+msgid "event"
+msgstr ""
+
+#: guard/state.py:78
+msgid "alarm_timer update"
+msgstr ""
+
+#: guard/state.py:80 guard/state.py:90
+msgid "ToAlarm"
+msgstr ""
+
+#: guard/state.py:107 guard/state.py:122
+msgid "on_indoors"
+msgstr ""
+
+#: guard/state.py:108 guard/state.py:125
+msgid "on_outgoing"
+msgstr ""
+
+#: guard/state.py:112
+msgid "ind"
+msgstr ""
+
+#: guard/state.py:113
+msgid "outg"
+msgstr ""
+
+#: guard/state.py:130 guard/state.py:146
+msgid "on_alarm"
+msgstr ""
+
+#: guard/state.py:131 guard/state.py:153
+msgid "on_quiet"
+msgstr ""
+
+#: guard/state.py:135
+msgid "be_alarm"
+msgstr ""
+
+#: guard/state.py:136
+msgid "be_quiet"
+msgstr ""
+
+#: guard/state.py:217 guard/state.py:223
+msgid "home"
+msgstr ""
+
+#: guard/state.py:219
+msgid "out"
+msgstr ""
+
+#: guard/state.py:231
+msgid "start"
+msgstr ""
+
+#: guard/state.py:233
+msgid "ok"
+msgstr ""
+
+#: guard/state.py:243 guard/state.py:276
+msgid "cancel"
+msgstr ""
+
+#: guard/state.py:261
+msgid "devid"
+msgstr ""
+
+#: guard/singleton.py:8 guard/singleton.py:9
+msgid "singleton_lock"
+msgstr ""
+
+#: guard/timer.py:5
+msgid " timer to count down, notify every step"
+msgstr ""
+
+#: guard/timer.py:64
+msgid "111111"
+msgstr ""
+
+#: guard/timer.py:65
+msgid "timeout"
+msgstr ""
+
+#: guard/tornado_server.py:31
+msgid ""
+"\n"
+"        self.write_message(json.dumps({\n"
+"            'type': 'sys',\n"
+"            'message': 'Welcome to WebSocket',\n"
+"        }))\n"
+"        SocketHandler.send_to_all({\n"
+"            'type': 'sys',\n"
+"            'message': str(id(self)) + ' has joined',\n"
+"        })"
+msgstr ""
+
+#: guard/tornado_server.py:44
+msgid ""
+"\n"
+"        SocketHandler.send_to_all({\n"
+"            'type': 'sys',\n"
+"            'message': str(id(self)) + ' has left',\n"
+"        })"
+msgstr ""
+
+#: guard/tornado_server.py:56
+msgid "post message"
+msgstr ""
+
+#: guard/tornado_server.py:57
+msgid ""
+"\n"
+"        print(self.request.remote_ip)\n"
+"        print(self.request.body_arguments)\n"
+"        data = json_decode(self.request.body)\n"
+"        user = data['user']\n"
+"        pw = data['passwd']\n"
+"        print(user, pw)\n"
+"        jdata = json.dumps(data)\n"
+"        print(jdata)\n"
+"        self.write(jdata)\n"
+"        "
+msgstr ""
+
+#: guard/tornado_server.py:92
+msgid "q EEEEEEEEEEEEEEEEEEEEEEEEEEEMPTY"
+msgstr ""
+
+#: guard/tornado_server.py:103
+msgid "protect"
+msgstr ""
+
+#: guard/tornado_server.py:103 guard/tornado_server.py:122
+#: guard/tornado_server.py:123 guard/tornado_server.py:124
+msgid "unknown"
+msgstr ""
+
+#: guard/tornado_server.py:106 guard/tornado_server.py:129
+#: guard/tornado_server.py:143 guard/tornado_server.py:157
+#: guard/tornado_server.py:167 guard/tornado_server.py:177
+#: guard/tornado_server.py:205 guard/tornado_server.py:218
+msgid "OK"
+msgstr ""
+
+#: guard/tornado_server.py:107 guard/tornado_server.py:130
+#: guard/tornado_server.py:144 guard/tornado_server.py:158
+#: guard/tornado_server.py:219
+msgid "StatusChanged"
+msgstr ""
+
+#: guard/tornado_server.py:110 guard/tornado_server.py:133
+msgid "{\"result\":\"OK\"}"
+msgstr ""
+
+#: guard/tornado_server.py:115 guard/tornado_server.py:309
+msgid "index.html"
+msgstr ""
+
+#: guard/tornado_server.py:122
+msgid "mode"
+msgstr ""
+
+#: guard/tornado_server.py:123 guard/tornado_server.py:213
+msgid "action"
+msgstr ""
+
+#: guard/tornado_server.py:124
+msgid "passwd"
+msgstr ""
+
+#: guard/tornado_server.py:138
+msgid "alertid"
+msgstr ""
+
+#: guard/tornado_server.py:139
+msgid "StopAlertHandler"
+msgstr ""
+
+#: guard/tornado_server.py:147 guard/tornado_server.py:161
+#: guard/tornado_server.py:222
+msgid "{\"result\": \"OK\"}"
+msgstr ""
+
+#: guard/tornado_server.py:152 guard/tornado_server.py:179
+#: guard/tornado_server.py:206
+msgid "result"
+msgstr ""
+
+#: guard/tornado_server.py:153 guard/tornado_server.py:214
+msgid "SetProtectHandler"
+msgstr ""
+
+#: guard/tornado_server.py:169
+msgid "oldname"
+msgstr ""
+
+#: guard/tornado_server.py:170
+msgid "newname"
+msgstr ""
+
+#: guard/tornado_server.py:173 guard/tornado_server.py:175
+#: guard/tornado_server.py:177 guard/tornado_server.py:205
+msgid "NOK"
+msgstr ""
+
+#: guard/tornado_server.py:195
+msgid "protect_pw"
+msgstr ""
+
+#: guard/tornado_server.py:202
+msgid "oldpw"
+msgstr ""
+
+#: guard/tornado_server.py:203
+msgid "newpw"
+msgstr ""
+
+#: guard/tornado_server.py:212
+msgid "bellid"
+msgstr ""
+
+#: guard/tornado_server.py:226
+msgid " Tornado web and websocket server"
+msgstr ""
+
+#: guard/tornado_server.py:233 guard/tornado_server.py:316
+msgid "/stop_alert"
+msgstr ""
+
+#: guard/tornado_server.py:235 guard/tornado_server.py:318
+msgid "/set_cancel_protected"
+msgstr ""
+
+#: guard/tornado_server.py:236 guard/tornado_server.py:319
+msgid "/set_protect_start"
+msgstr ""
+
+#: guard/tornado_server.py:237 guard/tornado_server.py:320
+msgid "/set_protect"
+msgstr ""
+
+#: guard/tornado_server.py:238 guard/tornado_server.py:321
+msgid "/get_devices_list"
+msgstr ""
+
+#: guard/tornado_server.py:239 guard/tornado_server.py:322
+msgid "/set_device_alias"
+msgstr ""
+
+#: guard/tornado_server.py:240 guard/tornado_server.py:323
+msgid "/get_protect_pw"
+msgstr ""
+
+#: guard/tornado_server.py:241 guard/tornado_server.py:324
+msgid "/ch_passwd"
+msgstr ""
+
+#: guard/tornado_server.py:242 guard/tornado_server.py:325
+msgid "/bell_do"
+msgstr ""
+
+#: guard/tornado_server.py:243 guard/tornado_server.py:326
+msgid "/"
+msgstr ""
+
+#: guard/tornado_server.py:256
+msgid "json/"
+msgstr ""
+
+#: guard/tornado_server.py:276
+msgid "loop"
+msgstr ""

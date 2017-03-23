@@ -4,6 +4,7 @@ import json
 from state import *
 from singleton import *
 import time
+import gettext
 
 
 class OicDevice(object):
@@ -198,11 +199,16 @@ class OicDeviceManager(object):
         self._locker.release()
 
     def get_devices(self):
+        t = gettext.translation('app', 'locale', languages=['zh_CN'], fallback=True)
+        t.install()
+        _ = t.gettext
         l = []
         for d in self._devices.values():
             a = {}
             a['uuid'] = d.devid
             a['type'] = d.type
+            a['type_tr'] = _(d.type)
+
             a['position'] = d.position
             if d.res_state.values() is not None:
                 rstate = d.res_state.values()[0]['value']
