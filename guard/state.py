@@ -12,6 +12,8 @@ import json
 import Queue
 from oicmgr import OicDeviceManager
 
+from collections import deque
+
 
 @singleton
 class GuardState(object):
@@ -158,6 +160,7 @@ class StateControl(object):
     def __init__(self):
         self.q = Queue.Queue()
         self.state = 'protected'
+        self.alarm_queue = deque()
 
     def update_status(self, status=None, timeout=30):
         g = GuardState()
@@ -202,19 +205,22 @@ class StateControl(object):
         self.q.put(info)
 
     def get_status(self):
-        return self.q.get(True)
+        while not self.q.empty():
+            a = self.q.get(True)
+
+        return a
 
     def set_protect_start(self, mode):
         g = GuardState()
         h = HouseState()
         print(mode)
-        if mode == 'indoors':
+        if mode in ['home', 'indoors']:
             h.ind()
-        if mode == 'outgoing':
+        if mode in ['out', 'outgoing']:
             h.outg()
         g.setup_guard()
 
-        if mode == 'indoors':
+        if mode in ['home', 'indoors']:
             self.update_status('protected')
         else:
             self.update_status('protect_starting', 60)
@@ -226,18 +232,42 @@ class StateControl(object):
             self.update_status('unlock_protect', 30)
         elif action == 'ok':
             GuardState().remove_guard()
-            self.update_status('protect_check')
+            AlarmState().be_quiet()
+            if len(self.alarm_queue) == 0:
+                self.update_status('protect_check')
+            else:
+                if AlarmState().state == 'noalert':
+                    AlarmState().be_alarm()
+                else:
+                    self.update_status('alert_message')
         elif action == 'cancel':
-            self.update_status('protected')
+            if GuardState().state == 'guarded':
+                self.update_status('protected')
+            elif GuardState().state == 'invaded':
+                self.update_status('alert_message')
 
     def stop_alert(self, alertid):
-        print(alertid)
-        AlarmState().be_quiet()
-        self.update_status('protect_check')
+        print(alertid, GuardState().state)
+        if GuardState().state == 'invaded':
+            self.update_status('unlock_protect', 30)
+        else:
+            if len(self.alarm_queue) > 0:
+                self.alarm_queue.popleft()
+            if len(self.alarm_queue) == 0:
+                AlarmState().be_quiet()
+            self.update_status('protect_check')
 
-    def alert(self):
-        AlarmState().be_alarm()
-        self.update_status('alert_message')
+    def alert(self, devid=''):
+        e = {'devid': devid}
+        if e not in self.alarm_queue:
+            self.alarm_queue.append(e)
+
+        if self.state != 'unlock_protect' and self.state != 'alert_message' \
+                and self.state != 'protect_starting':
+            AlarmState().be_alarm()
+            self.update_status('alert_message')
+
+        print(self.alarm_queue)
 
     def invade(self):
         GuardState().invade()

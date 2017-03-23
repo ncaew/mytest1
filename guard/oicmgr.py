@@ -162,7 +162,7 @@ class OicDeviceManager(object):
         devid = info['id']
         self._locker.acquire()
         dev = self._update_oic_device(info)
-        if dev.cancel is True:
+        if dev is not None and dev.cancel is True:
             for o in dev.observers.items():
                 o.cancel_observing(response, False)
             del dev
