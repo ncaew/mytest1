@@ -198,9 +198,8 @@ class GetPWHandler(BaseHandler):
 class ChangePWHandler(BaseHandler):
     def get(self):
         from passwd import PwManager
-        oldpw = self.get_argument('oldpw', '') #in hash code form
+        oldpw = self.get_argument('oldpw', '')
         newpw = self.get_argument('newpw', '')
-        print 'HHHHHH oldpw: ' + oldpw + '  HHHHH newpw: ' + newpw
         res = 'OK' if PwManager.update_passwd(oldpw, newpw) else 'NOK'
         info = {'result': res}
         self.write(json.dumps(info))

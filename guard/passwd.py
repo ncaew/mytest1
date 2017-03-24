@@ -7,14 +7,12 @@ class PwManager(object):
     @staticmethod
     def get_passwd_hash(systime=''):
         file_path = os.getcwd() + '/config.ini'
-        print 'config.ini: ' + file_path
 
         if os.path.exists(file_path):
             ini_config = ConfigParser.ConfigParser()
             ini_config.read(file_path)
             pw = ini_config.get('User', 'psw')
             md5_hex = hashlib.md5(pw + systime)
-            print 'HHHHHHHHHHHH: pw: ' + pw + '  systime: ' + systime + '  ' + md5_hex.hexdigest()
             return md5_hex.hexdigest()
         else:
             ini_file = open(file_path, 'w')
@@ -24,8 +22,6 @@ class PwManager(object):
             ini_config.write(ini_file)
             ini_file.close()
             md5_hex = hashlib.md5('123456' + systime)
-            print 'HHHHHHHHHHHH: 123456: ' + '123456' + '  systime: ' + systime
-            print md5_hex.hexdigest()
             return md5_hex.hexdigest()
 
     @staticmethod
@@ -45,12 +41,11 @@ class PwManager(object):
         return ret
 
 
-
 if __name__ == '__main__':
     pswm = PwManager()
     print 'Get: '
     print pswm.get_passwd_hash()
     print '\n'
     print 'Update To: 123456'
-    # pswm.update_passwd('e10adc3949ba59abbe56e057f20f883e', '123456')
+    pswm.update_passwd('e10adc3949ba59abbe56e057f20f883e', '123456')
     print 'Done.'

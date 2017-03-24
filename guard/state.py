@@ -236,13 +236,9 @@ class StateControl(object):
             AlarmState().be_quiet()
             if len(self.alarm_queue) == 0:
                 # check password
-                print 'HHHHHHHHHHHHHHHHHHHHHHHH: ' + password
-                print 'HHHHHHHHHHHHHHHHHHHHHHHH: ' + systime
                 if password == PwManager.get_passwd_hash(systime):
-                    print 'HHHHHHHHHHHHHHHHHHHHHHHH: password passed'
                     self.update_status('protect_check')
                 else:
-                    print 'HHHHHHHHHHHHHHHHHHHHHHHH: password deny'
                     self.update_status('protected')
             else:
                 if AlarmState().state == 'noalert':
