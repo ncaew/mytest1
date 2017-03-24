@@ -42,6 +42,7 @@ class PwManager(object):
         return ret
 
 
+
 if __name__ == '__main__':
     pswm = PwManager()
     print 'Get: '
