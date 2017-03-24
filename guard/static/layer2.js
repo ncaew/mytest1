@@ -382,6 +382,7 @@ function win_unlock_protect_check_or_show(data) {
 
     });
 
+
     return 1;
 }
 function win_unlock_protect_stop() {
@@ -472,7 +473,7 @@ function win_alert_message_stop() {
 ///////////////      case "bell_ring":
 var win_bell_ring_bellid;
 var win_bell_ring_description;
-
+var win_bell_ring_jsoncache;
 function win_bell_ring_submit(bellid, action) {
     //time_stamp = Math.floor((new Date().getTime()) / 60000);
     $.ajax({
@@ -500,9 +501,21 @@ function win_bell_ring_submit(bellid, action) {
 
 function win_bell_ring_check_or_show(data) {
     //分析 wininit  
-    win_bell_ring_bellid = "453453452"
-    win_bell_ring_description = "门铃"
-	
+	if ( data.bell_status == "ringing")
+	{
+			$.each(data["devices_status"], function(index, val) {
+
+				if (val.type == "doorbutton" && val.status_code != 0)
+				{
+					console.log( val.type ,val.status_code ,val.status , val.video_url ,val.position, val.uuid);
+					win_bell_ring_jsoncache = JSON.parse(JSON.stringify(val));
+
+				}
+        });
+	}
+
+	win_bell_ring_bellid = win_bell_ring_jsoncache.uuid;
+	win_bell_ring_description = win_bell_ring_jsoncache.position;
    
 	$('#bell_ring_description').html(win_bell_ring_description + "呼叫……");
 
@@ -542,11 +555,27 @@ function win_bell_ring_stop() {
 ///////////////      case "bell_view":
 var win_bell_view_bellid;
 var win_bell_view_video_url;
+var win_bell_view_description;
+var win_bell_view_jsoncache;
 
 function win_bell_view_check_or_show(data) {
     //分析 wininit  
-    win_bell_view_bellid = "453453452"
-    win_bell_view_video_url = "1488879903612.mp4"
+ 
+	if ( data.bell_status == "conversation")
+	{
+			$.each(data["devices_status"], function(index, val) {
+
+				if (val.type == "doorbutton" && val.status_code != 0)
+				{
+					console.log( val.type ,val.status_code ,val.status , val.video_url ,val.position, val.uuid);
+					win_bell_view_jsoncache = JSON.parse(JSON.stringify(val));
+
+				}
+        });
+	}
+    win_bell_view_bellid = win_bell_view_jsoncache.uuid;
+	win_bell_view_description = win_bell_view_jsoncache.position;
+    win_bell_view_video_url = win_bell_view_jsoncache.video_url;
     
 
 	//使用和相同的url submit
@@ -559,9 +588,23 @@ function win_bell_view_check_or_show(data) {
 		win_bell_ring_submit(win_bell_view_bellid, "reject");
 	});
 
+	$('#bell_view_description').html(win_bell_view_description + "视频中……");
+
  	if (win_bell_view_video_url != "") {
-		document.getElementById("bell_view_video").src = win_bell_view_video_url;
-		document.getElementById("bell_view_video").play();
+		var htmlvideo_control = document.getElementById("bell_view_video");
+		if (htmlvideo_control != null)
+		{
+			//console.log(JSON.stringify(htmlvideo_control));
+			htmlvideo_control.src = win_bell_view_video_url;
+			htmlvideo_control.play();
+		}
+		
+
+		if (document.getElementById("bell_view_video_vlc") != null)
+		{
+			$("bell_view_video_vlc").attr("target",win_bell_view_video_url);
+		} 
+		
 	}
     
 	if (ui_state_current_shown == 'bell_view') return 0;
@@ -581,8 +624,6 @@ function win_bell_view_stop() {
 
 
 }
-
-
 
 
 
