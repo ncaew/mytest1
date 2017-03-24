@@ -25,7 +25,9 @@ class PwManager(object):
             ini_config.set('User', 'psw', '123456')
             ini_config.write(ini_file)
             ini_file.close()
-            return 'e10adc3949ba59abbe56e057f20f883e'
+            m = hashlib.md5()
+            m.update('123456' + systime)
+            return m.hexdigest()
 
     @staticmethod
     def update_passwd(old_psw_md5, new_psw):
