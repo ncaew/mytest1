@@ -124,6 +124,7 @@ class CancelProtectHandler(BaseHandler):
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
         systime = self.get_argument('systime', 'unknown')
+        print 'systime:' + systime
         print 'passwd: ' + passwd
         if passwd == PwManager.get_passwd_hash(systime):
             print 'password:' + passwd
