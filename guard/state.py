@@ -225,8 +225,9 @@ class StateControl(object):
         else:
             self.update_status('protect_starting', 60)
 
-    def cancel_protect(self, mode, action, password):
-        print(mode, action, password)
+    def cancel_protect(self, mode, action, password, systime):
+        from passwd import PwManager
+        print(mode, action, password, systime)
         HouseState().ind()
         if action == 'start':
             self.update_status('unlock_protect', 30)
@@ -234,7 +235,15 @@ class StateControl(object):
             GuardState().remove_guard()
             AlarmState().be_quiet()
             if len(self.alarm_queue) == 0:
-                self.update_status('protect_check')
+                # check password
+                print 'HHHHHHHHHHHHHHHHHHHHHHHH: ' + password
+                print 'HHHHHHHHHHHHHHHHHHHHHHHH: ' + systime
+                if password == PwManager.get_passwd_hash(systime):
+                    print 'HHHHHHHHHHHHHHHHHHHHHHHH: password passed'
+                    self.update_status('protect_check')
+                else:
+                    print 'HHHHHHHHHHHHHHHHHHHHHHHH: password deny'
+                    self.update_status('protected')
             else:
                 if AlarmState().state == 'noalert':
                     AlarmState().be_alarm()
