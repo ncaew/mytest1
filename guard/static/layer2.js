@@ -591,18 +591,18 @@ function win_bell_view_check_or_show(data) {
 	$('#bell_view_description').html(win_bell_view_description + "视频中……");
 
  	if (win_bell_view_video_url != "") {
-		var htmlvideo_control = document.getElementById("bell_view_video");
+		var htmlvideo_control =  document.getElementById("bell_view_video");
 		if (htmlvideo_control != null)
 		{
 			//console.log(JSON.stringify(htmlvideo_control));
 			htmlvideo_control.src = win_bell_view_video_url;
-			htmlvideo_control.play();
+			//htmlvideo_control.play();
 		}
 		
 
 		if (document.getElementById("bell_view_video_vlc") != null)
 		{
-			$("bell_view_video_vlc").attr("target",win_bell_view_video_url);
+			$("bell_view_video_vlc").attr("src",win_bell_view_video_url);
 		} 
 		
 	}
@@ -619,8 +619,8 @@ function win_bell_view_stop() {
 	$('#bell_view_opendoor').off('click');
 	$('#bell_view_reject').off('click');
 
-	document.getElementById("bell_view_video").pause();
-	document.getElementById("bell_view_video").src ="";
+	//document.getElementById("bell_view_video").pause();
+	//document.getElementById("bell_view_video").src ="";
 
 
 }

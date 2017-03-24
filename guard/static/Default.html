@@ -589,11 +589,12 @@ debug row end-->
                     <td class="col-sm-1" style="width:528px;  vertical-align:bottom">
 					 <!-- 
                     <div style="border: 1; border-color: #00FF00; border-style: solid; border-width: 1px;" > </div>
-                    <video id="bell_view_video" autoplay style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;"></video>
-					-->
-                        <!-- source src="1488879903612.mp4" type="video/mp4" -->
+					
+                    <video id="bell_view_video" autoplay style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;"> </video>
+					
+                    -->
                     
-					<embed type='application/x-vlc-plugin'  id="bell_view_video_vlc"  autoplay="yes" target="" style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;">
+					<embed type='application/x-vlc-plugin'  id="bell_view_video_vlc"  autoplay autostart style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;">
 					</embed>
 					
                     <div style="position:absolute; top:420px; width:528px; z-index:2; text-align:center;/*display:flex;flex-direction:row;align-content:center*/">
@@ -1001,6 +1002,20 @@ function get_ui_state_fromServer() {
 <script type="text/javascript" src="layer2.js"></script>
 
 <script type="text/javascript">
+function ui_state_stop_window_all(json_data){
+
+                win_protect_check_stop(json_data);
+                win_protect_starting_stop(json_data);
+                win_protected_stop(json_data);
+                 win_unlock_protect_stop(json_data);
+
+                win_alert_message_stop(json_data);
+
+                win_bell_ring_stop(json_data);
+
+                win_bell_view_stop(json_data);
+
+}
 function ui_state_stop_window(stop_win,json_data){
 	switch (stop_win) {
             case "protect_check":
@@ -1059,7 +1074,8 @@ function ui_state_check_or_show(json_data) {
        
         //old state must to stop
         ui_state_will_tohide = ui_state_current_shown;
-		ui_state_stop_window(ui_state_will_tohide,json_data);
+		ui_state_stop_window_all(json_data);
+		//ui_state_stop_window(ui_state_will_tohide,json_data);
         
         //show new state
 		
@@ -1072,7 +1088,7 @@ function ui_state_check_or_show(json_data) {
 					
 					console.info("<--lay2--> hide <<< ("+ui_state_will_tohide +")");
 					ui_state_will_tohide2 = ui_state_current_showing
-					ui_state_stop_window(ui_state_current_showing,json_data);
+					//ui_state_stop_window(ui_state_current_showing,json_data);
 					
 				}
 				
