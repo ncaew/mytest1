@@ -586,15 +586,19 @@ debug row end-->
             <table style=" height:430px">
                 <tr>
 
-                    <td class="col-sm-1" style="width:528px;  vertical-align:bottom"
-                    ">
-                    <!-- div class="" style="/*border: 1; border-color: #00FF00; border-style: solid; border-width: 3px; */margin:auto; text-align:center" -->
-                    <video id="bell_view_video" style="width:100%;height:100% ;margin-left=10px">
-                        <source src="1488879903612.mp4" type="video/mp4">
-                    </video>
-                    <div style="position:absolute; top:420px; left:180px; z-index:2;">
-                        <font color="#ffffff" face="兰亭黑" style="font-size:28px;margin:auto; buttom:-38px">
-                            门铃视频中…… </font>
+                    <td class="col-sm-1" style="width:528px;  vertical-align:bottom">
+					 <!-- 
+                    <div style="border: 1; border-color: #00FF00; border-style: solid; border-width: 1px;" > </div>
+                    <video id="bell_view_video" autoplay style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;"></video>
+					-->
+                        <!-- source src="1488879903612.mp4" type="video/mp4" -->
+                    
+					<embed type='application/x-vlc-plugin'  id="bell_view_video_vlc"  autoplay="yes" target="" style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;">
+					</embed>
+					
+                    <div style="position:absolute; top:420px; width:528px; z-index:2; text-align:center;/*display:flex;flex-direction:row;align-content:center*/">
+						<span ><font id='bell_view_description' face="兰亭黑" style="font-size:28px;margin:auto;buttom:-38px " color="#ffffff">门铃视频中…… </font></span>
+                        
                     </div>
 
 
