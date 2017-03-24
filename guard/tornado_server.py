@@ -118,19 +118,26 @@ class StaticHandler(BaseHandler):
 class CancelProtectHandler(BaseHandler):
     count =0
     def get(self):
+        from passwd import PwManager
         CancelProtectHandler.count += 1
         mode = self.get_argument('mode', 'unknown')
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
-        print(passwd)
+        systime = self.get_argument('systime', 'unknown')
+        print 'passwd: ' + passwd
+        if passwd == PwManager.get_passwd_hash(systime):
+            print 'password:' + passwd
+            print 'systime:' + systime
+            StateControl().cancel_protect(mode=mode, action=action, password=passwd)
+            info = dict(handler=self.__class__.__name__, action=action, result='OK')
+            event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
+            WebSocketHandler.send_to_all(event)
+            self.write('{"result":"OK"}')
 
-        StateControl().cancel_protect(mode=mode, action=action, password=passwd)
-
-        info = dict(handler=self.__class__.__name__, action=action, result='OK')
-        event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
-
-        WebSocketHandler.send_to_all(event)
-        self.write('{"result":"OK"}')
+        else:
+            print 'password deny'
+            self.write('{"result":"NOK"}')
+            pass
 
 
 class StopAlertHandler(BaseHandler):

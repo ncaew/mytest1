@@ -5,8 +5,7 @@ import os
 
 class PwManager(object):
     @staticmethod
-    def get_passwd_hash():
-        # file_path = os.path.dirname(os.getcwd()) + '/config.ini'
+    def get_passwd_hash(systime=''):
         file_path = os.getcwd() + '/config.ini'
 
         if os.path.exists(file_path):
@@ -15,7 +14,7 @@ class PwManager(object):
             ini_config.read(file_path)
             pw = ini_config.get('User', 'psw')
             m = hashlib.md5()
-            m.update(pw)
+            m.update(pw+systime)
             return m.hexdigest()
 
         else:
@@ -31,7 +30,6 @@ class PwManager(object):
     @staticmethod
     def update_passwd(old_psw_md5, new_psw):
         if old_psw_md5 == PwManager.get_passwd_hash():
-            # file_path = os.path.dirname(os.getcwd()) + '/config.ini'
             file_path = os.getcwd() + '/config.ini'
             ini_file = open(file_path, 'w')
             ini_config = ConfigParser.ConfigParser()
