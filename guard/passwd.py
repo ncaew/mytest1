@@ -14,9 +14,7 @@ class PwManager(object):
             ini_config.read(file_path)
             pw = ini_config.get('User', 'psw')
             md5_hex = hashlib.md5(pw + systime)
-            print 'HHHHHHHHHHHH: pw: ' + pw
-            print 'HHHHHHHHHHHH: systime: ' + systime
-            print md5_hex.hexdigest()
+            print 'HHHHHHHHHHHH: pw: ' + pw + '  systime: ' + systime + '  ' + md5_hex.hexdigest()
             return md5_hex.hexdigest()
         else:
             ini_file = open(file_path, 'w')
@@ -25,9 +23,8 @@ class PwManager(object):
             ini_config.set('User', 'psw', '123456')
             ini_config.write(ini_file)
             ini_file.close()
-            print 'HHHHHHHHHHHH: 123456: ' + '123456'
             md5_hex = hashlib.md5('123456' + systime)
-            print 'HHHHHHHHHHHH: systime: ' + systime
+            print 'HHHHHHHHHHHH: 123456: ' + '123456' + '  systime: ' + systime
             print md5_hex.hexdigest()
             return md5_hex.hexdigest()
 
