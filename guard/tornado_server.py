@@ -127,8 +127,7 @@ class CancelProtectHandler(BaseHandler):
         print 'systime:' + systime
         print 'passwd: ' + passwd
         if passwd == PwManager.get_passwd_hash(systime):
-            print 'password:' + passwd
-            print 'systime:' + systime
+            print 'password passed'
             StateControl().cancel_protect(mode=mode, action=action, password=passwd)
             info = dict(handler=self.__class__.__name__, action=action, result='OK')
             event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
