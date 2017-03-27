@@ -67,18 +67,21 @@ function win_protect_check_check_or_show(data) {
         win_protect_check_outcan_obj[index] = JSON.parse(JSON.stringify(val));
 
     });
-	//将以上变量 赋值到相应的ui 控件上
-	win_protect_check_init();
+	
+	
 
-	if (ui_state_current_shown == 'protect_check') return 0;
+	if (ui_state_current_shown == 'protect_check') {
+		win_protect_check_init(); //将以上变量 赋值到相应的ui 控件上
+		return 0;
+	}
  
 
 	//判断当前ui 是否是当前窗口，如果是设置 show shown事件 并返回1 。 如果不切换窗口则返回0
     $('#protect_check').on('show.bs.modal', function() {
-        
+        win_protect_check_init();
     });
     $('#protect_check').on('shown.bs.modal', function() {
-        system_close_last_window("protect_check");
+        on_window_shown("protect_check");
     });
     return 1;
 }
@@ -108,10 +111,12 @@ function win_protect_check_init() {
         //document.getElementById("protect_check_btn_outgoing").disabled=""; 
         //document.getElementById("protect_check_btn_indoors").disabled="";
         if (debug_log_detail==1)console.log("protect_check set protect_check_btn_ both can")
+		$('#protect_check_btn_outgoing').off('click');
         $('#protect_check_btn_outgoing').on('click', function() {
 			audio_system_play_click();
             win_protect_check_private_func_submit("out")
         });
+		$('#protect_check_btn_indoors').off('click');
         $('#protect_check_btn_indoors').on('click', function() {
 			audio_system_play_click();
             win_protect_check_private_func_submit("home")
@@ -122,15 +127,18 @@ function win_protect_check_init() {
             $.each(val, function(protect_mode, can_value) {
                 if (debug_log_detail==1)console.log("protect_check set protect_check_btn_" + protect_mode, can_value)
                 if (can_value == 'cannot') {
+					$('#protect_check_btn_' + protect_mode).off('click');
                     $('#protect_check_btn_' + protect_mode).on('click', function() {
 						audio_system_play_error();
                         Popup_info_pop("不能进行设备设防状态，请检查设备情况。", "show", 1000);
                     });
-                } else
+                } else{
+					$('#protect_check_btn_' + protect_mode).off('click');
                     $('#protect_check_btn_' + protect_mode).on('click', function() {
 						audio_system_play_click();
                         win_protect_check_private_func_submit(protect_mode)
                     });
+				}
             });
         });
 
@@ -140,9 +148,6 @@ function win_protect_check_init() {
 
 }
 function win_protect_check_stop() {
-	//关闭声音
-	audio_system_stop_all();
-
 	$('#protect_check_btn_outgoing').off('click');
 	$('#protect_check_btn_indoors').off('click');
 }
@@ -157,10 +162,10 @@ var win_protect_starting_inittime;
 var win_protect_starting_init_time_remained;
 var win_protect_starting_timer;
 var win_protect_starting_protectmode;
-
+var win_protect_starting_static_isclose=1;
 function win_protect_starting_submit(type) {
-    //time_stamp = Math.floor((new Date().getTime()) / 60000);
-	
+    
+	//win_protect_starting_stop() ;
     $.ajax({
         url: "http://"+g_vars_domain_prefix+ "/set_protect",
         data: {
@@ -179,15 +184,18 @@ function win_protect_starting_submit(type) {
 			alert("网络连接异常！");
         }
     });
-
+	
 }
 
 function win_protect_starting_timer_event() {
+	if (win_protect_starting_static_isclose == 1) return;
+
     now_time = (new Date().getTime()) / 1000
     total_remain = Math.floor(win_protect_starting_init_time_remained - (now_time - win_protect_starting_inittime))
     if (debug_log_detail==1)console.log("in win_protect_starting_timer_event", total_remain);
-    $('#protect_starting_timeremain').html( "<font face='兰亭黑' >"+total_remain+"</font>");
-    if (total_remain > 0) {
+    $('#protect_starting_timeremain').html( "<font>"+total_remain+"</font>");
+
+    if (total_remain > 0  ) {
         win_protect_starting_timer = window.setTimeout(function() {
             win_protect_starting_timer_event();
         }, 500);
@@ -204,47 +212,63 @@ function win_protect_starting_check_or_show(data) {
     win_protect_starting_inittime = (new Date().getTime()) / 1000;
     win_protect_starting_init_time_remained = data.remain_second;
 
-    win_protect_starting_protectmode = data.house_status_chs;
-	if (data.house_status == "outgoing") 
-		win_protect_starting_protectmode = "外出";
-	else if (data.house_status == "indoors")
-		win_protect_starting_protectmode = "居家";
-	else
-		win_protect_starting_protectmode = "未知";
-	//console.error("data.house_status_chs() data.house_status() win_protect_starting_protectmode() ")
+    win_protect_starting_protectmode = data.house_status;
 
-	win_protect_starting_init("");
-	if (ui_state_current_shown == 'protect_starting') return 0;
+	
+	if (ui_state_current_shown == 'protect_starting'){
+		win_protect_starting_init("part_ui");
+		return 0;
+	}
+	$('#protect_starting').on('show.bs.modal', function() {
+		$('#protect_starting_status').html();
+		$('#protect_starting_timeremain').html();
+    });
 
     $('#protect_starting').on('shown.bs.modal', function() {
-        win_protect_starting_init("all");
-		system_close_last_window('protect_starting');
+		win_protect_starting_static_isclose = 0;
+        win_protect_starting_init("all_ui");
+		on_window_shown('protect_starting');
     });
     return 1;
 
 }
 
 function win_protect_starting_init(ispart) {
-    $('#protect_starting_status').html("即将进入" + win_protect_starting_protectmode + "保护模式");
+	switch (win_protect_starting_protectmode)
+	{
+		case "outgoing":
+				str_protectmode = "外出";
+			break
+		case "indoors":
+				str_protectmode = "居家";
+			break
+		default:
+				str_protectmode = "未知";
+	}
+    $('#protect_starting_status').html("即将进入" + str_protectmode + "保护模式");
+
+
+	$('#protect_starting_btn-cancel').off('click');
 	$('#protect_starting_btn-cancel').on('click', function() {
 		audio_system_play_click();
         win_protect_starting_submit("cancel")
     });
-	if (ispart=="all")
+
+	if (ispart=="all_ui")
 	{
-		$('#protect_starting_timeremain').html("<font face='兰亭黑' >"+win_protect_starting_init_time_remained+"</font>" );
+		$('#protect_starting_timeremain').html("<font>"+win_protect_starting_init_time_remained+"</font>" );
 		audio_system_play_time_warning();
 		win_protect_starting_inittime = (new Date().getTime()) / 1000;
 		win_protect_starting_timer = window.setTimeout(function() {
 			win_protect_starting_timer_event();
-		}, 1000);
+		}, 500);
 	}
 
 
 }
 function win_protect_starting_stop() {
-    $('#protect_starting_status').html();
-    $('#protect_starting_timeremain').html();
+	win_protect_starting_static_isclose = 1;
+
     $('#protect_starting_btn-cancel').off('click');
     audio_system_stop_all();
 	window.clearTimeout(win_protect_starting_timer);
@@ -262,35 +286,41 @@ var win_protected_protectmode;
 
 function win_protected_check_or_show(data) {
     ////分析 wininit 的参数'status': 'protected', 'protect_mode': 'out'
-	win_protect_starting_protectmode = data.house_status_chs;
-	if (data.house_status == "outgoing")
-		win_protected_protectmode = "外出";
-	else if (data.house_status == "indoors")
-		win_protected_protectmode = "居家";
-	else
-		win_protected_protectmode = "未知";
-    
+	win_protect_starting_protectmode = data.house_status;
 
-	win_protected_init();
-
-	if (ui_state_current_shown == 'protected') return 0;
+	if (ui_state_current_shown == 'protected'){
+		win_protected_init(); //for update
+		return 0;
+	}
     $('#' + data.status).on('shown.bs.modal', function() {
-        system_close_last_window('protected');
+		$('#protected_btn-cancel').on('click', function() {
+			audio_system_play_click();
+			win_unlock_protect_submit("start", "");
+		});
+        on_window_shown('protected');
     });
 
     $('#' + data.status).on('show.bs.modal', function() {
-        
+        win_protected_init();
     });
-
+	 
     return 1;
 }
 function win_protected_init() {
-    $('#protected_status').html("已设防，" + win_protected_protectmode + "模式 ");
-    $('#protected_btn-cancel').on('click', function() {
-		//console.error("one two three");
-		audio_system_play_click();
-        win_unlock_protect_submit("start", "");
-    });
+		switch (win_protected_protectmode)
+	{
+		case "outgoing":
+				str_protectmode = "外出";
+			break
+		case "indoors":
+				str_protectmode = "居家";
+			break
+		default:
+				str_protectmode = "未知";
+	}
+
+    $('#protected_status').html("已设防，" + str_protectmode + "模式 ");
+
 }
 
 function win_protected_stop() {
@@ -339,6 +369,10 @@ function win_unlock_protect_submit(okorcancel, passwd) {
 }
 
 function win_unlock_protect_timer_event() {
+	if (win_unlock_protect_is_colsed == 1)
+	{
+		return;
+	}
     now_time = (new Date().getTime()) / 1000
     total_remain = Math.floor(win_unlock_protect_remain_seconds - (now_time - win_unlock_protect_inittime))
     console.log("in win_unlock_protect ", total_remain);
@@ -361,11 +395,14 @@ function win_unlock_protect_check_or_show(data) {
 	$('#unlock_protect_remain_seconds').html(win_unlock_protect_remain_seconds);
 
 	win_unlock_protect_is_colsed=0;
-	if (ui_state_current_shown == 'unlock_protect') return 0;
-
-
-    $('#' + data.status).on('shown.bs.modal', function() {
-
+	if (ui_state_current_shown == 'unlock_protect') {
+		return 0;
+	}
+	 $('#' + data.status).on('show.bs.modal', function() {
+			$('#unlock_protect_remain_seconds').html();
+	 });
+     $('#' + data.status).on('shown.bs.modal', function() {
+		win_unlock_protect_is_colsed =0;
 		win_unlock_protect_inittime = (new Date().getTime()) / 1000;
         win_unlock_protect_timer = window.setTimeout(function() {
             win_unlock_protect_timer_event();
@@ -377,8 +414,7 @@ function win_unlock_protect_check_or_show(data) {
 			
         });
 
-
-		system_close_last_window('unlock_protect');
+		on_window_shown('unlock_protect');
 
     });
 
@@ -386,11 +422,10 @@ function win_unlock_protect_check_or_show(data) {
     return 1;
 }
 function win_unlock_protect_stop() {
-		console.log("win_unlock_protect_stop invoked!");
+		
 		win_unlock_protect_is_colsed =1;
 		window.clearTimeout(win_unlock_protect_timer);
-		$('#unlock_protect_remain_seconds').html();
-		audio_system_stop_all();
+		
 		virual_password_keyboard_close(); 
 }
 
@@ -406,6 +441,7 @@ var win_alert_message_alertid;
 
 function win_alert_message_submit(alertid) {
     //time_stamp = Math.floor((new Date().getTime()) / 60000);
+
     $.ajax({
         url: "http://"+g_vars_domain_prefix+"/stop_alert",
         data: {
@@ -422,6 +458,10 @@ function win_alert_message_submit(alertid) {
             alert("网络连接异常！");
         }
     });
+}
+
+function win_alert_message_init() {
+	$('#alert_message_explain').html(win_alert_message_explain);
 }
 
 function win_alert_message_check_or_show(data) {
@@ -445,27 +485,30 @@ function win_alert_message_check_or_show(data) {
 
     });
 
-	$('#alert_message_explain').html(win_alert_message_explain);
-    $('#alert_message_btn-stopalert').on('click', function() {
-			audio_system_play_click();
-            win_alert_message_submit(win_alert_message_alertid);
-        });
 
-	if (ui_state_current_shown == 'alert_message') return 0;
+	if (ui_state_current_shown == 'alert_message'){
+		win_alert_message_init();
+		return 0;
+	}
 
     $('#' + data.status).on('shown.bs.modal', function() {
 
+		$('#alert_message_btn-stopalert').on('click', function() {
+			audio_system_play_click();
+            win_alert_message_submit(win_alert_message_alertid);
+        });
 		audio_system_play_alerm();
-        system_close_last_window('alert_message');
+        on_window_shown('alert_message');
     });
+
     $('#' + data.status).on('show.bs.modal', function() {
+		win_alert_message_init();
     });
 
     return 1;
 }
 function win_alert_message_stop() {
 	audio_system_stop_all();
-	$('#alert_message_explain').html();
     $('#alert_message_btn-stopalert').off('click');
 	
 }
@@ -490,13 +533,17 @@ function win_bell_ring_submit(bellid, action) {
                 //get_ui_state_fromServer();	
         },
         error: function() {
-			try { throw new Error("dummy"); } catch (e) { console.log(e.stack); }
             alert("网络连接异常！");
         }
     });
 }
 
+function win_bell_ring_init() {
+	$('#bell_ring_description').html(win_bell_ring_description + "呼叫……");
 
+
+
+}
 
 
 function win_bell_ring_check_or_show(data) {
@@ -517,34 +564,37 @@ function win_bell_ring_check_or_show(data) {
 	win_bell_ring_bellid = win_bell_ring_jsoncache.uuid;
 	win_bell_ring_description = win_bell_ring_jsoncache.position;
    
-	$('#bell_ring_description').html(win_bell_ring_description + "呼叫……");
-
-	$('#bell_ring_startstream').on('click', function() {
-		audio_system_play_click();
-		win_bell_ring_submit(win_bell_ring_bellid, "startstream");
-	});
-	$('#bell_ring_opendoor').on('click', function() {
-		audio_system_play_click();
-		win_bell_ring_submit(win_bell_ring_bellid, "opendoor");
-	});
-	$('#bell_ring_reject').on('click', function() {
-		audio_system_play_click();
-		win_bell_ring_submit(win_bell_ring_bellid, "reject");
-	});
 
     
-	if (ui_state_current_shown == 'bell_ring') return 0;
+	if (ui_state_current_shown == 'bell_ring'){
+		win_bell_ring_init();
+		return 0;
+	}
     $('#' + data.status).on('shown.bs.modal', function() {
+
+		$('#bell_ring_startstream').on('click', function() {
+			audio_system_play_click();
+			win_bell_ring_submit(win_bell_ring_bellid, "startstream");
+		});
+		$('#bell_ring_opendoor').on('click', function() {
+			audio_system_play_click();
+			win_bell_ring_submit(win_bell_ring_bellid, "opendoor");
+		});
+		$('#bell_ring_reject').on('click', function() {
+			audio_system_play_click();
+			win_bell_ring_submit(win_bell_ring_bellid, "reject");
+		});
+
 		audio_system_play_bell_ring();
-        system_close_last_window('bell_ring');
+        on_window_shown('bell_ring');
     });
 	$('#' + data.status).on('show.bs.modal', function() {
+		win_bell_ring_init();
 	});
     return 1;
 }
 function win_bell_ring_stop() {
-	$('#bell_ring_description').html();
-
+	audio_system_stop_all();
 	$('#bell_ring_startstream').off('click');
 	$('#bell_ring_opendoor').off('click');
 	$('#bell_ring_reject').off('click');
@@ -558,9 +608,52 @@ var win_bell_view_video_url;
 var win_bell_view_description;
 var win_bell_view_jsoncache;
 
+function myBrowser(){
+    var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    var isOpera = userAgent.indexOf("Opera") > -1;
+    if (isOpera) {
+        return "Opera"
+    }; //判断是否Opera浏览器
+    if (userAgent.indexOf("Firefox") > -1) {
+        return "Firefox";
+    } //判断是否Firefox浏览器
+    if (userAgent.indexOf("Chrome") > -1){
+  return "Chrome";
+ }
+    if (userAgent.indexOf("Safari") > -1) {
+        return "Safari";
+    } //判断是否Safari浏览器
+    if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+        return "IE";
+    }; //判断是否IE浏览器
+}
+function win_bell_view_init() {
+
+	$('#bell_view_description').html(win_bell_view_description + "视频中……");
+
+ 	if (win_bell_view_video_url != "") {
+		var htmlvideo_control =  document.getElementById("bell_view_video");
+		if (htmlvideo_control != null)
+		{
+			//console.log(JSON.stringify(htmlvideo_control));
+			htmlvideo_control.src = win_bell_view_video_url;
+			//htmlvideo_control.play();
+		}
+		
+		if (document.getElementById("bell_view_video_vlc") != null && myBrowser() == "Firefox")
+		{
+			 $("bell_view_video_vlc").attr("src",win_bell_view_video_url);
+			// document.bell_view_video_vlc.stop();
+			// document.bell_view_video_vlc.clear_playlist();
+			// document.bell_view_video_vlc.add_item( win_bell_view_video_url );
+			// document.bell_view_video_vlc.paly();
+		} 
+		
+	}
+    
+}
 function win_bell_view_check_or_show(data) {
     //分析 wininit  
- 
 	if ( data.bell_status == "conversation")
 	{
 			$.each(data["devices_status"], function(index, val) {
@@ -576,51 +669,50 @@ function win_bell_view_check_or_show(data) {
     win_bell_view_bellid = win_bell_view_jsoncache.uuid;
 	win_bell_view_description = win_bell_view_jsoncache.position;
     win_bell_view_video_url = win_bell_view_jsoncache.video_url;
-    
 
-	//使用和相同的url submit
-	$('#bell_view_opendoor').on('click', function() {
-		audio_system_play_click();
-		win_bell_ring_submit(win_bell_view_bellid, "opendoor");
-	});
-	$('#bell_view_reject').on('click', function() {
-		audio_system_play_click();
-		win_bell_ring_submit(win_bell_view_bellid, "reject");
-	});
-
-	$('#bell_view_description').html(win_bell_view_description + "视频中……");
-
- 	if (win_bell_view_video_url != "") {
-		var htmlvideo_control =  document.getElementById("bell_view_video");
-		if (htmlvideo_control != null)
-		{
-			//console.log(JSON.stringify(htmlvideo_control));
-			htmlvideo_control.src = win_bell_view_video_url;
-			//htmlvideo_control.play();
-		}
-		
-
-		if (document.getElementById("bell_view_video_vlc") != null)
-		{
-			$("bell_view_video_vlc").attr("src",win_bell_view_video_url);
-		} 
-		
+	 
+	
+	if (ui_state_current_shown == 'bell_view'){
+		win_bell_view_init();
+		return 0;
 	}
-    
-	if (ui_state_current_shown == 'bell_view') return 0;
-    $('#' + data.status).on('shown.bs.modal', function() {
-        system_close_last_window('bell_view');
+	$('#' + data.status).on('shown.bs.modal', function() {
+		$('#bell_view_opendoor').on('click', function() {
+			audio_system_play_click();
+			win_bell_ring_submit(win_bell_view_bellid, "opendoor");
+		});
+		$('#bell_view_reject').on('click', function() {
+			audio_system_play_click();
+			win_bell_ring_submit(win_bell_view_bellid, "reject");
+		});
+
+        on_window_shown('bell_view');
     });
 	$('#' + data.status).on('show.bs.modal', function() {
+		win_bell_view_init();
 	});
     return 1;
 }
 function win_bell_view_stop() {
+	//audio_system_stop_all();
 	$('#bell_view_opendoor').off('click');
 	$('#bell_view_reject').off('click');
 
-	//document.getElementById("bell_view_video").pause();
-	//document.getElementById("bell_view_video").src ="";
+	var htmlvideo_control =  document.getElementById("bell_view_video");
+	if (htmlvideo_control != null)
+	{
+		
+		htmlvideo_control.pause();
+		htmlvideo_control.src="";
+	}
+
+	if (document.getElementById("bell_view_video_vlc") != null && myBrowser() == "Firefox" )
+	{
+		 $("bell_view_video_vlc").attr("src","");
+		 //document.bell_view_video_vlc.stop();
+		 //document.bell_view_video_vlc.clear_playlist();
+	} 
+ 
 
 
 }

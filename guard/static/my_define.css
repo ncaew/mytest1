@@ -1,4 +1,9 @@
-
+@font-face {
+  font-family: 'À¼Í¤ºÚ';
+  src:  url('fonts/langting_black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 html {
 	color: #000;
 	background: #FFF
@@ -56,7 +61,8 @@ legend {
 	color: #000
 }
 body, button, input, select, textarea {
-	font: 18px "Microsoft YaHei", tahoma, arial, "À¼Í¤ºÚ";
+	/*font: 18px "Microsoft YaHei", tahoma, arial, "À¼Í¤ºÚ";*/
+	font: 18px  "À¼Í¤ºÚ";
 	color: #56baca
 
 }
@@ -1702,6 +1708,7 @@ _filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="http://s1.pan.bd
 
 	text-align: center;
 }
+.bell_ring_description
 .protect_starting_status
 .alert_message_explain
 .protected_status{
