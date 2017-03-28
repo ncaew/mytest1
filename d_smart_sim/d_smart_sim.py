@@ -3,6 +3,7 @@ import threading
 import json
 import uuid
 
+import Queue
 
 from coapthon.resources.resource import Resource
 from coapthon.server.coap import CoAP
@@ -170,6 +171,12 @@ if __name__ == '__main__':
         dl.append(d)
         ml.append(m)
         i += 1
+
+        d, m = create_device(ip, port, i, "doorbutton", 'button.bell')
+        dl.append(d)
+        ml.append(m)
+        i += 1
+
         return dl, ml
 
     def post_devices(devs):
@@ -179,14 +186,18 @@ if __name__ == '__main__':
         s.bind(('0.0.0.0', 0))
         client = HelperClient(server=('224.0.1.187', 5683), sock=s)
 
-        for d in devs:
-            request = client.mk_request(defines.Codes.POST, 'oic/rd')
-            request.type = defines.Types['NON']
-            request.payload = json.dumps(d)
-            try:
+        try:
+            for d in devs:
+                request = client.mk_request(defines.Codes.POST, 'oic/rd')
+                request.type = defines.Types['NON']
+                request.payload = json.dumps(d)
+
                 client.send_request(request, callback=None, timeout=1)
-            except Exception:
-                pass
+        except KeyboardInterrupt:
+            client.close()
+            return
+        except Queue.Empty:
+            pass
 
         timer = threading.Timer(30, post_devices, (devs,))
         timer.setDaemon(True)
@@ -251,6 +262,7 @@ if __name__ == '__main__':
     server.add_resources(rlist)
     post_devices(dlist)
     t = threading.Thread(target=server.listen, args=(10,))
+    t.setDaemon(True)
     t.start()
     wapp = tornado.web.Application(
         handlers=[
@@ -269,4 +281,5 @@ if __name__ == '__main__':
         print "Server Shutdown"
         tornado.ioloop.IOLoop.instance().stop()
         server.close()
+        t.join(1)
         print "Exiting..."

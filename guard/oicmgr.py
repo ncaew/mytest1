@@ -13,10 +13,12 @@ class OicDevice(object):
     motion_device_type = ['oic.d.irintrusiondetector']
     fatal_device_type = ['oic.d.flammablegasdetector', 'oic.d.smokesensor',
                          'oic.d.waterleakagedetector']
+
     alarm_device_type = ['oic.d.alarm']
+    bell_device_type = ['oic.d.doorbutton']
 
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
-                             'oic.r.sensor.smoke', 'oic.r.sensor.water']
+                             'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button.bell']
 
     def __init__(self, oicinfo):
         self.devid = oicinfo['di']
@@ -39,7 +41,7 @@ class OicDevice(object):
 
     def is_detector(self):
         return self.is_invade_detector() or self.is_motion_detector() \
-               or self.is_fatal_detector()
+               or self.is_fatal_detector() or self.is_bell()
 
     def is_invade_detector(self):
         return self.type in OicDevice.invade_device_type
@@ -53,6 +55,9 @@ class OicDevice(object):
     def is_alarmer(self):
         print(self.type)
         return self.type in OicDevice.alarm_device_type
+
+    def is_bell(self):
+        return self.type in OicDevice.bell_device_type
 
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:
@@ -150,6 +155,9 @@ class OicDeviceManager(object):
                 if dev.is_fatal_detector():
                     StateControl().alert()
 
+                if dev.is_bell():
+                    StateControl().bell_ring()
+
             if old_state != state:
                 info['old_value'] = old_state
                 oic_event = dict(event='OICNotify', info=info)
@@ -158,6 +166,9 @@ class OicDeviceManager(object):
 
     def observe_callback(self, response):
         print(response.payload)
+        if response.payload is None:
+            print('response.payload is None')
+            return
         info = json.loads(response.payload)
 
         devid = info['id']
@@ -206,7 +217,7 @@ class OicDeviceManager(object):
         for d in self._devices.values():
             a = {}
             a['uuid'] = d.devid
-            a['type'] = d.type
+            a['type'] = d.type[6:]
             a['type_tr'] = _(d.type)
 
             a['position'] = d.position
@@ -214,7 +225,7 @@ class OicDeviceManager(object):
                 rstate = d.res_state.values()[0]['value']
             else:
                 rstate = False
-            a['status_code'] = rstate
+            a['status_code'] = 1 if rstate else 0
             a['status'] = 'lock' if rstate else 'unlock'
             l.append(a)
         return l
