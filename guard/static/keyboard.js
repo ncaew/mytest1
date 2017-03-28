@@ -91,7 +91,7 @@ function virual_password_keyboard_init( target_id ,fun_callback ){
 function virual_password_keyboard_close(){
 
 	var aLi=document.getElementsByTagName('li');
-	console.log ("virual_password_keyboard_close: " + aLi.length );
+	//console.log ("virual_password_keyboard_close: " + aLi.length );
 	var i=0;
 	for(i=0;i<aLi.length;i++)
 	{
