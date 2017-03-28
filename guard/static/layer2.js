@@ -286,7 +286,7 @@ var win_protected_protectmode;
 
 function win_protected_check_or_show(data) {
     ////分析 wininit 的参数'status': 'protected', 'protect_mode': 'out'
-	win_protect_starting_protectmode = data.house_status;
+	win_protected_protectmode = data.house_status;
 
 	if (ui_state_current_shown == 'protected'){
 		win_protected_init(); //for update
@@ -640,13 +640,11 @@ function win_bell_view_init() {
 			//htmlvideo_control.play();
 		}
 		
-		if (document.getElementById("bell_view_video_vlc") != null && myBrowser() == "Firefox")
+		var ff_vlc = document.getElementById("bell_view_video_vlc")
+		if ( ff_vlc != null && myBrowser() == "Firefox")
 		{
-			 $("bell_view_video_vlc").attr("src",win_bell_view_video_url);
-			// document.bell_view_video_vlc.stop();
-			// document.bell_view_video_vlc.clear_playlist();
-			// document.bell_view_video_vlc.add_item( win_bell_view_video_url );
-			// document.bell_view_video_vlc.paly();
+			    ff_vlc.playlist.add(win_bell_view_video_url);
+				ff_vlc.playlist.play();
 		} 
 		
 	}
@@ -706,12 +704,16 @@ function win_bell_view_stop() {
 		htmlvideo_control.src="";
 	}
 
-	if (document.getElementById("bell_view_video_vlc") != null && myBrowser() == "Firefox" )
+
+	var ff_vlc = document.getElementById("bell_view_video_vlc")
+	if ( ff_vlc != null && myBrowser() == "Firefox")
 	{
-		 $("bell_view_video_vlc").attr("src","");
-		 //document.bell_view_video_vlc.stop();
-		 //document.bell_view_video_vlc.clear_playlist();
+
+			ff_vlc.playlist.stop();
+			ff_vlc.playlist.items.clear();
+			
 	} 
+  
  
 
 
