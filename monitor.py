@@ -4,7 +4,7 @@
 
 from guard.tornado_server import TornadoServer
 from guard.coapserver import *
-from guard.oicmgr import OicDeviceManager
+
 from guard.singleton import *
 import threading
 import tornado
@@ -16,7 +16,7 @@ class SecureMonitor(object):
         self.tornado = TornadoServer()
         self._coapsrv = CoAPServer('224.0.1.187', 5683, multicast=True)
         self._coapsrv_thread = threading.Thread(target=self._coapservice)
-
+        self._coapsrv_thread.setDaemon(True)
 
     def _coapservice(self):
         while True:
@@ -28,6 +28,9 @@ class SecureMonitor(object):
     def start_coap_service(self):
         self._coapsrv_thread.start()
 
+    def stop_coap_service(self):
+        self._coapsrv.close()
+
 
 if __name__ == '__main__':
     sm = SecureMonitor()
@@ -36,4 +39,6 @@ if __name__ == '__main__':
     try:
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
+        print('exit....')
+        sm.stop_coap_service()
         tornado.ioloop.IOLoop.instance().stop()

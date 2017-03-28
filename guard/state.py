@@ -180,7 +180,10 @@ class StateControl(object):
 
         info['house_status'] = h.state
         info['alarm_status'] = a.state
-        info['bell_status'] = 'standby'
+        if self.state == 'bell_ring':
+            info['bell_status'] = 'ringing'
+        else:
+            info['bell_status'] = 'standby'
         info['remain_second'] = timeout
         info['devices_status'] = OicDeviceManager().get_devices()
         can = []
@@ -285,6 +288,9 @@ class StateControl(object):
         else:
             GuardState().setup_guard()
             self.update_status('protected')
+
+    def bell_ring(self):
+        self.update_status('bell_ring')
 
     def bell_do(self, bellid, action):
         print(bellid, action)
