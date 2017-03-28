@@ -10,8 +10,8 @@ guard deploy:<br/>
     
     sudo apt-get update 
     sudo apt-get install vim htop iftop vlc mplayer iperf 
-    sudo apt-get install unclutter firefox-esr-l10n-zh-cn
-    sudo pip install tornado coapthon transitions 
+    sudo apt-get install unclutter firefox-esr-l10n-zh-cn python-dev build-essential
+    sudo pip install tornado coapthon transitions onvif netifaces
     mkdir guard
     cd guard/
     git clone https://github.com/ncaew/mytest1 
