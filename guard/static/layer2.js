@@ -286,7 +286,7 @@ var win_protected_protectmode;
 
 function win_protected_check_or_show(data) {
     ////分析 wininit 的参数'status': 'protected', 'protect_mode': 'out'
-	win_protect_starting_protectmode = data.house_status;
+	win_protected_protectmode = data.house_status;
 
 	if (ui_state_current_shown == 'protected'){
 		win_protected_init(); //for update
