@@ -19,6 +19,7 @@ class OicDevice(object):
 
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
                              'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button.bell']
+    media_resource_type = ['oic.r.media']
 
     def __init__(self, oicinfo):
         self.devid = oicinfo['di']
@@ -30,6 +31,8 @@ class OicDevice(object):
         self.observers = {}
         self.locker = threading.Lock()
         self.cancel = False
+        self.oic_info = oicinfo
+
 
     @staticmethod
     def get_device_type(oicinfo):
@@ -38,6 +41,27 @@ class OicDevice(object):
                 break
 
         return link['rt']
+
+    def get_stream_uri(self):
+        uri_list = []
+        if self.is_bell():
+            href = []
+            for link in self.oic_info['links']:
+                if link['rt'] in OicDevice.media_resource_type:
+                    href.append(link['href'])
+
+            for h in href:
+                host, port, uri = parse_uri(h)
+                client = HelperClient(server=(host, port))
+                response = client.get(uri)
+                jsonobj = json.loads(response.payload)
+                if 'media' in jsonobj:
+                    media = jsonobj['media']
+                    for m in media:
+                        if 'url' in m and len(m['url']):
+                            uri_list.append(m['url'])
+
+        return uri_list
 
     def is_detector(self):
         return self.is_invade_detector() or self.is_motion_detector() \
@@ -221,12 +245,18 @@ class OicDeviceManager(object):
             a['type_tr'] = _(d.type)
 
             a['position'] = d.position
-            if d.res_state.values() is not None:
+            print(d.res_state)
+            if len(d.res_state.values()) > 0:
                 rstate = d.res_state.values()[0]['value']
             else:
                 rstate = False
             a['status_code'] = 1 if rstate else 0
-            a['status'] = 'lock' if rstate else 'unlock'
+            a['status'] = 'unlock' if rstate else 'lock'
+            vurl = d.get_stream_uri()
+            if len(vurl) > 0:
+                a['video_url'] = vurl[0]
+            else:
+                a['video_url'] = ''
             l.append(a)
         return l
 

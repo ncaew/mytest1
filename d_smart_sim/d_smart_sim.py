@@ -128,6 +128,43 @@ if __name__ == '__main__':
         m = create_resource(dinfo['uuid'], rnum, rt)
         return d, m
 
+    def create_bell_device(ip, port, rnum, dt, rt):
+        pat = '''{
+            "di" : "%(uuid)s",
+            "links" : [
+                {
+                    "href" : "coap://%(ip)s:%(port)d/oic/d",
+                    "rel" : "contained",
+                    "rt" : "oic.d.%(dt)s"
+                },
+                {
+                    "href" : "coap://%(ip)s:%(port)d/ResURI%(rnum)d",
+                    "rel" : "contained",
+                    "rt" : "oic.r.%(rt)s"
+                }
+            ],
+            "lt" : 86400,
+            "n" : "%(name)s"
+        }'''
+        dinfo = {}
+        dinfo['uuid'] = uuid.uuid4()
+        dinfo['ip'] = ip
+        dinfo['port'] = port
+        dinfo['dt'] = dt
+        dinfo['rt'] = rt
+        dinfo['rnum'] = rnum
+        dinfo['name'] = uuid.uuid4()
+
+        print(pat % dinfo)
+        d = json.loads(pat % dinfo)
+        media = {'rel': 'contained', 'rt': 'oic.r.media', 'href': "coap://%s:%d/ResURI%d" % (ip, port, rnum)}
+        d['links'].append(media)
+        m = create_resource(dinfo['uuid'], rnum, rt)
+        media = {'url': 'rtsp://admin:12345@192.168.1.188:554/Streaming/Channels/'
+                    '1?transportmode=unicast&profile=Profile_1'}
+        m.info['media'] = [media]
+        return d, m
+
     def create_devices(ip, port):
         dl = []
         ml = []
@@ -172,7 +209,7 @@ if __name__ == '__main__':
         ml.append(m)
         i += 1
 
-        d, m = create_device(ip, port, i, "doorbutton", 'button.bell')
+        d, m = create_bell_device(ip, port, i, "doorbutton", 'button.bell')
         dl.append(d)
         ml.append(m)
         i += 1

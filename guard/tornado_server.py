@@ -209,7 +209,7 @@ class BellHandler(BaseHandler):
     def get(self):
         bellid = self.get_argument('bellid', '')
         action = self.get_argument('action', '')
-        print("SetProtectHandler", bellid, action)
+        print("BellHandler", bellid, action)
 
         StateControl().bell_do(bellid=bellid, action=action)
 

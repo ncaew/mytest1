@@ -13,6 +13,7 @@ import Queue
 from oicmgr import OicDeviceManager
 
 from collections import deque
+import time
 
 
 @singleton
@@ -182,6 +183,8 @@ class StateControl(object):
         info['alarm_status'] = a.state
         if self.state == 'bell_ring':
             info['bell_status'] = 'ringing'
+        elif self.state == 'bell_view':
+            info['bell_status'] = 'conversation'
         else:
             info['bell_status'] = 'standby'
         info['remain_second'] = timeout
@@ -235,11 +238,12 @@ class StateControl(object):
         if action == 'start':
             self.update_status('unlock_protect', 30)
         elif action == 'ok':
-            GuardState().remove_guard()
-            AlarmState().be_quiet()
+
             if len(self.alarm_queue) == 0:
                 # check password
                 if password == PwManager.get_passwd_hash(systime):
+                    GuardState().remove_guard()
+                    AlarmState().be_quiet()
                     self.update_status('protect_check')
                 else:
                     self.update_status('protected')
@@ -290,10 +294,24 @@ class StateControl(object):
             self.update_status('protected')
 
     def bell_ring(self):
-        self.update_status('bell_ring')
+        if GuardState().state == 'unguarded' or HouseState().state == 'indoors':
+            self.update_status('bell_ring')
 
     def bell_do(self, bellid, action):
         print(bellid, action)
+        if action == 'startstream':
+            self.update_status('bell_view')
+        elif action == 'opendoor':
+            time.sleep(3)
+            if GuardState().state == 'guarded':
+                self.update_status('protected')
+            if GuardState().state == 'unguarded':
+                self.update_status('protect_check')
+        else:
+            if GuardState().state == 'guarded':
+                self.update_status('protected')
+            if GuardState().state == 'unguarded':
+                self.update_status('protect_check')
 
 
 if __name__ == '__main__':
