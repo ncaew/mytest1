@@ -8,14 +8,24 @@
 #counter_content { width: 252px; position: relative; top: 62px; left:2px ;right: 14px; z-index: 1; }
 
 #counter_content li { 
-	width: 84px; height: 74px; line-height: 74px; float: left; 
+	float: left; 
+	width: 84px; height: 74px; line-height: 74px; 
 	/*background: url(ico.png) no-repeat -303px 0;*/
-	text-align: center; color: #fff; cursor: pointer; margin: 0 0px 0px 0;
-	vertical-align:middle;border-color: #343434; border-style: solid; border-width: 1px;
-	} 
+	text-align: center; color: #fff; cursor: pointer; 
+	vertical-align:middle;
+	
+	border:1px solid #343434;
+	margin: 0px;
+    padding:0px;
+	margin-left:-1px; margin-top:-1px;  
+} 
+
 #counter_content .active,
-#counter_content li:active
-{ background-color: #333; /*background: url(ico.png) no-repeat -244px 0;*/ }
+#counter_content li:active { 
+	background-color: #333; /*background: url(ico.png) no-repeat -244px 0;*/
+	}
+ 
+
 #counter p {  position: absolute; color="#56baca" face="À¼Í¤ºÚ" font-size: 26px; text-align: center; }
 
  
