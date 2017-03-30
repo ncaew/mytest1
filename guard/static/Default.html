@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/jquery-3.1.1.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="md5.js"></script>
+	<script type="text/javascript" src="vlc.js?v=0.1"></script>
 
 </head>
 
@@ -76,38 +77,44 @@ function audio_system_stop_all(){
 <body>
 <div id="body" class="clearfix  ">
 
-    <div id="layer1" style="display:block; position:absolute;  left:0px; height:800px;">
-        <div style=" position:absolute;  left:0px; width: 640px;">
-            <img src="bg.png"/>
-            <div style="position:absolute;  left:477px; top:92px; opacity: 1"><i class="fa fa-grav fa-spin "
-                                                                                 aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:490px; top:380px; opacity: 1"><i class="fa fa-grav fa-spin "
-                                                                                  aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:663px; top:378px; opacity: 1"><i class="fa fa-thermometer-full fa-spin "
-                                                                                  aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:693px; top:378px; opacity: 1"><i class="fa fa-shower fa-spin "
-                                                                                  aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:770px; top:378px; opacity: 1"><i class="fa fa-window-maximize fa-spin "
-                                                                                  aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:770px; top:92px; opacity: 1"><i class="fa fa-window-maximize fa-spin "
-                                                                                 aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:53px; top:117px; opacity: 1"><i class="fa fa-wpexplorer fa-spin "
-                                                                                 aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:178px; top:368px; opacity: 1"><i
-                    class="fa fa-assistive-listening-systems fa-spin "
-                    aria-hidden="true"></i></div>
-            <div style="position:absolute;  left:272px; top:260px; opacity: 1"><i
-                    class="fa fa-exclamation-triangle fa-spin"
-                    aria-hidden="true"></i></div>
+    <div  style="display:block; position:absolute;  left:0px; height:800px;">
+	  <!--
+        <div id="layer1" style="display:inline;">
+            <img style="position:absolute;  left:0px;   top:0px;" src="bg.png"/>
+            <div style="position:absolute;  left:477px; top:92px;"><i class="fa fa-grav fa-spin" ></i></div>
+            <div style="position:absolute;  left:490px; top:380px;"><i class="fa fa-grav fa-spin" ></i></div>
+            <div style="position:absolute;  left:663px; top:378px;"><i class="fa fa-thermometer-full fa-spin"></i></div>
+            <div style="position:absolute;  left:693px; top:378px;"><i class="fa fa-shower fa-spin"></i></div>
+            <div style="position:absolute;  left:770px; top:378px;"><i class="fa fa-window-maximize fa-spin" ></i></div>
+            <div style="position:absolute;  left:770px; top:92px;"><i class="fa fa-window-maximize fa-spin" ></i></div>
+            <div style="position:absolute;  left:53px;  top:117px;"><i class="fa fa-wpexplorer fa-spin" ></i></div>
+            <div style="position:absolute;  left:178px; top:368px;"><i class="fa fa-assistive-listening-systems fa-spin"></i></div>
+            <div style="position:absolute;  left:272px; top:260px;"><i class="fa fa-exclamation-triangle fa-spin"></i></div>
         </div>
-        <div style="width: 160px;">
-            <div class="pull-right" style="margin-top:300px;">
-                <button type="button" class="btn btn-default btn-lg" style="z-order:2;">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>设防
-                </button>
-            </div>
-        </div>
-    </div>
+	-->
+		<embed pluginspage="http://www.videolan.org"
+                       type="application/x-vlc-plugin"
+                       width="480"
+                       height="400"
+                       toolbar="0"
+                       loop="false"
+                       branding="true"
+                       text="Waiting for video"
+                       bgcolor="#000000"
+                       allowfullscreen="true"
+                       name="vlc"
+					   style="position:absolute; margin:0; left:40px; top:60px;z-index=0" 
+					   
+					   />
+		<div id="layer1_cover" >  
+			<div  style="position:absolute;margin:0;left:0px;  width:800px;top:0px; height:60px;background:#000;opacity:1">  </div>
+
+			<div  style="position:absolute;margin:0;left:0px;  width:40px; top:60px; height:400px;background:#000;opacity:1">  </div>
+			<div  style="position:absolute;margin:0;left:40px; width:480px;top:60px; height:400px;background:#000;opacity:1"  id="layer1_cover_vlc">  </div>
+			<div  style="position:absolute;margin:0;left:520px;width:280px;top:60px; height:400px;background:#000;opacity:1">  </div>
+			
+			<div  style="position:absolute;margin:0;left:0px;  width:800px;top:460px; height:20px;background:#000;opacity:1">  </div>
+		</div>
 
 
     <!--  layer 2 protect_check -->
@@ -533,16 +540,15 @@ function audio_system_stop_all(){
     <!--  layer 2 bell_view-->
     <div class="modal fade" id="bell_view">
         <div class="modal-dialog"
-             style="position:absolute; margin-top:0px; left:0px; top:0px; width:800px; height:480px; background:#000;opacity: 1">
+             style="position:absolute; margin-top:0px; left:0px; top:0px; width:800px; height:480px; background:#000;opacity: 0.9">
             <!--<div class="" style="padding: 10px;">-->
             <div class="dlg-hd ">
                 <div class="row" style=" height:50px">
                     <div style="display:inline; height:50px;">
                         <div id="logo7" class="pi-pilog-icon" style=" margin-left:38px;"></div>
-
-
                     </div>
                 </div>
+
                 <table style=" height:430px">
                     <tr>
 
@@ -554,9 +560,7 @@ function audio_system_stop_all(){
 
                            -->
 
-                            <embed type='application/x-vlc-plugin' id="bell_view_video_vlc" name="bell_view_video_vlc" autostart="1" autoplay="yes"
-                                   style="position:absolute; margin:50px 0 0 10px; left:0px; top:0px; width:518px;height:420px ;">
-                            </embed>
+
 
                             <div style="position:absolute; top:420px; width:528px; z-index:2; text-align:center;/*display:flex;flex-direction:row;align-content:center*/">
                             <span><font id='bell_view_description' 
@@ -786,9 +790,11 @@ function audio_system_stop_all(){
 <script type="text/javascript">
 
 
-$(document).ready(function() { //$(function($) {
-
+$(document).ready(function() {
+//$(function($) {
+//window.onload=function(){
     //init websocket
+	vlc_init();
     webSocket_init();
 
 });
@@ -970,7 +976,7 @@ function get_ui_state_fromServer() {
 
 </script>
 
-<script type="text/javascript" src="layer2.js"></script>
+<script type="text/javascript" src="layer2.js?v=0.1"></script>
 
 <script type="text/javascript">
 var pi_l2_all_win = new  Array("protect_check","protect_starting","protected","unlock_protect","alert_message","bell_ring","bell_view");
@@ -1009,7 +1015,7 @@ function ui_state_check_or_show(json_data) {
     var server_ui_state = json_data["status"];
     console.info("<--lay2--> show >>> (" + server_ui_state +")");
 	
-	$('#layer1').html(""); //zhaoliang add for close layer1
+	//$('#layer1').html(""); //zhaoliang add for close layer1
     switch (server_ui_state) {
         case "protect_check":
             isChecked_shouldShow = win_protect_check_check_or_show(json_data);
@@ -1048,9 +1054,15 @@ function ui_state_check_or_show(json_data) {
 					console.error("!!!!refresh ui too quick ,current_showing (" + ui_state_current_showing+")server_ui_state("+server_ui_state+")current_shown( "+ui_state_current_shown+")");
 
 				}
-
+				console.log("vlc cover op:" +document.getElementById("layer1_cover_vlc").style.opacity);
 				ui_state_current_showing = server_ui_state;
-				$('#' + ui_state_current_showing).addClass("fade");
+				if (server_ui_state !="bell_view" )
+				{
+					$('#' + ui_state_current_showing).addClass("fade");
+				}else
+					$('#' + ui_state_current_showing).removeClass("fade");
+				
+				
 				$('#' + ui_state_current_showing).modal({backdrop:"static", keyboard: true})
 							.modal("show");
 		 }

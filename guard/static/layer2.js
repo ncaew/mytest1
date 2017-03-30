@@ -630,7 +630,7 @@ function myBrowser(){
 function win_bell_view_init() {
 
 	$('#bell_view_description').html(win_bell_view_description + "视频中……");
-
+	
  	if (win_bell_view_video_url != "") {
 		var htmlvideo_control =  document.getElementById("bell_view_video");
 		if (htmlvideo_control != null)
@@ -639,13 +639,12 @@ function win_bell_view_init() {
 			htmlvideo_control.src = win_bell_view_video_url;
 			//htmlvideo_control.play();
 		}
-		
-		var ff_vlc = document.getElementById("bell_view_video_vlc")
-		if ( ff_vlc != null && myBrowser() == "Firefox")
+ 
+		if (  myBrowser() == "Firefox")
 		{
-			    ff_vlc.playlist.add(win_bell_view_video_url);
-				ff_vlc.playlist.play();
+			    doGo(win_bell_view_video_url);
 		} 
+		 
 		
 	}
     
@@ -683,7 +682,8 @@ function win_bell_view_check_or_show(data) {
 			audio_system_play_click();
 			win_bell_ring_submit(win_bell_view_bellid, "reject");
 		});
-
+		
+		
         on_window_shown('bell_view');
     });
 	$('#' + data.status).on('show.bs.modal', function() {
@@ -703,14 +703,10 @@ function win_bell_view_stop() {
 		htmlvideo_control.pause();
 		htmlvideo_control.src="";
 	}
-
-
-	var ff_vlc = document.getElementById("bell_view_video_vlc")
-	if ( ff_vlc != null && myBrowser() == "Firefox")
+	if ( myBrowser() == "Firefox")
 	{
-
-			ff_vlc.playlist.stop();
-			ff_vlc.playlist.items.clear();
+		document.getElementById("layer1_cover_vlc").style.opacity="1";
+		doStop();
 			
 	} 
   
