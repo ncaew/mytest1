@@ -34,7 +34,7 @@ class SecureMonitor(object):
 
 
 if __name__ == '__main__':
-    #OnvifDiscover.probe()
+    OnvifDiscover.probe()
     sm = SecureMonitor()
     sm.start_coap_service()
     sm.tornado.webapp.listen(8888)
@@ -42,6 +42,6 @@ if __name__ == '__main__':
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
         print('exit....')
-        #OnvifDiscover.stop()
+        OnvifDiscover.stop()
         sm.stop_coap_service()
         tornado.ioloop.IOLoop.instance().stop()
