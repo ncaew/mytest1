@@ -34,7 +34,8 @@ class SecureMonitor(object):
 
 
 if __name__ == '__main__':
-    OnvifDiscover.probe()
+    probe_thread = threading.Thread(target=OnvifDiscover.probe)
+    probe_thread.start()
     sm = SecureMonitor()
     sm.start_coap_service()
     sm.tornado.webapp.listen(8888)
