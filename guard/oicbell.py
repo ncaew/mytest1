@@ -67,6 +67,7 @@ class OicDoorGuard(CoAP):
         CoAP.__init__(self, (host, port), multicast, starting_mid)
 
         #self.oic_device = dict(di=str(uuid.uuid4()))
+        self.oic_device = {}
         self.oic_device['lt'] = 86400
         self.oic_device['n'] = self.__class__.__name__
 
@@ -140,7 +141,7 @@ class OicDoorGuardThread(object):
         self.thread = threading.Thread(target=self.server.listen, args=(10,))
 
     def start(self):
-        self.server.heartbeat()
+        #self.server.heartbeat()
         self.thread.start()
 
     def stop(self):
