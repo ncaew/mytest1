@@ -5,6 +5,7 @@ from state import *
 from singleton import *
 import time
 import gettext
+from oicbell import OnvifDiscover
 
 
 class OicDevice(object):
@@ -213,6 +214,9 @@ class OicDeviceManager(object):
 
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
+                if d.type == 'oic.d.wirelessdoorbell':
+                    OnvifDiscover.add_bell(oicinfo)
+
                 if d.is_detector():
                     d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
