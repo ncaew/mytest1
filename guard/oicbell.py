@@ -66,8 +66,7 @@ class OicDoorGuard(CoAP):
     def __init__(self, host, port, media_uri, multicast=False, starting_mid=None):
         CoAP.__init__(self, (host, port), multicast, starting_mid)
 
-        #self.oic_device = dict(di=str(uuid.uuid4()))
-        self.oic_device = {}
+        self.oic_device = dict(di='')
         self.oic_device['lt'] = 86400
         self.oic_device['n'] = self.__class__.__name__
 
@@ -78,7 +77,8 @@ class OicDoorGuard(CoAP):
         self.oic_device['links'] = [oic_d_res, media_res]
 
         media_info = {'id': self.oic_device['di'], 'rt': 'oic.r.media', 'media': [{'url': media_uri}]}
-        self.add_resource('/MediaResURI', MediaResource(coap_server=self, info=media_info))
+        self.media_res = MediaResource(coap_server=self, info=media_info)
+        self.add_resource('/MediaResURI', self.media_res)
         print(self.oic_device, media_info)
         self.timer = None
         self._heartbeat = True
@@ -122,8 +122,9 @@ class OicDoorGuard(CoAP):
     def add_bell(self, belloic):
         if belloic is not None:
             self.oic_device['di'] = belloic['di']
+            self.media_res.info['id'] = belloic['di']
             for link in belloic['links']:
-                if link['rt'] == 'oic.r.switch.binary':
+                if link['rt'] == 'oic.r.button':
                     break
             link['rt'] = 'oic.r.button.bell'
             self.oic_device['links'].append(link)

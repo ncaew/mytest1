@@ -214,7 +214,7 @@ class OicDeviceManager(object):
 
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
-                if d.type == 'oic.d.wirelessdoorbell':
+                if d.type == 'oic.d.Bellbuttonswitch':
                     OnvifDiscover.add_bell(oicinfo)
 
                 if d.is_detector():
