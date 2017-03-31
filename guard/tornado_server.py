@@ -12,6 +12,8 @@ import threading
 
 import json
 from state import StateControl
+import logging
+logger = logging.getLogger(__name__)
 
 
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
@@ -23,7 +25,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
 
     @staticmethod
     def send_to_all(message):
-        print(message)
+        logger.debug(message)
         for c in WebSocketHandler.clients:
             c.write_message(json.dumps(message))
 
@@ -89,11 +91,10 @@ class StatusHandler(BaseHandler):
 
     def get(self):
         if StateControl().q.empty():
-            print("q EEEEEEEEEEEEEEEEEEEEEEEEEEEMPTY")
             StateControl().update_status()
 
         info = StateControl().get_status()
-        print(info)
+
         self.write(info)
 
 
@@ -135,7 +136,6 @@ class CancelProtectHandler(BaseHandler):
 class StopAlertHandler(BaseHandler):
     def get(self):
         alert_id = self.get_argument('alertid', '')
-        print("StopAlertHandler", alert_id)
 
         StateControl().stop_alert(alertid=alert_id)
 
@@ -149,7 +149,6 @@ class StopAlertHandler(BaseHandler):
 class SetProtectHandler(BaseHandler):
     def get(self):
         result = self.get_argument('result', '')
-        print("SetProtectHandler", result)
 
         StateControl().set_protect(result)
 
