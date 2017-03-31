@@ -209,7 +209,7 @@ if __name__ == '__main__':
         ml.append(m)
         i += 1
 
-        d, m = create_bell_device(ip, port, i, "doorbutton", 'button.bell')
+        d, m = create_device(ip, port, i, "Bellbuttonswitch", 'button')
         dl.append(d)
         ml.append(m)
         i += 1
@@ -292,7 +292,6 @@ if __name__ == '__main__':
 
         def on_message(self, message):
             pass
-
 
 
     dlist, rlist = create_devices('127.0.0.1', 40000)

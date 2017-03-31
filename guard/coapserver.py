@@ -2,6 +2,10 @@ from coapthon.server.coap import CoAP
 from coapthon.resources.resource import Resource
 import json
 import oicmgr
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class CoAPServer(CoAP):
@@ -48,15 +52,14 @@ class CoAPServer(CoAP):
             return self
 
         def render_POST(self, request):
-            print request.payload
+            logger.info('render_POST %s' % str(request.payload))
             dev = oicmgr.json.loads(request.payload)
-            print dev
             oicmgr.OicDeviceManager().add_device(dev)
 
             return True
 
         def render_DELETE(self, request):
-            print(request.uri_query)
+            logger.info('render_DELETE', request.uri_query)
             oicmgr.OicDeviceManager.del_device(request.uri_query)
             return True
 

@@ -10,6 +10,8 @@ import threading
 import tornado
 from guard.oicbell import *
 
+logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
+
 
 @singleton
 class SecureMonitor(object):
@@ -34,6 +36,7 @@ class SecureMonitor(object):
 
 
 if __name__ == '__main__':
+
     probe_thread = threading.Thread(target=OnvifDiscover.probe)
     probe_thread.start()
     sm = SecureMonitor()

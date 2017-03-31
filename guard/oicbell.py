@@ -16,7 +16,6 @@ import urlparse
 from onvif import ONVIFCamera
 from onvif.exceptions import *
 
-logging.config.fileConfig("logging.conf")
 logger = logging.getLogger(__name__)
 
 
@@ -61,6 +60,7 @@ class MediaResource(Resource):
         self.payload = request.payload
         return self
 
+
 class OicDoorGuard(CoAP):
 
     def __init__(self, host, port, media_uri, multicast=False, starting_mid=None):
@@ -101,6 +101,7 @@ class OicDoorGuard(CoAP):
             client.send_request(request, callback=None, timeout=1)
         except Exception:
             pass
+        time.sleep(1)
         client.close()
         self.timer = threading.Timer(60, self.heartbeat)
         self.timer.setDaemon(True)
@@ -121,13 +122,15 @@ class OicDoorGuard(CoAP):
 
     def add_bell(self, belloic):
         if belloic is not None:
+            logger.info('add_bell: %s', belloic)
             self.oic_device['di'] = belloic['di']
             self.media_res.info['id'] = belloic['di']
             for link in belloic['links']:
                 if link['rt'] == 'oic.r.button':
                     break
-            link['rt'] = 'oic.r.button.bell'
-            self.oic_device['links'].append(link)
+            link['rt'] = 'oic.r.button'
+            if link not in self.oic_device['links']:
+                self.oic_device['links'].append(link)
             self.stop_heartbeat()
             self.restart_heartbeat()
 
@@ -203,13 +206,15 @@ class OnvifDiscover(object):
                         port = s.getsockname()[1]
                         s.close()
                         OnvifDiscover.oic_srv[n] = OicDoorGuardThread('127.0.0.1', port, media_uri)
-                        OnvifDiscover.oic_srv[n].server.add_bell(OnvifDiscover.oic_bell)
+
                         OnvifDiscover.oic_srv[n].start()
                         OnvifDiscover.onvif_urls.add(n)
 
                     except ONVIFError as e:
                         logger.info(n, str(e))
                         continue
+        for s in OnvifDiscover.oic_srv.values():
+            s.server.add_bell(OnvifDiscover.oic_bell)
         logger.debug('onvif_urls set is %s' % OnvifDiscover.onvif_urls)
 
         timer = threading.Timer(60, OnvifDiscover.probe)
