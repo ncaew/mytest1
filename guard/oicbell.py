@@ -10,13 +10,12 @@ from coapthon import defines
 
 import threading
 
-import  multiprocessing
+import time
 from guard.WSDiscovery import WSDiscovery
 import urlparse
 from onvif import ONVIFCamera
 from onvif.exceptions import *
 
-logging.config.fileConfig("logging.conf")
 logger = logging.getLogger(__name__)
 
 
@@ -61,29 +60,34 @@ class MediaResource(Resource):
         self.payload = request.payload
         return self
 
+
 class OicDoorGuard(CoAP):
 
     def __init__(self, host, port, media_uri, multicast=False, starting_mid=None):
         CoAP.__init__(self, (host, port), multicast, starting_mid)
 
-        self.oic_device = dict(di=str(uuid.uuid4()))
+        self.oic_device = dict(di='')
         self.oic_device['lt'] = 86400
         self.oic_device['n'] = self.__class__.__name__
 
         uri_prefix = 'coap://%s:%d' % (host, port)
         oic_d_res = dict(href=uri_prefix + '/oic/d', rel='contained', rt='oic.d.doorbutton')
-        bell_res = dict(href=uri_prefix + '/BellResURI', rel='contained', rt='oic.r.button.bell')
-        media_res = dict(href=uri_prefix + '/MediaResURI', rel='contained', rt='oic.r.media')
-        self.oic_device['links'] = [oic_d_res, bell_res, media_res]
 
-        info = {'id': self.oic_device['di'], 'rt': 'oic.r.button.bell', 'value': False}
-        self.add_resource('/BellResURI', ObservableResource(coap_server=self, info=info))
+        media_res = dict(href=uri_prefix + '/MediaResURI', rel='contained', rt='oic.r.media')
+        self.oic_device['links'] = [oic_d_res, media_res]
+
         media_info = {'id': self.oic_device['di'], 'rt': 'oic.r.media', 'media': [{'url': media_uri}]}
-        self.add_resource('/MediaResURI', MediaResource(coap_server=self, info=media_info))
-        print(self.oic_device, info)
+        self.media_res = MediaResource(coap_server=self, info=media_info)
+        self.add_resource('/MediaResURI', self.media_res)
+        print(self.oic_device, media_info)
+        self.timer = None
         self._heartbeat = True
 
     def heartbeat(self):
+        if not self._heartbeat:
+            if self.timer is not None and self.timer.is_alive():
+                self.timer.cancel()
+            return
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         '''s.setsockopt(socket.SOL_SOCKET, 25, 'eth0')'''
@@ -97,18 +101,38 @@ class OicDoorGuard(CoAP):
             client.send_request(request, callback=None, timeout=1)
         except Exception:
             pass
-
-        if self._heartbeat:
-            timer = threading.Timer(60, self.heartbeat)
-            timer.setDaemon(True)
-            timer.start()
+        time.sleep(1)
+        client.close()
+        self.timer = threading.Timer(60, self.heartbeat)
+        self.timer.setDaemon(True)
+        self.timer.start()
 
     def stop_heartbeat(self):
         self._heartbeat = False
+        if self.timer is not None and self.timer.is_alive():
+            self.timer.cancel
 
     def restart_heartbeat(self):
         self._heartbeat = True
         self.heartbeat()
+
+#bell_res = dict(href=uri_prefix + '/BellResURI', rel='contained', rt='oic.r.button.bell')
+#info = {'id': self.oic_device['di'], 'rt': 'oic.r.button.bell', 'value': False}
+#self.add_resource('/BellResURI', ObservableResource(coap_server=self, info=info))
+
+    def add_bell(self, belloic):
+        if belloic is not None:
+            logger.info('add_bell: %s', belloic)
+            self.oic_device['di'] = belloic['di']
+            self.media_res.info['id'] = belloic['di']
+            for link in belloic['links']:
+                if link['rt'] == 'oic.r.button':
+                    break
+            link['rt'] = 'oic.r.button'
+            if link not in self.oic_device['links']:
+                self.oic_device['links'].append(link)
+            self.stop_heartbeat()
+            self.restart_heartbeat()
 
     def capture_pkt(self):
         pass
@@ -121,7 +145,7 @@ class OicDoorGuardThread(object):
         self.thread = threading.Thread(target=self.server.listen, args=(10,))
 
     def start(self):
-        self.server.heartbeat()
+        #self.server.heartbeat()
         self.thread.start()
 
     def stop(self):
@@ -139,6 +163,7 @@ class OnvifDiscover(object):
     onvif_urls = set([])
     oic_srv = {}
     stop_probe = False
+    oic_bell = None
 
     @staticmethod
     def probe():
@@ -181,12 +206,15 @@ class OnvifDiscover(object):
                         port = s.getsockname()[1]
                         s.close()
                         OnvifDiscover.oic_srv[n] = OicDoorGuardThread('127.0.0.1', port, media_uri)
+
                         OnvifDiscover.oic_srv[n].start()
                         OnvifDiscover.onvif_urls.add(n)
 
                     except ONVIFError as e:
                         logger.info(n, str(e))
                         continue
+        for s in OnvifDiscover.oic_srv.values():
+            s.server.add_bell(OnvifDiscover.oic_bell)
         logger.debug('onvif_urls set is %s' % OnvifDiscover.onvif_urls)
 
         timer = threading.Timer(60, OnvifDiscover.probe)
@@ -197,6 +225,9 @@ class OnvifDiscover(object):
     def stop():
         OnvifDiscover.stop_probe = True
 
+    @staticmethod
+    def add_bell(belloic):
+        OnvifDiscover.oic_bell = belloic
 
 if __name__ == '__main__':
 
@@ -204,7 +235,7 @@ if __name__ == '__main__':
     try:
         while True:
             logger.debug('sleep 10')
-            threading._sleep(10)
+            time.sleep(10)
     except KeyboardInterrupt:
         print('exit')
         OnvifDiscover.stop()

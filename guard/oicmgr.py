@@ -5,6 +5,9 @@ from state import *
 from singleton import *
 import time
 import gettext
+from oicbell import OnvifDiscover
+
+logger = logging.getLogger(__name__)
 
 
 class OicDevice(object):
@@ -18,7 +21,7 @@ class OicDevice(object):
     bell_device_type = ['oic.d.doorbutton']
 
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
-                             'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button.bell']
+                             'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button']
     media_resource_type = ['oic.r.media']
 
     def __init__(self, oicinfo):
@@ -40,6 +43,7 @@ class OicDevice(object):
             if link['rt'].find('oic.d.') >= 0:
                 break
 
+        logger.debug('%s', link['rt'])
         return link['rt']
 
     def get_stream_uri(self):
@@ -77,7 +81,6 @@ class OicDevice(object):
         return self.type in OicDevice.fatal_device_type
 
     def is_alarmer(self):
-        print(self.type)
         return self.type in OicDevice.alarm_device_type
 
     def is_bell(self):
@@ -85,7 +88,7 @@ class OicDevice(object):
 
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:
-            print(link['rt'])
+            logger.debug('observe_resources: %s', link['rt'])
             if link['rt'].find('oic.r.') >= 0 and \
                             link['rt'] in OicDevice.observe_resource_type:
                 rt_info = dict(id=oicinfo['di'], rt=link['rt'], value=False)
@@ -103,9 +106,6 @@ class OicDevice(object):
 @singleton
 class OicDeviceManager(object):
     def __init__(self):
-        print(self)
-        print(self.singleton_lock)
-        print('OicDeviceManager')
         self._locker = threading.Lock()
         self._oic_info = {}
         self._devices = {}
@@ -131,7 +131,7 @@ class OicDeviceManager(object):
                 host, port, uri = parse_uri(clock_uri)
                 client = HelperClient(server=(host, port))
                 response = client.post(uri, json.dumps(p))
-                print(response.pretty_print())
+                logger.debug('set alarm clock:', response.pretty_print())
                 client.stop()
 
             if mode == 'alarm':
@@ -140,7 +140,7 @@ class OicDeviceManager(object):
                     host, port, uri = parse_uri(alarm_uri)
                     client = HelperClient(server=(host, port))
                     response = client.post(uri, json.dumps(p))
-                    print(response.pretty_print())
+                    logger.debug('setup_alarm alarm response:', response.pretty_print())
                     client.stop()
             elif mode == 'fire':
                 if len(fire_alarm_uri) > 0:
@@ -148,12 +148,12 @@ class OicDeviceManager(object):
                     host, port, uri = parse_uri(fire_alarm_uri)
                     client = HelperClient(server=(host, port))
                     response = client.post(uri, json.dumps(p))
-                    print(response.pretty_print())
+                    logger.debug('setup_alarm  response:', response.pretty_print())
                     client.stop()
 
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
-        from state import GuardState, AlarmState, HouseState,StateControl
+        from state import GuardState, AlarmState, HouseState, StateControl
         devid = info['id']
         rt = info['rt']
         state = info['value']
@@ -169,7 +169,7 @@ class OicDeviceManager(object):
                 old_state = False
 
             dev.res_state[rt] = info
-            print(old_state, state)
+            logger.debug('%s %s', old_state, state)
             if old_state is False and state is True:
 
                 if dev.is_invade_detector():
@@ -189,9 +189,9 @@ class OicDeviceManager(object):
             return dev
 
     def observe_callback(self, response):
-        print(response.payload)
+        logger.debug('%s', response.payload)
         if response.payload is None:
-            print('response.payload is None')
+            logger.error('response.payload is None')
             return
         info = json.loads(response.payload)
 
@@ -207,12 +207,16 @@ class OicDeviceManager(object):
         self._locker.release()
 
     def add_device(self, oicinfo):
+        logger.debug('%s', oicinfo)
         self._locker.acquire()
         try:
             devid = oicinfo['di']
 
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
+                if d.type == 'oic.d.Bellbuttonswitch':
+                    OnvifDiscover.add_bell(oicinfo)
+
                 if d.is_detector():
                     d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
@@ -222,7 +226,7 @@ class OicDeviceManager(object):
                     self._alarm_devices[devid] = d
 
         except Exception as e:
-            print(e.args)
+            logger.error(e.args)
         finally:
             self._locker.release()
 
@@ -245,7 +249,7 @@ class OicDeviceManager(object):
             a['type_tr'] = _(d.type)
 
             a['position'] = d.position
-            print(d.res_state)
+
             if len(d.res_state.values()) > 0:
                 rstate = d.res_state.values()[0]['value']
             else:
@@ -258,6 +262,7 @@ class OicDeviceManager(object):
             else:
                 a['video_url'] = ''
             l.append(a)
+            logger.debug("device info:%s", a)
         return l
 
     def update_device_alias(self, devid, alias):
