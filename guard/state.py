@@ -273,11 +273,11 @@ class StateControl(object):
 
     def alert(self, devid=''):
         e = {'devid': devid}
+        logger.debug('%s' % e)
         if e not in self.alarm_queue:
             self.alarm_queue.append(e)
 
-        if self.state != 'unlock_protect' and self.state != 'alert_message' \
-                and self.state != 'protect_starting':
+        if self.state == 'protect_check':
             AlarmState().be_alarm()
             self.update_status('alert_message')
 
