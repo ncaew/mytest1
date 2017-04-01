@@ -228,6 +228,7 @@ class StateControl(object):
             h.outg()
 
         if mode in ['home', 'indoors']:
+            GuardState().setup_guard()
             self.update_status('protected')
         else:
             self.update_status('protect_starting', 60)
