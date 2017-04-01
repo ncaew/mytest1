@@ -60,7 +60,7 @@ class CoAPServer(CoAP):
 
         def render_DELETE(self, request):
             logger.info('render_DELETE', request.uri_query)
-            oicmgr.OicDeviceManager.del_device(request.uri_query)
+            oicmgr.OicDeviceManager().del_device(request.uri_query)
             return True
 
 if __name__ == '__main__':
