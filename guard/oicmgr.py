@@ -88,16 +88,19 @@ class OicDevice(object):
 
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:
-            logger.debug('observe_resources: %s', link['rt'])
+
             if link['rt'].find('oic.r.') >= 0 and \
                             link['rt'] in OicDevice.observe_resource_type:
+
                 rt_info = dict(id=oicinfo['di'], rt=link['rt'], value=False)
                 self.res_state[link['rt']] = rt_info
                 path = link['href']
-                host, port, uri = parse_uri(path)
-                client = HelperClient(server=(host, port))
-                client.observe(path=uri, callback=cb)
-                self.observers[path] = client
+                if path not in self.observers:
+                    logger.debug('observe_resources: %s %s', link['rt'], path)
+                    host, port, uri = parse_uri(path)
+                    client = HelperClient(server=(host, port))
+                    client.observe(path=uri, callback=cb)
+                    self.observers[path] = client
 
     def cancel_observe(self):
         self.cancel = True
