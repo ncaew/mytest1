@@ -199,7 +199,9 @@ class OnvifDiscover(object):
                     mycam = ONVIFCamera(url.hostname, 80, OnvifDiscover.default_user,
                                         OnvifDiscover.default_passwd, wsdl_dir=OnvifDiscover.wsdl_dir)
                     try:
-                        media_uri = mycam.create_media_service().GetStreamUri().Uri
+                        media_uri_orig = mycam.create_media_service().GetStreamUri().Uri
+                        pw = OnvifDiscover.default_user + ':' + OnvifDiscover.default_passwd + '@'
+                        media_uri = media_uri_orig[:7] + pw + media_uri_orig[7:]
                         logger.info('media_uri is %s' % media_uri)
                         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                         s.bind(('', 0))
