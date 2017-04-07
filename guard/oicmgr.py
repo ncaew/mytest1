@@ -134,7 +134,7 @@ class OicDeviceManager(object):
                 host, port, uri = parse_uri(clock_uri)
                 client = HelperClient(server=(host, port))
                 response = client.post(uri, json.dumps(p))
-                logger.debug('set alarm clock:', response.pretty_print())
+                logger.debug('set alarm clock:%s', response.pretty_print())
                 client.stop()
 
             if mode == 'alarm':
@@ -143,7 +143,7 @@ class OicDeviceManager(object):
                     host, port, uri = parse_uri(alarm_uri)
                     client = HelperClient(server=(host, port))
                     response = client.post(uri, json.dumps(p))
-                    logger.debug('setup_alarm alarm response:', response.pretty_print())
+                    logger.debug('setup_alarm alarm response:%s', response.pretty_print())
                     client.stop()
             elif mode == 'fire':
                 if len(fire_alarm_uri) > 0:
@@ -151,7 +151,7 @@ class OicDeviceManager(object):
                     host, port, uri = parse_uri(fire_alarm_uri)
                     client = HelperClient(server=(host, port))
                     response = client.post(uri, json.dumps(p))
-                    logger.debug('setup_alarm  response:', response.pretty_print())
+                    logger.debug('setup_alarm  response:%s', response.pretty_print())
                     client.stop()
 
     def _update_oic_device(self, info):
