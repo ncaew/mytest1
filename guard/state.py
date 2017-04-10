@@ -164,7 +164,7 @@ class StateControl(object):
         self.state = 'protected'
         self.alarm_queue = deque()
 
-    def update_status(self, status=None, timeout=-1):
+    def update_status(self, status=None, timeout=1):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
