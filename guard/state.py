@@ -46,7 +46,7 @@ class GuardState(object):
         self.remain_second = self.to_protect_timer.remain_second
         info = dict(type='ToProtect', seconds=self.remain_second)
         event = dict(event='CountDown', info=info)
-        logger.debug('%d', self.remain_second)
+        logger.debug('on_guard_every_time: %d', self.remain_second)
         WebSocketHandler.send_to_all(event)
 
     def timeout_to_guard(self, args):
@@ -81,12 +81,12 @@ class GuardState(object):
         self.remain_second = self.to_alarm_timer.remain_second
         info = dict(type='ToAlarm', seconds=self.remain_second)
         event = dict(event='CountDown', info=info)
-        logger.debug('%d', self.remain_second)
+        logger.debug('on_alarm_every_time: %d', self.remain_second)
         WebSocketHandler.send_to_all(event)
 
     def timeout_to_alarm(self, args):
         from tornado_server import WebSocketHandler
-        logger.debug('on_timeout')
+        logger.debug('on_timeout, ToAlarm')
         self.remain_second = -1
         AlarmState().be_alarm()
         info = dict(type='ToAlarm')
@@ -168,6 +168,7 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
+        logger.debug('update_status:' + status + ' g.state:' + g.state + ' h.state:' + h.state + 'a.state:' + a.state)
 
         if status is None:
             info = {'status': self.state}
