@@ -168,7 +168,7 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
-        logger.debug('update_status:' + status + ' g.state:' + g.state + ' h.state:' + h.state + 'a.state:' + a.state)
+        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
         if status is None:
             info = {'status': self.state}
