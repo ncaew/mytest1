@@ -212,11 +212,11 @@ class StateControl(object):
         info['canprotect'] = can
         logger.debug("%s", info)
         self.q.put(info)
+        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
     def get_status(self):
         while not self.q.empty():
             a = self.q.get(True)
-
         return a
 
     def set_protect_start(self, mode):
@@ -236,7 +236,7 @@ class StateControl(object):
 
     def cancel_protect(self, mode, action, password, systime):
         from passwd import PwManager
-        logger.debug('%s %s %s %s', mode, action, password, systime)
+        logger.debug('cancel_protect: %s %s %s %s', mode, action, password, systime)
 
         if action == 'start':
             self.update_status('unlock_protect', 30)
