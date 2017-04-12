@@ -43,7 +43,7 @@ class OicDevice(object):
             if link['rt'].find('oic.d.') >= 0:
                 break
 
-        logger.debug('%s', link['rt'])
+        logger.debug('get_device_type: %s', link['rt'])
         return link['rt']
 
     def get_stream_uri(self):
@@ -65,26 +65,38 @@ class OicDevice(object):
                         if 'url' in m and len(m['url']):
                             uri_list.append(m['url'])
 
+        logger.debug('get_device_type uri_list: %s',uri_list)
         return uri_list
 
     def is_detector(self):
-        return self.is_invade_detector() or self.is_motion_detector() \
-               or self.is_fatal_detector() or self.is_bell()
+        b = self.is_invade_detector() or self.is_motion_detector() or self.is_fatal_detector() or self.is_bell()
+        logger.debug('is_detector: %s', b)
+        return b
 
     def is_invade_detector(self):
-        return self.type in OicDevice.invade_device_type
+        b = self.type in OicDevice.invade_device_type
+        logger.debug('is_invade_detector: %s', b)
+        return b
 
     def is_motion_detector(self):
-        return self.type in OicDevice.motion_device_type
+        b = self.type in OicDevice.motion_device_type
+        logger.debug('is_motion_detector: %s', b)
+        return b
 
     def is_fatal_detector(self):
-        return self.type in OicDevice.fatal_device_type
+        b = self.type in OicDevice.fatal_device_type
+        logger.debug('is_fatal_detector: %s', b)
+        return b
 
     def is_alarmer(self):
-        return self.type in OicDevice.alarm_device_type
+        b = self.type in OicDevice.alarm_device_type
+        logger.debug('is_alarmer: %s', b)
+        return b
 
     def is_bell(self):
-        return self.type in OicDevice.bell_device_type
+        b = self.type in OicDevice.bell_device_type
+        logger.debug('is_bell: %s', b)
+        return b
 
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:

@@ -46,7 +46,7 @@ class GuardState(object):
         self.remain_second = self.to_protect_timer.remain_second
         info = dict(type='ToProtect', seconds=self.remain_second)
         event = dict(event='CountDown', info=info)
-        logger.debug('%d', self.remain_second)
+        logger.debug('on_guard_every_time: %d', self.remain_second)
         WebSocketHandler.send_to_all(event)
 
     def timeout_to_guard(self, args):
@@ -81,12 +81,12 @@ class GuardState(object):
         self.remain_second = self.to_alarm_timer.remain_second
         info = dict(type='ToAlarm', seconds=self.remain_second)
         event = dict(event='CountDown', info=info)
-        logger.debug('%d', self.remain_second)
+        logger.debug('on_alarm_every_time: %d', self.remain_second)
         WebSocketHandler.send_to_all(event)
 
     def timeout_to_alarm(self, args):
         from tornado_server import WebSocketHandler
-        logger.debug('on_timeout')
+        logger.debug('on_timeout, ToAlarm')
         self.remain_second = -1
         AlarmState().be_alarm()
         info = dict(type='ToAlarm')
@@ -168,6 +168,7 @@ class StateControl(object):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
+        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
         if status is None:
             info = {'status': self.state}
@@ -211,11 +212,11 @@ class StateControl(object):
         info['canprotect'] = can
         logger.debug("%s", info)
         self.q.put(info)
+        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
     def get_status(self):
         while not self.q.empty():
             a = self.q.get(True)
-
         return a
 
     def set_protect_start(self, mode):
@@ -235,7 +236,7 @@ class StateControl(object):
 
     def cancel_protect(self, mode, action, password, systime):
         from passwd import PwManager
-        logger.debug('%s %s %s %s', mode, action, password, systime)
+        logger.debug('cancel_protect: %s %s %s %s', mode, action, password, systime)
 
         if action == 'start':
             self.update_status('unlock_protect', 30)

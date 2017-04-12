@@ -137,7 +137,7 @@ class QName:
 
     def __repr__(self):
         return self.getFullname()
-        
+
 
 class Scope:
 
@@ -153,7 +153,7 @@ class Scope:
 
     def getQuotedValue(self):
         return self._value.replace(' ', '%20')
-    
+
     def __repr__(self):
         if self.getMatchBy() == None or len(self.getMatchBy()) == 0:
             return self.getValue()

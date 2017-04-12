@@ -25,6 +25,7 @@
   "devices_status": [
     {
       "uuid": "f2a18ab6-a5db-48fb-a431-c56880859666",
+      "alias": "",
       "type": "door",
       "position": "户外门",
       "status_code": "0",
@@ -32,6 +33,7 @@
     },
     {
       "uuid": "ad0ac41e-b5d4-4d8a-9a01-5dcdb0d3aabd",
+      "alias": "",
       "type": "door",
       "position": "户内门",
       "status_code": "1",
@@ -39,6 +41,7 @@
     },
     {
       "uuid": "577c3bf5-b4dd-4ae9-9fa9-aed8e084d4fb",
+      "alias": "",
       "type": "window",
       "position": "厨房窗",
       "status_code": "2",
@@ -46,6 +49,7 @@
     },
     {
       "uuid": "3e815873-a561-4db6-a2e6-570ae4bcf71e",
+      "alias": "",
       "type": "smoke",
       "position": "厨房",
       "status_code": "3",
@@ -54,6 +58,7 @@
     },
     {
       "uuid": "28e941a8-8798-4b5d-a008-a98bdec72bef",
+      "alias": "",
       "type": "water",
       "position": "卫生间",
       "status_code": "4",
@@ -62,6 +67,7 @@
     },
     {
       "uuid": "5a35623b-40e9-4506-b007-17ecf06543bc",
+      "alias": "",
       "type": "gas",
       "position": "厨房",
       "status_code": "5",
@@ -70,6 +76,7 @@
     },
     {
       "uuid": "75e1e8eb-59b4-44cb-bc77-4fee544a2f5c",
+      "alias": "",
       "type": "human",
       "position": "北卧室",
       "status_code": "6",
@@ -78,6 +85,7 @@
     },
     {
       "uuid": "a1a18ab6-a5db-48fb-a431-c56880859666",
+      "alias": "",
       "type": "doorbutton",
       "position": "楼宇门禁",
       "status_code": "0",
@@ -87,6 +95,7 @@
     },
     {
       "uuid": "b2a18ab6-a5db-48fb-a431-c56880859666",
+      "alias": "",
       "type": "doorbutton",
       "position": "户门",
       "status_code": "0",
