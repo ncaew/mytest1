@@ -105,6 +105,17 @@ class OicDevice(object):
     def cancel_observe(self):
         self.cancel = True
 
+    def get_status_str(self, rstate):
+        res = ''
+        if self.is_invade_detector():
+            res = 'unlock' if rstate else 'lock'
+        elif self.is_motion_detector():
+            res = 'motion' if rstate else 'no_motion'
+        elif self.is_fatal_detector():
+            res = 'alarm' if rstate else 'no_alarm'
+        return res
+
+
 
 @singleton
 class OicDeviceManager(object):
@@ -258,7 +269,7 @@ class OicDeviceManager(object):
             else:
                 rstate = False
             a['status_code'] = 1 if rstate else 0
-            a['status'] = 'unlock' if rstate else 'lock'
+            a['status'] = _(d.get_status_str(rstate))
             vurl = d.get_stream_uri()
             if len(vurl) > 0:
                 a['video_url'] = vurl[0]
