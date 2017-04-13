@@ -110,7 +110,7 @@ class OicDoorGuard(CoAP):
     def stop_heartbeat(self):
         self._heartbeat = False
         if self.timer is not None and self.timer.is_alive():
-            self.timer.cancel
+            self.timer.cancel()
 
     def restart_heartbeat(self):
         self._heartbeat = True
