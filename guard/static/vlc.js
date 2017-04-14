@@ -99,7 +99,7 @@ function handle_MediaPlayerBuffering(val)
 {
     var vlc = getVLC("vlc");
 	console.log("!!!vlc  handle_MediaPlayerBuffering("+val+") ");
-    if( vlc.playlist.isPlaying )
+    if( vlc.playlist !== undefined && vlc.playlist.isPlaying )
     {
       onPlaying();
     
@@ -307,13 +307,17 @@ function doGo(targetURL)
 
     if( vlc )
     {
-        vlc.playlist.items.clear();
+        if (vlc.playlist!== undefined)
+        {
+			vlc.playlist.items.clear();
+        }
         var options = [":rtsp-tcp"];
         var itemId = vlc.playlist.add(targetURL,"",options);
         if( itemId != -1 )
         {
             // play MRL
-            vlc.playlist.playItem(itemId);
+			if (vlc.playlist!== undefined)
+	            vlc.playlist.playItem(itemId);
         }
         else
         {
@@ -327,7 +331,7 @@ function doGo(targetURL)
 function doPlayOrPause()
 {
     var vlc = getVLC("vlc");
-    if( vlc )
+    if( vlc && vlc.playlist!== undefined  )
     {
         if( vlc.playlist.isPlaying )
             vlc.playlist.togglePause();
@@ -339,7 +343,7 @@ function doPlayOrPause()
 function doStop()
 {
     var vlc = getVLC("vlc");
-    if( vlc )
+    if( vlc && vlc.playlist!== undefined )
         vlc.playlist.stop();
 }
 

@@ -192,6 +192,10 @@ function win_protect_starting_timer_event() {
 
     now_time = (new Date().getTime()) / 1000
     total_remain = Math.floor(win_protect_starting_init_time_remained - (now_time - win_protect_starting_inittime))
+	if (total_remain<0)
+	{
+		total_remain = 0;
+	}
     if (debug_log_detail==1)console.log("in win_protect_starting_timer_event", total_remain);
     $('#protect_starting_timeremain').html( "<font>"+total_remain+"</font>");
 
@@ -211,6 +215,10 @@ function win_protect_starting_check_or_show(data) {
 
     win_protect_starting_inittime = (new Date().getTime()) / 1000;
     win_protect_starting_init_time_remained = data.remain_second;
+	if (win_protect_starting_init_time_remained<0)
+	{
+		win_protect_starting_init_time_remained = 0;
+	}
 
     win_protect_starting_protectmode = data.house_status;
 
@@ -374,7 +382,11 @@ function win_unlock_protect_timer_event() {
 		return;
 	}
     now_time = (new Date().getTime()) / 1000
-    total_remain = Math.floor(win_unlock_protect_remain_seconds - (now_time - win_unlock_protect_inittime))
+    total_remain = Math.floor(win_unlock_protect_remain_seconds - (now_time - win_unlock_protect_inittime));
+	if (total_remain<0)
+	{
+		total_remain = 0;
+	}
     console.log("in win_unlock_protect ", total_remain);
     $('#unlock_protect_remain_seconds').html(total_remain);
     if (win_unlock_protect_is_colsed==0 && total_remain > 0) {
@@ -392,6 +404,10 @@ function win_unlock_protect_check_or_show(data) {
     win_unlock_protect_protectmode = data.protect_mode;
     win_unlock_protect_remain_seconds = data.remain_second;
 	//console.error("unlock_protect timer remained  init value is " + data.remain_second)
+	if (win_unlock_protect_remain_seconds<0)
+	{
+		win_unlock_protect_remain_seconds=0;
+	}
 	$('#unlock_protect_remain_seconds').html(win_unlock_protect_remain_seconds);
 
 	win_unlock_protect_is_colsed=0;
