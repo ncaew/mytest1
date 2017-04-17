@@ -9,7 +9,7 @@ from guard.singleton import *
 import threading
 import tornado
 from guard.oicbell import *
-
+import platform
 logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
 
 
@@ -17,7 +17,11 @@ logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
 class SecureMonitor(object):
     def __init__(self):
         self.tornado = TornadoServer()
-        self._coapsrv = CoAPServer('224.0.1.187', 5683, multicast=True)
+        if platform.system() == "Windows" :
+            logger.info('rum DEMO Mode on ' + platform.system())
+            self._coapsrv = CoAPServer('127.0.0.1', 5683, multicast=False)
+        else:
+            self._coapsrv = CoAPServer('224.0.1.187', 5683, multicast=True)
         self._coapsrv_thread = threading.Thread(target=self._coapservice)
         self._coapsrv_thread.setDaemon(True)
 
@@ -36,9 +40,9 @@ class SecureMonitor(object):
 
 
 if __name__ == '__main__':
-    logger.info('SSSSSSSSTart')
-    probe_thread = threading.Thread(target=OnvifDiscover.probe)
-    probe_thread.start()
+    logger.info('SSSSSSS STart on '+ platform.system())
+    #probe_thread = threading.Thread(target=OnvifDiscover.probe)
+    #probe_thread.start()
     sm = SecureMonitor()
     sm.start_coap_service()
     sm.tornado.webapp.listen(8888)

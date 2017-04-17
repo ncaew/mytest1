@@ -2,7 +2,7 @@ import logging
 import threading
 import json
 import uuid
-
+import platform
 import Queue
 
 from coapthon.resources.resource import Resource
@@ -221,7 +221,12 @@ if __name__ == '__main__':
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         '''s.setsockopt(socket.SOL_SOCKET, 25, 'eth0')'''
         s.bind(('0.0.0.0', 0))
-        client = HelperClient(server=('224.0.1.187', 5683), sock=s)
+        if platform.system() == "Windows":
+            logger.info('rum DEMO Mode on ' + platform.system())
+            client = HelperClient(server=('127.0.0.1', 5683), sock=s)
+        else:
+            client = HelperClient(server=('224.0.1.187', 5683), sock=s)
+        
 
         try:
             for d in devs:
@@ -292,6 +297,7 @@ if __name__ == '__main__':
 
         def on_message(self, message):
             pass
+
 
 
     dlist, rlist = create_devices('127.0.0.1', 40000)

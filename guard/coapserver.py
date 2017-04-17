@@ -52,7 +52,7 @@ class CoAPServer(CoAP):
             return self
 
         def render_POST(self, request):
-            logger.info('render_POST %s' % str(request.payload))
+            logger.debug('render_POST %s' % str(request.payload))
             dev = oicmgr.json.loads(request.payload)
             oicmgr.OicDeviceManager().add_device(dev)
 

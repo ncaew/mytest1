@@ -1,10 +1,11 @@
 from coapthon.client.helperclient import HelperClient
 from coapthon.utils import parse_uri
 import json
-from state import *
+import logging
 from singleton import *
 import time
 import gettext
+import db_proxy
 from oicbell import OnvifDiscover
 
 logger = logging.getLogger(__name__)
@@ -28,9 +29,12 @@ class OicDevice(object):
         self.devid = oicinfo['di']
         self.name = oicinfo['n']
         self.type = OicDevice.get_device_type(oicinfo)
+        self.position = None
+        self.con_alert_indoor = False
+        self.con_alert_outdoor = False
+        
         self.res_state = {}
         self.control_state = None
-        self.position = None
         self.observers = {}
         self.locker = threading.Lock()
         self.cancel = False
@@ -179,7 +183,7 @@ class OicDeviceManager(object):
 
     def _update_oic_device(self, info):
         from tornado_server import WebSocketHandler
-        from state import GuardState, AlarmState, HouseState, StateControl
+        from state import StateControl
         devid = info['id']
         rt = info['rt']
         state = info['value']
@@ -195,18 +199,19 @@ class OicDeviceManager(object):
                 old_state = False
 
             dev.res_state[rt] = info
-            logger.debug('%s %s', old_state, state)
-            if old_state is False and state is True:
+            
 
-                if dev.is_invade_detector():
-                    StateControl().invade()
-                if dev.is_motion_detector() and HouseState().state == "outgoing":
-                    StateControl().invade()
-                if dev.is_fatal_detector():
-                    StateControl().alert()
-
-                if dev.is_bell():
-                    StateControl().bell_ring()
+            StateControl().new_event_from_oic(dev,info,old_state)
+			#logger.debug('%s %s', old_state, state)
+            #if old_state is False and state is True:
+            #    if dev.is_invade_detector():
+            #        StateControl().invade()
+            #    if dev.is_motion_detector() and HouseState().state == "outgoing":
+            #        StateControl().invade()
+            #    if dev.is_fatal_detector():
+            #        StateControl().alert()
+            #    if dev.is_bell():
+            #        StateControl().bell_ring()
 
             if old_state != state:
                 info['old_value'] = old_state
@@ -275,7 +280,10 @@ class OicDeviceManager(object):
             a['type_tr'] = _(d.type)
 
             a['position'] = d.position
+            a['con_alert_indoor'] = d.con_alert_indoor
+            a['con_alert_outdoor'] = d.con_alert_outdoor
 
+            
             if len(d.res_state.values()) > 0:
                 rstate = d.res_state.values()[0]['value']
             else:
@@ -295,12 +303,46 @@ class OicDeviceManager(object):
         result = True
         if devid in self._devices:
             d = self._devices[devid]
-            d.position = alias
+            d.name = alias
         else:
             result = False
-
+		#todo  commit to d.smarthome  # copy logic from setup_alarm
         return result
 
+    def update_device_posname(self, devid, posname):
+        result = True
+        if devid in self._devices:
+            d = self._devices[devid]
+            d.position = posname
+        else:
+            result = False
+        # todo  commit to d.smarthome  # copy logic from setup_alarm
+        return result
+
+    def update_device_con_out(self, devid, con):
+        result = True
+        if devid in self._devices:
+	        d = self._devices[devid]
+	        d.con_alert_outdoor = con
+        else:
+	        result = False
+        # todo  commit to DB
+        #db_proxy.set_key("con_alert_outdoor",con)
+        return result
+
+    def update_device_con_in(self, devid, con):
+        result = True
+        if devid in self._devices:
+	        d = self._devices[devid]
+	        d.con_alert_indoor = con
+        else:
+	        result = False
+        # todo  commit to DB
+        # db_proxy.set_key("con_alert_indoor",con)
+        return result
+
+	    
+	    
     def all_devices_quiet(self):
         for d in self._devices.values():
             if d.res_state.values() is not None:

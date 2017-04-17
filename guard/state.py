@@ -1,12 +1,12 @@
 # https://github.com/tyarkoni/transitions
 
-
+import logging
 from transitions.extensions import LockedMachine as Machine
 from transitions import State
 from timer import Timer
 from singleton import *
 
-import logging
+
 from transitions import logger
 import json
 import Queue
@@ -215,8 +215,12 @@ class StateControl(object):
         logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
     def get_status(self):
+        if self.q.empty():
+            self.update_status()
         while not self.q.empty():
             a = self.q.get(True)
+
+        logger.info("statemachine Output:" + str(a) )
         return a
 
     def set_protect_start(self, mode):
@@ -237,11 +241,11 @@ class StateControl(object):
     def cancel_protect(self, mode, action, password, systime):
         from passwd import PwManager
         logger.debug('cancel_protect: %s %s %s %s', mode, action, password, systime)
-
+    
         if action == 'start':
             self.update_status('unlock_protect', 30)
         elif action == 'ok':
-
+        
             if len(self.alarm_queue) == 0:
                 # check password
                 if password == PwManager.get_passwd_hash(systime):
@@ -262,6 +266,8 @@ class StateControl(object):
             elif GuardState().state == 'invaded':
                 self.update_status('alert_message')
 
+        
+   
     def stop_alert(self, alertid):
         logger.debug('%s %s', alertid, GuardState().state)
         if GuardState().state == 'invaded':
@@ -285,8 +291,32 @@ class StateControl(object):
 
         print(self.alarm_queue)
 
-    def invade(self):
-        GuardState().invade()
+    #todo  merge follow 2 func to one  new_event and add from_timer
+    def new_event_from_webservice(self, event_name, event_para):
+        logger.info("statemachine input Event web:" +str(event_name) + str(event_para))
+   
+        if event_name == "set_protect_start":
+            self.set_protect_start(event_para["mode"])
+        elif event_name == "cancel_protect":
+            self.cancel_protect(event_para["mode"], event_para["action"], event_para["password"], event_para["systime"])
+        elif event_name == "stop_alert":
+            self.stop_alert(event_para["alertid"])
+        elif event_name == "set_protect":
+            self.set_protect(event_para["result"])
+        elif event_name == "bell_do":
+            self.bell_do(event_para["bellid"], event_para["action"])
+
+    def new_event_from_oic(self,dev,dev_info,oldstate):
+        logger.info("statemachine input Event oic:" +str(dev) +str(dev_info)+str(oldstate))
+        if oldstate is False and dev_info['value'] is True:
+           if dev.is_invade_detector():
+               StateControl().invade()
+           if dev.is_motion_detector() and HouseState().state == "outgoing":
+               StateControl().invade()
+           if dev.is_fatal_detector():
+               StateControl().alert()
+           if dev.is_bell():
+               StateControl().bell_ring()
 
     def set_protect(self, result):
         logger.debug('%s', result)

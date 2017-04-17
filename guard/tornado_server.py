@@ -9,7 +9,6 @@ import tornado.httpclient
 import tornado.websocket
 
 import threading
-
 import json
 from state import StateControl
 import logging
@@ -90,11 +89,7 @@ class StatusHandler(BaseHandler):
         self.set_header('Content-type', 'application/json')
 
     def get(self):
-        if StateControl().q.empty():
-            StateControl().update_status()
-
         info = StateControl().get_status()
-
         self.write(info)
 
 
@@ -102,12 +97,13 @@ class SetProtectStartHandler(BaseHandler):
     def get(self):
 
         mode = self.get_argument('protect', 'unknown')
-        StateControl().set_protect_start(mode)
+        StateControl().new_event_from_webservice("set_protect_start",dict(mode=mode))
+        #StateControl().set_protect_start(mode)
 
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
-
         WebSocketHandler.send_to_all(event)
+
         self.write('{"result":"OK"}')
 
 
@@ -126,10 +122,13 @@ class CancelProtectHandler(BaseHandler):
         passwd = self.get_argument('passwd', 'unknown')
         systime = self.get_argument('systime', 'unknown')
 
-        StateControl().cancel_protect(mode=mode, action=action, password=passwd, systime=systime)
+        StateControl().new_event_from_webservice("cancel_protect",dict(mode=mode, action=action, password=passwd, systime=systime))
+        #StateControl().cancel_protect(mode=mode, action=action, password=passwd, systime=systime)
+        
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
         event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
         WebSocketHandler.send_to_all(event)
+
         self.write('{"result":"OK"}')
 
 
@@ -137,12 +136,13 @@ class StopAlertHandler(BaseHandler):
     def get(self):
         alert_id = self.get_argument('alertid', '')
 
-        StateControl().stop_alert(alertid=alert_id)
+        StateControl().new_event_from_webservice("stop_alert",dict(alertid=alert_id))
+        #StateControl().stop_alert(alertid=alert_id)
 
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
-
         WebSocketHandler.send_to_all(event)
+
         self.write('{"result": "OK"}')
 
 
@@ -150,12 +150,13 @@ class SetProtectHandler(BaseHandler):
     def get(self):
         result = self.get_argument('result', '')
 
-        StateControl().set_protect(result)
+        StateControl().new_event_from_webservice("set_protect",dict(result=result))
+        #StateControl().set_protect(result)
 
         info = dict(handler=self.__class__.__name__, action='', result='OK')
         event = dict(event='StatusChanged', info=info)
-
         WebSocketHandler.send_to_all(event)
+
         self.write('{"result": "OK"}')
 
 
@@ -177,6 +178,32 @@ class SetDevAliasHandler(BaseHandler):
         info = {'result': result, 'devices_status': OicDeviceManager().get_devices()}
         self.write(json.dumps(info))
 
+class SetDevAttrHandler(BaseHandler):
+    def get(self):
+        from oicmgr import OicDeviceManager
+        result = 0 #0 mean 'OK'
+        devid = self.get_argument('uuid', '')
+        posname = self.get_argument('posname', '')
+        aliasname = self.get_argument('aliasname', '')
+        outdoor = self.get_argument('outdoor', '')
+        inhome = self.get_argument('inhome', '')
+    
+        if devid == '':
+            result = 1
+        else:
+            if aliasname != ''and  OicDeviceManager().update_device_alias(devid, aliasname) == False:
+                result += 1
+            if posname !=  ''and OicDeviceManager().update_device_posname(devid, posname) == False :
+                result += 1
+            if outdoor !=  '' and OicDeviceManager().update_device_con_out(devid, outdoor) == False:
+                result += 1
+            if inhome !=  '' and OicDeviceManager().update_device_con_in(devid, inhome) == False:
+                result += 1
+    
+                    #convert str from num ( 0 == OK )
+        result = 'NOK' if result >0 else 'OK'
+        info = {'result': result, 'devices_status': OicDeviceManager().get_devices()}
+        self.write(json.dumps(info))
 
 class GetDevicesListHandler(BaseHandler):
     def get(self):
@@ -210,12 +237,13 @@ class BellHandler(BaseHandler):
         action = self.get_argument('action', '')
         print("BellHandler", bellid, action)
 
-        StateControl().bell_do(bellid=bellid, action=action)
+        StateControl().new_event_from_webservice("bell_do",dict(bellid=bellid,action=action))
+        #StateControl().bell_do(bellid=bellid, action=action)
 
         info = dict(handler=self.__class__.__name__, action=action, result='OK')
         event = dict(event='StatusChanged', info=info)
-
         WebSocketHandler.send_to_all(event)
+
         self.write('{"result": "OK"}')
 
 
@@ -234,6 +262,7 @@ class TornadoServer(object):
                 (r"/set_protect", SetProtectHandler),
                 (r"/get_devices_list", GetDevicesListHandler),
                 (r"/set_device_alias", SetDevAliasHandler),
+				(r"/set_device_attr", SetDevAttrHandler),
                 (r"/get_protect_pw", GetPWHandler),
                 (r"/ch_passwd", ChangePWHandler),
                 (r"/bell_do", BellHandler),
@@ -317,6 +346,7 @@ if __name__ == '__main__':
             (r"/set_protect", SetProtectHandler),
             (r"/get_devices_list", GetDevicesListHandler),
             (r"/set_device_alias", SetDevAliasHandler),
+			(r"/set_device_attr", SetDevAttrHandler),
             (r"/get_protect_pw", GetPWHandler),
             (r"/ch_passwd", ChangePWHandler),
             (r"/bell_do", BellHandler),
