@@ -1,7 +1,8 @@
 import hashlib
 import ConfigParser
 import os
-db_file_path = os.getcwd() + '/db.ini'
+
+db_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'db.ini'))
 def check_db():
 	
 	if not os.path.exists(db_file_path):
@@ -46,13 +47,31 @@ def get_key(key_name):
 def set_key(key_name,value):
  
 	check_db()
-	ini_file = open(db_file_path, 'w')
+	
 	ini_config = ConfigParser.ConfigParser()
+	ini_config.read(db_file_path)
 	ini_config.add_section('User')
 	ini_config.set('User', key_name, value)
-	ini_config.write(ini_file)
-	ini_file.close()
 	
+	#ini_file =open(db_file_path, 'w')
+	ini_config.write( open(db_file_path, 'w'))
+	#ini_file.close()
 	update_cache(key_name,value)
 	pass
+
+
+def set_dev_attr(uuid,key_name, value):
+	check_db()
+
+	ini_config = ConfigParser.ConfigParser()
+	ini_config.read(db_file_path)
+	try:
+		ini_config.add_section(uuid)
+	except Exception as e:
+		pass
+	ini_config.set(uuid, key_name, value)
+	ini_config.write(open(db_file_path, 'w'))
+
+	update_cache(key_name, value)
+	return True
 

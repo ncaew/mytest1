@@ -7,7 +7,7 @@ import time
 import gettext
 import db_proxy
 from oicbell import OnvifDiscover
-
+import db_proxy
 logger = logging.getLogger(__name__)
 
 
@@ -29,16 +29,24 @@ class OicDevice(object):
         self.devid = oicinfo['di']
         self.name = oicinfo['n']
         self.type = OicDevice.get_device_type(oicinfo)
-        self.position = None
-        self.con_alert_indoor = False
-        self.con_alert_outdoor = False
+        self.position = ""
+        self.con_alert_indoor = "false"
+        self.con_alert_outdoor = "false"
         
+
         self.res_state = {}
         self.control_state = None
         self.observers = {}
         self.locker = threading.Lock()
         self.cancel = False
         self.oic_info = oicinfo
+        
+        db_proxy.set_dev_attr(str(self.devid),"name",str(self.name))
+        db_proxy.set_dev_attr(str(self.devid),"type", str(self.type))
+        db_proxy.set_dev_attr(str(self.devid),"position",str(self.position))
+        db_proxy.set_dev_attr(str(self.devid),"con_alert_indoor",str(self.con_alert_indoor))
+        db_proxy.set_dev_attr(str(self.devid),"con_alert_outdoor",str(self.con_alert_outdoor))
+
 
 
     @staticmethod
@@ -243,6 +251,7 @@ class OicDeviceManager(object):
         try:
             devid = oicinfo['di']
 
+
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
                 if d.type == 'oic.d.Bellbuttonswitch':
@@ -326,8 +335,10 @@ class OicDeviceManager(object):
 	        d.con_alert_outdoor = con
         else:
 	        result = False
-        # todo  commit to DB
-        #db_proxy.set_key("con_alert_outdoor",con)
+	        
+        # todo commit to DB , alway return true
+        db_proxy.set_dev_attr(devid,"con_alert_outdoor",con)
+        
         return result
 
     def update_device_con_in(self, devid, con):
@@ -337,8 +348,10 @@ class OicDeviceManager(object):
 	        d.con_alert_indoor = con
         else:
 	        result = False
-        # todo  commit to DB
-        # db_proxy.set_key("con_alert_indoor",con)
+
+        # todo commit to DB , alway return true
+        db_proxy.set_dev_attr(devid,"con_alert_outdoor",con)
+        
         return result
 
 	    
