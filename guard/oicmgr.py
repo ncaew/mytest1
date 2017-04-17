@@ -30,6 +30,8 @@ class OicDevice(object):
         self.name = oicinfo['n']
         self.type = OicDevice.get_device_type(oicinfo)
         self.position = ""
+        if self.position == "" :
+	        self.position ="default position"
         self.con_alert_indoor = "false"
         self.con_alert_outdoor = "false"
         

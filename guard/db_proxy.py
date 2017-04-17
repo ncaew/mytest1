@@ -50,7 +50,10 @@ def set_key(key_name,value):
 	
 	ini_config = ConfigParser.ConfigParser()
 	ini_config.read(db_file_path)
-	ini_config.add_section('User')
+	try:
+		ini_config.add_section('User')
+	except Exception as e:
+		pass
 	ini_config.set('User', key_name, value)
 	
 	#ini_file =open(db_file_path, 'w')
