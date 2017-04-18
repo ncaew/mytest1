@@ -8,6 +8,7 @@ import gettext
 import db_proxy
 from oicbell import OnvifDiscover
 import db_proxy
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +21,7 @@ class OicDevice(object):
 
     alarm_device_type = ['oic.d.alarm']
     bell_device_type = ['oic.d.doorbutton']
-   
+
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
                              'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button']
     media_resource_type = ['oic.r.media']
@@ -30,11 +31,11 @@ class OicDevice(object):
         self.name = oicinfo['n']
         self.type = OicDevice.get_device_type(oicinfo)
         self.position = ""
-        if self.position == "" :
-            self.position ="default position"
-        
-        #todo according type to decide  detectorgroup  and default  indoor/outdoor action
-        self.detectorgroup=[]
+        if self.position == "":
+            self.position = "default position"
+
+        # todo according type to decide  detectorgroup  and default  indoor/outdoor action
+        self.detectorgroup = []
         if self.is_invade_detector():
             self.detectorgroup.append("invadedetector")
         if self.is_motion_detector():
@@ -43,19 +44,19 @@ class OicDevice(object):
             self.detectorgroup.append("fataldetector")
         if self.is_bell():
             self.detectorgroup.append("belldetector")
-         
-         # set action_in_doorprotect/action_in_outprotect
-         # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
-         #   if smart-ele-socket: poweron,poweroff,
+
+            # set action_in_doorprotect/action_in_outprotect
+            # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
+            #   if smart-ele-socket: poweron,poweroff,
         if self.is_fatal_detector():
             self.action_in_doorprotect = "insist_alart"
-            self.action_in_outprotect  = "insist_alart"
+            self.action_in_outprotect = "insist_alart"
         elif self.is_bell():
             self.action_in_doorprotect = "insist_alart"
-            self.action_in_outprotect =  "insist_noaction"
-        elif len(self.get_detectorgroup_define() ) > 0 : #genera detector look up DB for user-defined-value
-            self.action_in_doorprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_doorprotect" )
-            self.action_in_outprotect  = db_proxy.get_dev_attr(str(self.devid), "action_in_outprotect" )
+            self.action_in_outprotect = "insist_noaction"
+        elif len(self.get_detectorgroup_define()) > 0:  # genera detector look up DB for user-defined-value
+            self.action_in_doorprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_doorprotect")
+            self.action_in_outprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_outprotect")
             if self.action_in_doorprotect == "":
                 self.action_in_doorprotect = "alart"
             if self.action_in_outprotect == "":
@@ -69,9 +70,9 @@ class OicDevice(object):
             if self.action_in_outprotect == "":
                 self.action_in_outprotect = "noaction"
             pass
-        else: # not dector and not elesocket
+        else:  # not dector and not elesocket
             self.action_in_doorprotect = "insist_noaction"
-            self.action_in_outprotect =  "insist_noaction"
+            self.action_in_outprotect = "insist_noaction"
 
         self.res_state = {}
         self.control_state = None
@@ -79,14 +80,12 @@ class OicDevice(object):
         self.locker = threading.Lock()
         self.cancel = False
         self.oic_info = oicinfo
-        
-        db_proxy.set_dev_attr(str(self.devid),"name",str(self.name))
-        db_proxy.set_dev_attr(str(self.devid),"type", str(self.type))
-        db_proxy.set_dev_attr(str(self.devid),"position",str(self.position))
-        db_proxy.set_dev_attr(str(self.devid),"action_in_doorprotect",str(self.action_in_doorprotect))
-        db_proxy.set_dev_attr(str(self.devid),"action_in_outprotect",str(self.action_in_outprotect))
 
-
+        db_proxy.set_dev_attr(str(self.devid), "name", str(self.name))
+        db_proxy.set_dev_attr(str(self.devid), "type", str(self.type))
+        db_proxy.set_dev_attr(str(self.devid), "position", str(self.position))
+        db_proxy.set_dev_attr(str(self.devid), "action_in_doorprotect", str(self.action_in_doorprotect))
+        db_proxy.set_dev_attr(str(self.devid), "action_in_outprotect", str(self.action_in_outprotect))
 
     @staticmethod
     def get_device_type(oicinfo):
@@ -116,7 +115,7 @@ class OicDevice(object):
                         if 'url' in m and len(m['url']):
                             uri_list.append(m['url'])
 
-        logger.debug('get_device_type uri_list: %s',uri_list)
+        logger.debug('get_device_type uri_list: %s', uri_list)
         return uri_list
 
     def is_detector(self):
@@ -148,13 +147,14 @@ class OicDevice(object):
         b = self.type in OicDevice.bell_device_type
         logger.debug('is_bell: %s', b)
         return b
+
     def get_detectorgroup_define(self):
         return self.detectorgroup;
-        
+
     def is_smart_elesocket(self):
-        b = self.type == 'oic.d.smart.elesocket'  #todo repell this type
+        b = self.type == 'oic.d.smart.elesocket'  # todo repell this type
         return b
-    
+
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:
 
@@ -183,7 +183,6 @@ class OicDevice(object):
         elif self.is_fatal_detector():
             res = 'alarm' if rstate else 'no_alarm'
         return res
-
 
 
 @singleton
@@ -252,11 +251,10 @@ class OicDeviceManager(object):
                 old_state = False
 
             dev.res_state[rt] = info
-            
 
-            StateControl().new_event_from_oic(dev,info,old_state)
-            #logger.debug('%s %s', old_state, state)
-            #if old_state is False and state is True:
+            ###StateControl().new_event_from_oic(dev,info,old_state)
+            # logger.debug('%s %s', old_state, state)
+            # if old_state is False and state is True:
             #    if dev.is_invade_detector():
             #        StateControl().invade()
             #    if dev.is_motion_detector() and HouseState().state == "outgoing":
@@ -270,6 +268,22 @@ class OicDeviceManager(object):
                 info['old_value'] = old_state
                 oic_event = dict(event='OICNotify', info=info)
                 WebSocketHandler.send_to_all(oic_event)
+
+                logger.info("WebSocketHandler.send_to_all: %s", str(oic_event))
+                if state:
+                    detector_define = dev.get_detectorgroup_define()
+                    if "invadedetector" in detector_define:
+                        event_name = "invadedetector"
+                        StateControl().event_notify(event_name, dev)
+                    if "motiondetector" in detector_define:
+                        event_name = "motiondetector"
+                        StateControl().event_notify(event_name, dev)
+                    if "fataldetector" in detector_define:
+                        event_name = "fataldetector"
+                        StateControl().event_notify(event_name, dev)
+                    if "belldetector" in detector_define:
+                        event_name = "belldetector"
+                        StateControl().event_notify(event_name, dev)
             return dev
 
     def observe_callback(self, response):
@@ -295,7 +309,6 @@ class OicDeviceManager(object):
         self._locker.acquire()
         try:
             devid = oicinfo['di']
-
 
             if devid not in self._oic_info and devid not in self._devices:
                 d = OicDevice(oicinfo)
@@ -338,7 +351,7 @@ class OicDeviceManager(object):
             a['action_in_doorprotect'] = d.action_in_doorprotect
             a['action_in_outprotect'] = d.action_in_outprotect
             a['detector_group_define'] = str(d.detectorgroup)
-            
+
             if len(d.res_state.values()) > 0:
                 rstate = d.res_state.values()[0]['value']
             else:
@@ -361,7 +374,7 @@ class OicDeviceManager(object):
             d.name = alias
         else:
             result = False
-        #todo  commit to d.smarthome  # copy logic from setup_alarm
+        # todo  commit to d.smarthome  # copy logic from setup_alarm
         return result
 
     def update_device_posname(self, devid, posname):
@@ -383,17 +396,17 @@ class OicDeviceManager(object):
         if devid in self._devices:
             d = self._devices[devid]
             if d.is_smart_elesocket():
-                d.action_in_outprotect = "poweron" if  con=="on" else "poweroff"
+                d.action_in_outprotect = "poweron" if con == "on" else "poweroff"
             elif d.is_bell():
                 result = False
             elif len(d.get_detectorgroup_define()) > 0:
                 d.action_in_outprotect = "alart" if con == "on" else "noaction"
         else:
             result = False
-            
+
         # todo commit to DB , alway return true
-        db_proxy.set_dev_attr(devid,"action_in_outprotect",con)
-        
+        db_proxy.set_dev_attr(devid, "action_in_outprotect", con)
+
         return result
 
     def update_device_con_in(self, devid, con):
@@ -405,7 +418,7 @@ class OicDeviceManager(object):
         if devid in self._devices:
             d = self._devices[devid]
             if d.is_smart_elesocket():
-                d.action_in_outprotect = "poweron" if  con=="on" else "poweroff"
+                d.action_in_outprotect = "poweron" if con == "on" else "poweroff"
             elif d.is_bell():
                 result = False
             elif len(d.get_detectorgroup_define()) > 0:
@@ -414,8 +427,8 @@ class OicDeviceManager(object):
             result = False
 
         # todo commit to DB , alway return true
-        db_proxy.set_dev_attr(devid,"action_in_doorprotect",con)
-        
+        db_proxy.set_dev_attr(devid, "action_in_doorprotect", con)
+
         return result
 
     def all_devices_quiet(self):
@@ -427,13 +440,14 @@ class OicDeviceManager(object):
             if rstate:
                 return False
         return True
-    
-    #todo add device exe funtion like :
-    #todo set_alarm2(uuid,on/off)
-    ##todo set_alarm3(uuid,on/off)
-    #todo set_robot_action(uuid,on/off)
-    #todo set_water_mech(uuid,on/off)
-    #todo set_ele_socket(uuid,on/off)
+
+        # todo add device exe funtion like :
+        # todo set_alarm2(uuid,on/off)
+        ##todo set_alarm3(uuid,on/off)
+        # todo set_robot_action(uuid,on/off)
+        # todo set_water_mech(uuid,on/off)
+        # todo set_ele_socket(uuid,on/off)
+
 
 if __name__ == '__main__':
     def thread_get_singleton(name):

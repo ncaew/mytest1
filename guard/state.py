@@ -281,7 +281,7 @@ class StateControl(object):
 
     def alert(self, devid=''):
         e = {'devid': devid}
-        logger.debug('%s' % e)
+        logger.debug('alert: %s' % e)
         if e not in self.alarm_queue:
             self.alarm_queue.append(e)
 
@@ -290,6 +290,32 @@ class StateControl(object):
             self.update_status('alert_message')
 
         print(self.alarm_queue)
+
+    def invade(self):
+        GuardState().invade()
+
+    def event_notify(self, event_name, event_parameter):
+        logger.info('event_notify: %s %s', event_name, str(event_parameter))
+        logger.debug('event_notify: %s %s self: %s', event_name, str(event_parameter), str(self))
+        if event_name == "invadedetector":
+            StateControl().invade()
+        if event_name == "motiondetector" and HouseState().state == "outgoing":
+            StateControl().invade()
+        if event_name == "fataldetector":
+            StateControl().alert()
+        if event_name == "belldetector":
+            StateControl().bell_ring()
+        pass
+        if event_name == "set_protect_start":
+            self.set_protect_start(event_parameter["mode"])
+        elif event_name == "cancel_protect":
+            self.cancel_protect(event_parameter["mode"], event_parameter["action"], event_parameter["password"], event_parameter["systime"])
+        elif event_name == "stop_alert":
+            self.stop_alert(event_parameter["alertid"])
+        elif event_name == "set_protect":
+            self.set_protect(event_parameter["result"])
+        elif event_name == "bell_do":
+            self.bell_do(event_parameter["bellid"], event_parameter["action"])
 
     #todo  merge follow 2 func to one  new_event and add from_timer
     def new_event_from_webservice(self, event_name, event_para):
@@ -306,8 +332,6 @@ class StateControl(object):
         elif event_name == "bell_do":
             self.bell_do(event_para["bellid"], event_para["action"])
 
-    def invade(self):
-        GuardState().invade()
 
     def new_event_from_oic(self,dev,dev_info,oldstate):
         logger.info("statemachine input Event oic:" +str(dev) +str(dev_info)+str(oldstate))
