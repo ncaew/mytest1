@@ -43,7 +43,7 @@ class OicDevice(object):
             self.detectorgroup.append("fataldetector")
         if self.is_bell():
             self.detectorgroup.append("belldetector")
-	     
+         
          # set action_in_doorprotect/action_in_outprotect
          # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
          #   if smart-ele-socket: powersave,noaction,
@@ -72,9 +72,7 @@ class OicDevice(object):
         else: # not dector and not elesocket
             self.action_in_doorprotect = "insist_noaction"
             self.action_in_outprotect =  "insist_noaction"
-	        
-        #
-        db_proxy.get_dev_attr(str(self.devid),"name",str(self.name))
+
         self.res_state = {}
         self.control_state = None
         self.observers = {}
@@ -257,7 +255,7 @@ class OicDeviceManager(object):
             
 
             StateControl().new_event_from_oic(dev,info,old_state)
-			#logger.debug('%s %s', old_state, state)
+            #logger.debug('%s %s', old_state, state)
             #if old_state is False and state is True:
             #    if dev.is_invade_detector():
             #        StateControl().invade()
@@ -293,7 +291,7 @@ class OicDeviceManager(object):
         self._locker.release()
 
     def add_device(self, oicinfo):
-        logger.debug('%s', oicinfo)
+        logger.info('add_device %s', oicinfo['di'])
         self._locker.acquire()
         try:
             devid = oicinfo['di']
@@ -318,6 +316,7 @@ class OicDeviceManager(object):
             self._locker.release()
 
     def del_device(self, devid):
+        logger.info('del_device %s', devid)
         self._locker.acquire()
         if devid in self._oic_info and devid in self._devices:
             dev = self._devices[devid]
@@ -362,7 +361,7 @@ class OicDeviceManager(object):
             d.name = alias
         else:
             result = False
-		#todo  commit to d.smarthome  # copy logic from setup_alarm
+        #todo  commit to d.smarthome  # copy logic from setup_alarm
         return result
 
     def update_device_posname(self, devid, posname):
@@ -429,12 +428,12 @@ class OicDeviceManager(object):
                 return False
         return True
     
-	#todo add device exe funtion like :
-	#todo set_alarm2(uuid,on/off)
-	##todo set_alarm3(uuid,on/off)
-	#todo set_robot_action(uuid,on/off)
-	#todo set_water_mech(uuid,on/off)
-	#todo set_ele_socket(uuid,on/off)
+    #todo add device exe funtion like :
+    #todo set_alarm2(uuid,on/off)
+    ##todo set_alarm3(uuid,on/off)
+    #todo set_robot_action(uuid,on/off)
+    #todo set_water_mech(uuid,on/off)
+    #todo set_ele_socket(uuid,on/off)
 
 if __name__ == '__main__':
     def thread_get_singleton(name):
