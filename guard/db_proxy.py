@@ -39,7 +39,7 @@ def get_key(key_name):
 		else:#other key
 			value= ini_config.get('User', key_name)
 	except Exception as e:
-		value = None
+		value = ""
 		
 	return value
 
@@ -77,4 +77,17 @@ def set_dev_attr(uuid,key_name, value):
 
 	update_cache(key_name, value)
 	return True
+
+
+def get_dev_attr(uuid,key_name):
+	if check_db() == False:
+		return ""
+	
+	ini_config = ConfigParser.ConfigParser()
+	ini_config.read(db_file_path)
+	try:
+		value = ini_config.get(uuid, key_name)
+	except Exception as e:
+		value = ""
+	return value
 

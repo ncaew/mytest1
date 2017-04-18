@@ -20,7 +20,7 @@ class OicDevice(object):
 
     alarm_device_type = ['oic.d.alarm']
     bell_device_type = ['oic.d.doorbutton']
-
+   
     observe_resource_type = ['oic.r.sensor.motion', 'oic.r.sensor.contact', 'oic.r.sensor.carbonmonoxide',
                              'oic.r.sensor.smoke', 'oic.r.sensor.water', 'oic.r.button']
     media_resource_type = ['oic.r.media']
@@ -31,11 +31,50 @@ class OicDevice(object):
         self.type = OicDevice.get_device_type(oicinfo)
         self.position = ""
         if self.position == "" :
-	        self.position ="default position"
-        self.con_alert_indoor = "false"
-        self.con_alert_outdoor = "false"
+            self.position ="default position"
         
-
+        #todo according type to decide  detectorgroup  and default  indoor/outdoor action
+        self.detectorgroup=[]
+        if self.is_invade_detector():
+            self.detectorgroup.append("invadedetector")
+        if self.is_motion_detector():
+            self.detectorgroup.append("motiondetector")
+        if self.is_fatal_detector():
+            self.detectorgroup.append("fataldetector")
+        if self.is_bell():
+            self.detectorgroup.append("belldetector")
+	     
+         # set action_in_doorprotect/action_in_outprotect
+         # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
+         #   if smart-ele-socket: powersave,noaction,
+        if self.is_fatal_detector():
+            self.action_in_doorprotect = "insist_alart"
+            self.action_in_outprotect  = "insist_alart"
+        elif self.is_bell():
+            self.action_in_doorprotect = "insist_alart"
+            self.action_in_outprotect =  "insist_noaction"
+        elif len(self.get_detectorgroup_define() ) > 0 : #genera detector look up DB for user-defined-value
+            self.action_in_doorprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_doorprotect" )
+            self.action_in_outprotect  = db_proxy.get_dev_attr(str(self.devid), "action_in_outprotect" )
+            if self.action_in_doorprotect == "":
+                self.action_in_doorprotect = "alart"
+            if self.action_in_outprotect == "":
+                self.action_in_outprotect = "alart"
+            pass
+        elif self.is_smart_elesocket():
+            self.action_in_doorprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_doorprotect")
+            self.action_in_outprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_outprotect")
+            if self.action_in_doorprotect == "":
+                self.action_in_doorprotect = "noaction"
+            if self.action_in_outprotect == "":
+                self.action_in_outprotect = "noaction"
+            pass
+        else: # not dector and not elesocket
+            self.action_in_doorprotect = "insist_noaction"
+            self.action_in_outprotect =  "insist_noaction"
+	        
+        #
+        db_proxy.get_dev_attr(str(self.devid),"name",str(self.name))
         self.res_state = {}
         self.control_state = None
         self.observers = {}
@@ -46,8 +85,8 @@ class OicDevice(object):
         db_proxy.set_dev_attr(str(self.devid),"name",str(self.name))
         db_proxy.set_dev_attr(str(self.devid),"type", str(self.type))
         db_proxy.set_dev_attr(str(self.devid),"position",str(self.position))
-        db_proxy.set_dev_attr(str(self.devid),"con_alert_indoor",str(self.con_alert_indoor))
-        db_proxy.set_dev_attr(str(self.devid),"con_alert_outdoor",str(self.con_alert_outdoor))
+        db_proxy.set_dev_attr(str(self.devid),"action_in_doorprotect",str(self.action_in_doorprotect))
+        db_proxy.set_dev_attr(str(self.devid),"action_in_outprotect",str(self.action_in_outprotect))
 
 
 
@@ -111,7 +150,13 @@ class OicDevice(object):
         b = self.type in OicDevice.bell_device_type
         logger.debug('is_bell: %s', b)
         return b
-
+    def get_detectorgroup_define(self):
+        return self.detectorgroup;
+        
+    def is_smart_elesocket(self):
+        b = self.type == 'oic.d.smart.elesocket'  #todo repell this type
+        return b
+    
     def observe_resources(self, oicinfo, cb):
         for link in oicinfo['links']:
 
@@ -291,9 +336,9 @@ class OicDeviceManager(object):
             a['type_tr'] = _(d.type)
 
             a['position'] = d.position
-            a['con_alert_indoor'] = d.con_alert_indoor
-            a['con_alert_outdoor'] = d.con_alert_outdoor
-
+            a['action_in_doorprotect'] = d.action_in_doorprotect
+            a['action_in_outprotect'] = d.action_in_outprotect
+            a['detector_group_define'] = str(d.detectorgroup)
             
             if len(d.res_state.values()) > 0:
                 rstate = d.res_state.values()[0]['value']
@@ -331,33 +376,49 @@ class OicDeviceManager(object):
         return result
 
     def update_device_con_out(self, devid, con):
+        '''con : on/off '''
+        # set action_in_doorprotect/action_in_outprotect
+        # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
+        #   if smart-ele-socket: powersave,noaction,
         result = True
         if devid in self._devices:
-	        d = self._devices[devid]
-	        d.con_alert_outdoor = con
+            d = self._devices[devid]
+            if d.is_smart_elesocket():
+                d.action_in_outprotect = "noaction" if  con=="on" else "powersave"
+            elif d.is_bell():
+                result = False
+            elif len(d.get_detectorgroup_define()) > 0:
+                d.action_in_outprotect = "alart" if con == "on" else "noaction"
         else:
-	        result = False
-	        
+            result = False
+            
         # todo commit to DB , alway return true
-        db_proxy.set_dev_attr(devid,"con_alert_outdoor",con)
+        db_proxy.set_dev_attr(devid,"action_in_outprotect",con)
         
         return result
 
     def update_device_con_in(self, devid, con):
+        '''con : on/off '''
+        # set action_in_doorprotect/action_in_outprotect
+        # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
+        #   if smart-ele-socket: powersave,noaction,
         result = True
         if devid in self._devices:
-	        d = self._devices[devid]
-	        d.con_alert_indoor = con
+            d = self._devices[devid]
+            if d.is_smart_elesocket():
+                d.action_in_outprotect = "noaction" if  con=="on" else "powersave"
+            elif d.is_bell():
+                result = False
+            elif len(d.get_detectorgroup_define()) > 0:
+                d.action_in_outprotect = "alart" if con == "on" else "noaction"
         else:
-	        result = False
+            result = False
 
         # todo commit to DB , alway return true
-        db_proxy.set_dev_attr(devid,"con_alert_outdoor",con)
+        db_proxy.set_dev_attr(devid,"action_in_doorprotect",con)
         
         return result
 
-	    
-	    
     def all_devices_quiet(self):
         for d in self._devices.values():
             if d.res_state.values() is not None:
@@ -367,7 +428,13 @@ class OicDeviceManager(object):
             if rstate:
                 return False
         return True
-
+    
+	#todo add device exe funtion like :
+	#todo set_alarm2(uuid,on/off)
+	##todo set_alarm3(uuid,on/off)
+	#todo set_robot_action(uuid,on/off)
+	#todo set_water_mech(uuid,on/off)
+	#todo set_ele_socket(uuid,on/off)
 
 if __name__ == '__main__':
     def thread_get_singleton(name):

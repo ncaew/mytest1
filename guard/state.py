@@ -309,13 +309,14 @@ class StateControl(object):
     def new_event_from_oic(self,dev,dev_info,oldstate):
         logger.info("statemachine input Event oic:" +str(dev) +str(dev_info)+str(oldstate))
         if oldstate is False and dev_info['value'] is True:
-           if dev.is_invade_detector():
+			detector_define = dev.get_detectorgroup_define()
+           if "invadedetector" in detector_define: 
                StateControl().invade()
-           if dev.is_motion_detector() and HouseState().state == "outgoing":
+           if "motiondetector" in detector_define and HouseState().state == "outgoing":
                StateControl().invade()
-           if dev.is_fatal_detector():
+           if "fataldetector" in detector_define:
                StateControl().alert()
-           if dev.is_bell():
+           if "belldetector" in detector_define:
                StateControl().bell_ring()
 
     def set_protect(self, result):
