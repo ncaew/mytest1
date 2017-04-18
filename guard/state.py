@@ -306,6 +306,9 @@ class StateControl(object):
         elif event_name == "bell_do":
             self.bell_do(event_para["bellid"], event_para["action"])
 
+    def invade(self):
+        GuardState().invade()
+
     def new_event_from_oic(self,dev,dev_info,oldstate):
         logger.info("statemachine input Event oic:" +str(dev) +str(dev_info)+str(oldstate))
         if oldstate is False and dev_info['value'] is True:
