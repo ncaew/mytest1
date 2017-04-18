@@ -270,7 +270,11 @@ class TornadoServer(object):
             ],
             static_path=os.path.join(os.path.dirname(__file__), "static"),
             debug=True,
+            log_function=lambda x: None
         )
+
+ 
+  
 
     def set_web_app(self, app):
         self.webapp = app
@@ -356,6 +360,7 @@ if __name__ == '__main__':
         debug=True,
     )
 
+    
     app = TornadoServer()
     app.set_web_app(wapp)
     app.webapp.listen(8888)
