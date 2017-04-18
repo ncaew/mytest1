@@ -46,7 +46,7 @@ class OicDevice(object):
          
          # set action_in_doorprotect/action_in_outprotect
          # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
-         #   if smart-ele-socket: powersave,noaction,
+         #   if smart-ele-socket: poweron,poweroff,
         if self.is_fatal_detector():
             self.action_in_doorprotect = "insist_alart"
             self.action_in_outprotect  = "insist_alart"
@@ -378,12 +378,12 @@ class OicDeviceManager(object):
         '''con : on/off '''
         # set action_in_doorprotect/action_in_outprotect
         # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
-        #   if smart-ele-socket: powersave,noaction,
+        #   if smart-ele-socket: poweron,poweroff,
         result = True
         if devid in self._devices:
             d = self._devices[devid]
             if d.is_smart_elesocket():
-                d.action_in_outprotect = "noaction" if  con=="on" else "powersave"
+                d.action_in_outprotect = "poweron" if  con=="on" else "poweroff"
             elif d.is_bell():
                 result = False
             elif len(d.get_detectorgroup_define()) > 0:
@@ -400,12 +400,12 @@ class OicDeviceManager(object):
         '''con : on/off '''
         # set action_in_doorprotect/action_in_outprotect
         # action contain : if detecter:   alart,noaction,insist_alart,insist_noaction
-        #   if smart-ele-socket: powersave,noaction,
+        #   if smart-ele-socket: poweron,poweroff,
         result = True
         if devid in self._devices:
             d = self._devices[devid]
             if d.is_smart_elesocket():
-                d.action_in_outprotect = "noaction" if  con=="on" else "powersave"
+                d.action_in_outprotect = "poweron" if  con=="on" else "poweroff"
             elif d.is_bell():
                 result = False
             elif len(d.get_detectorgroup_define()) > 0:

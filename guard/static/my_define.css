@@ -2028,3 +2028,52 @@ button[value="mycheck-switch-on"] {
 	  background: url(images/switch_off.png) no-repeat;
 	  transition: background-image ease 0.4s;
 	}
+	button[value="mycheck-switch-insist_on"] {
+		width: 38px;
+	  height: 20px;
+	  position: relative;
+	  border: 1px solid #000;
+	  background-color: #dfdfdf;
+	  box-shadow: #dfdfdf 0 0 0 0 inset;
+	  border-radius: 2px;
+	  border-top-left-radius: 2px;
+	  border-top-right-radius: 2px;
+	  border-bottom-left-radius: 2px;
+	  border-bottom-right-radius: 2px;
+	  background-clip: content-box;
+	  appearance:button;
+	  -moz-appearance:button; /* Firefox */
+	  -webkit-appearance: button;
+	  display: inline-block;
+	  user-select: none;
+	  outline: none; 
+ 
+ 
+	  background: url(images/switch_on.png) no-repeat;
+	  transition: background-image ease 0.4s;
+	}
+
+	button[value="mycheck-switch-insist_off"] {
+		width: 38px;
+	  height: 20px;
+	  position: relative;
+	  border: 1px solid #000;
+	  background-color: #dfdfdf;
+	  box-shadow: #dfdfdf 0 0 0 0 inset;
+	  border-radius: 2px;
+	  border-top-left-radius: 2px;
+	  border-top-right-radius: 2px;
+	  border-bottom-left-radius: 2px;
+	  border-bottom-right-radius: 2px;
+	  background-clip: content-box;
+	  appearance:button;
+	  -moz-appearance:button; /* Firefox */
+	  -webkit-appearance: button;
+	  display: inline-block;
+	  user-select: none;
+	  outline: none; 
+ 
+ 
+	  background: url(images/switch_off.png) no-repeat;
+	  transition: background-image ease 0.4s;
+	}
