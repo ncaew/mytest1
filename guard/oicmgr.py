@@ -252,7 +252,7 @@ class OicDeviceManager(object):
 
             dev.res_state[rt] = info
 
-            ###StateControl().new_event_from_oic(dev,info,old_state)
+            StateControl().new_event_from_oic(dev,info,old_state)
             # logger.debug('%s %s', old_state, state)
             # if old_state is False and state is True:
             #    if dev.is_invade_detector():
@@ -269,21 +269,6 @@ class OicDeviceManager(object):
                 oic_event = dict(event='OICNotify', info=info)
                 WebSocketHandler.send_to_all(oic_event)
 
-                logger.info("WebSocketHandler.send_to_all: %s", str(oic_event))
-                if state:
-                    detector_define = dev.get_detectorgroup_define()
-                    if "invadedetector" in detector_define:
-                        event_name = "invadedetector"
-                        StateControl().event_notify(event_name, dev)
-                    if "motiondetector" in detector_define:
-                        event_name = "motiondetector"
-                        StateControl().event_notify(event_name, dev)
-                    if "fataldetector" in detector_define:
-                        event_name = "fataldetector"
-                        StateControl().event_notify(event_name, dev)
-                    if "belldetector" in detector_define:
-                        event_name = "belldetector"
-                        StateControl().event_notify(event_name, dev)
             return dev
 
     def observe_callback(self, response):
@@ -418,11 +403,11 @@ class OicDeviceManager(object):
         if devid in self._devices:
             d = self._devices[devid]
             if d.is_smart_elesocket():
-                d.action_in_outprotect = "poweron" if con == "on" else "poweroff"
+                d.action_in_doorprotect = "poweron" if con == "on" else "poweroff"
             elif d.is_bell():
                 result = False
             elif len(d.get_detectorgroup_define()) > 0:
-                d.action_in_outprotect = "alart" if con == "on" else "noaction"
+                d.action_in_doorprotect = "alart" if con == "on" else "noaction"
         else:
             result = False
 

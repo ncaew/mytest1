@@ -187,7 +187,7 @@ class SetDevAttrHandler(BaseHandler):
         aliasname = self.get_argument('aliasname', '')
         outdoor = self.get_argument('outdoor', '')
         inhome = self.get_argument('inhome', '')
-    
+        
         if devid == '':
             result = 1
         else:
@@ -203,7 +203,9 @@ class SetDevAttrHandler(BaseHandler):
                     #convert str from num ( 0 == OK )
         result = 'NOK' if result >0 else 'OK'
         info = {'result': result, 'devices_status': OicDeviceManager().get_devices()}
+        
         self.write(json.dumps(info))
+        logging.info("%s %s (aliasname:%s ,posname:%s, outdoor:%s,inhome:%s) %s %s"%("SetDevAttr",devid,aliasname,posname,outdoor,inhome," return:",json.dumps(info)))
 
 class GetDevicesListHandler(BaseHandler):
     def get(self):
@@ -262,7 +264,7 @@ class TornadoServer(object):
                 (r"/set_protect", SetProtectHandler),
                 (r"/get_devices_list", GetDevicesListHandler),
                 (r"/set_device_alias", SetDevAliasHandler),
-				(r"/set_device_attr", SetDevAttrHandler),
+                (r"/set_device_attr", SetDevAttrHandler),
                 (r"/get_protect_pw", GetPWHandler),
                 (r"/ch_passwd", ChangePWHandler),
                 (r"/bell_do", BellHandler),
@@ -350,7 +352,7 @@ if __name__ == '__main__':
             (r"/set_protect", SetProtectHandler),
             (r"/get_devices_list", GetDevicesListHandler),
             (r"/set_device_alias", SetDevAliasHandler),
-			(r"/set_device_attr", SetDevAttrHandler),
+            (r"/set_device_attr", SetDevAttrHandler),
             (r"/get_protect_pw", GetPWHandler),
             (r"/ch_passwd", ChangePWHandler),
             (r"/bell_do", BellHandler),
