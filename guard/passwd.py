@@ -7,7 +7,7 @@ class PwManager(object):
 	@staticmethod
 	def get_passwd_hash(systime=''):
 		pw = db_proxy.get_key('psw')
-		if pw is None:
+		if pw == '':
 			pw = '123456'
 			db_proxy.set_key('psw', pw)
 		md5_hex = hashlib.md5(pw + systime)

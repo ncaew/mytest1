@@ -155,7 +155,15 @@ class AlarmState(object):
         logger.debug('on_quiet')
         OicDeviceManager().setup_alarm(False)
 
-
+class State_Event(object):
+    event_source=""
+    event_name=""
+    event_para=None
+    def __init__(self,source):
+        self.event_source = source
+        pass
+ 
+ 
 @singleton
 class StateControl(object):
 
@@ -164,11 +172,12 @@ class StateControl(object):
         self.state = 'protected'
         self.alarm_queue = deque()
 
+
     def update_status(self, status=None, timeout=1):
         g = GuardState()
         h = HouseState()
         a = AlarmState()
-        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
+        logger.info('update_status:%s, g.state:%s, h.state:%s, a.state:%s', status, g.state, h.state, a.state)
 
         if status is None:
             info = {'status': self.state}
@@ -219,8 +228,8 @@ class StateControl(object):
             self.update_status()
         while not self.q.empty():
             a = self.q.get(True)
+        logger.info("\r\n STATE-MACHINE >>> Output  : \r\n" +  str(a) + "\r\n" )
 
-        logger.info("statemachine Output:" + str(a) )
         return a
 
     def set_protect_start(self, mode):
@@ -294,32 +303,60 @@ class StateControl(object):
     def invade(self):
         GuardState().invade()
 
-    def event_notify(self, event_name, event_parameter):
-        logger.info('event_notify: %s %s', event_name, str(event_parameter))
-        logger.debug('event_notify: %s %s self: %s', event_name, str(event_parameter), str(self))
-        if event_name == "invadedetector":
-            StateControl().invade()
-        if event_name == "motiondetector" and HouseState().state == "outgoing":
-            StateControl().invade()
-        if event_name == "fataldetector":
-            StateControl().alert()
-        if event_name == "belldetector":
-            StateControl().bell_ring()
-        pass
-        if event_name == "set_protect_start":
-            self.set_protect_start(event_parameter["mode"])
-        elif event_name == "cancel_protect":
-            self.cancel_protect(event_parameter["mode"], event_parameter["action"], event_parameter["password"], event_parameter["systime"])
-        elif event_name == "stop_alert":
-            self.stop_alert(event_parameter["alertid"])
-        elif event_name == "set_protect":
-            self.set_protect(event_parameter["result"])
-        elif event_name == "bell_do":
-            self.bell_do(event_parameter["bellid"], event_parameter["action"])
+    #todo add a method for inject a event by jsoa string
+    def inject_event(self,string_json):
+        from collections import namedtuple
+        e = json.loads(string_json, object_hook=lambda d: namedtuple('X', d.keys())(*d.values()))
+        self.state_process_event(e)
 
-    #todo  merge follow 2 func to one  new_event and add from_timer
+    
+    def state_process_event(self, event):
+        print type(event) == "guard.state.State_Event"
+        
+        g = GuardState()
+        h = HouseState()
+        a = AlarmState()
+        tmp_stat=" g.state:%s, h.state:%s, a.state:%s" % ( g.state, h.state, a.state)
+        logger.info("\r\n STATE-MACHINE <<< input_event  : \r\n" +json.dumps(event.__dict__) + "\r\n" + tmp_stat )
+        #todo recorect follow MAIN state control logic
+        if event.event_source == 'oic_event' and event.event_name == "state_changed":
+            if "invadedetector" in event.event_para['dev_detectorgroup']:
+                StateControl().invade()
+            if "motiondetector"  in event.event_para['dev_detectorgroup'] and h.state == "outgoing":
+                StateControl().invade()
+            if "fataldetector" in event.event_para['dev_detectorgroup']  :
+                StateControl().alert()
+            if "belldetector" in event.event_para['dev_detectorgroup'] :
+                StateControl().bell_ring()
+            
+        if event.event_source == 'webservice':
+            if event.event_name  == "set_protect_start":
+                self.set_protect_start(event.event_para["mode"])
+            elif event.event_name  == "cancel_protect":
+                self.cancel_protect(event.event_para["mode"], event.event_para["action"], event.event_para["password"], event.event_para["systime"])
+            elif event.event_name  == "stop_alert":
+                self.stop_alert(event.event_para["alertid"])
+            elif event.event_name  == "set_protect":
+                self.set_protect(event.event_para["result"])
+            elif event.event_name  == "bell_do":
+                self.bell_do(event.event_para["bellid"], event.event_para["action"])
+       
+    def state_machine_internal_timer_event(self):
+        logger.info("statemachine input Event state_machine_internal_timer_event")
+        e = State_Event("inter_timer_event")
+        e.event_name = ""
+        e.event_para = None
+        self.state_process_event(e)
+        return
+    
     def new_event_from_webservice(self, event_name, event_para):
-        logger.info("statemachine input Event web:" +str(event_name) + str(event_para))
+        logger.info("statemachine input Event web:" + str(event_name) + str(event_para))
+        e = State_Event("webservice")
+        e.event_name = event_name
+        e.event_para = event_para
+        self.state_process_event(e)
+        return
+        
    
         if event_name == "set_protect_start":
             self.set_protect_start(event_para["mode"])
@@ -334,7 +371,30 @@ class StateControl(object):
 
 
     def new_event_from_oic(self,dev,dev_info,oldstate):
-        logger.info("statemachine input Event oic:" +str(dev) +str(dev_info)+str(oldstate))
+    
+        logger.info("statemachine input Event oic:" + str(dev.__dict__) + str(dev_info) + str(oldstate))
+        
+        e = State_Event("oic_event")
+        if dev_info['value'] != oldstate :
+            e.event_name = "state_changed"
+        else:
+            e.event_name = "device_join"
+        e.event_para = dict (dev_info_rt=dev_info['rt'],dev_info_id=dev_info['id'],dev_info_value=dev_info['value'],
+                             oldstate=oldstate,
+                             dev_devid=dev.devid ,
+                             dev_name=dev.name,
+                             dev_position=dev.position,
+                             dev_type=dev.type,
+                             dev_detectorgroup=dev.detectorgroup,
+                             dev_action_in_doorprotect=dev.action_in_doorprotect,
+                             dev_action_in_outprotect=dev.action_in_outprotect,
+                             dev_control_state=dev.control_state,
+                             dev_cancel=dev.cancel,
+                             
+                              )
+        self.state_process_event(e)
+        return
+        
         if oldstate is False and dev_info['value'] is True:
             detector_define = dev.get_detectorgroup_define()
             if "invadedetector" in detector_define:
