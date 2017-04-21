@@ -11,7 +11,7 @@ logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 '''s.setsockopt(socket.SOL_SOCKET, 25, 'eth0')'''
-s.bind(('192.168.1.202', 0))
+s.bind(('192.168.3.202', 0))
 
 print s.getsockname()
 
