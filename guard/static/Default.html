@@ -1045,7 +1045,9 @@ function ui_state_check_or_show(json_data) {
         case "bell_view":
             isChecked_shouldShow = win_bell_view_check_or_show(json_data);
             break;
-    }
+		default:
+			console.error("server_ui_state :"+server_ui_state+" not in [protect_check,protect_starting,protected,unlock_protect,alert_message,bell_ring,bell_view] !!!!");
+		}
     if (isChecked_shouldShow != 1) {
 		console.info("only update win",  server_ui_state, isChecked_shouldShow ,ui_state_current_shown);
 		win_devices_view_update_status(json_data);
@@ -1107,7 +1109,7 @@ function on_window_shown(pwin){
 }
 
 </script>
-<script type="text/javascript" src="layer3.js"></script>
+<script type="text/javascript" src="layer3.js?v=0.1"></script>
 
 </body>
 </html>

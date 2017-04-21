@@ -27,14 +27,28 @@ class OicDevice(object):
     media_resource_type = ['oic.r.media']
 
     def __init__(self, oicinfo):
+        
         self.devid = oicinfo['di']
-        self.name = oicinfo['n']
         self.type = OicDevice.get_device_type(oicinfo)
+        self.use_name_pos_fromDB = "local"
+        
+        # fill "name" , "position" to oic
+        self.name = oicinfo['n']
         self.position = ""
+
+        if self.use_name_pos_fromDB == "local":
+            tmp_v = db_proxy.get_dev_attr(str(self.devid), "name")
+            if tmp_v !="" :
+                self.name = tmp_v
+            tmp_v = db_proxy.get_dev_attr(str(self.devid), "position")
+            if tmp_v != "":
+                self.position = tmp_v
+            
         if self.position == "":
             self.position = "default position"
 
-        # todo according type to decide  detectorgroup  and default  indoor/outdoor action
+ 
+        ## fill "detectorgroup"  to oic
         self.detectorgroup = []
         if self.is_invade_detector():
             self.detectorgroup.append("invadedetector")
@@ -57,9 +71,11 @@ class OicDevice(object):
         elif len(self.get_detectorgroup_define()) > 0:  # genera detector look up DB for user-defined-value
             self.action_in_doorprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_doorprotect")
             self.action_in_outprotect = db_proxy.get_dev_attr(str(self.devid), "action_in_outprotect")
-            if self.action_in_doorprotect == "":
+            if self.action_in_doorprotect == "" and self.is_invade_detector():
                 self.action_in_doorprotect = "alart"
-            if self.action_in_outprotect == "":
+            elif self.action_in_doorprotect == "" : #and self.is_motion_detector()
+                self.action_in_doorprotect = "noaction"
+            if self.action_in_outprotect == "": #both is_invade_detector  is_motion_detector
                 self.action_in_outprotect = "alart"
             pass
         elif self.is_smart_elesocket():
@@ -192,8 +208,9 @@ class OicDeviceManager(object):
         self._oic_info = {}
         self._devices = {}
         self._alarm_devices = {}
+        
 
-    def setup_alarm(self, on, mode='alarm', seconds=6001):
+    def setup_alarm_level1(self, on, mode='alarm', seconds=6001):
         alarm_uri = ''
         fire_alarm_uri = ''
         clock_uri = ''
@@ -268,7 +285,7 @@ class OicDeviceManager(object):
                 info['old_value'] = old_state
                 oic_event = dict(event='OICNotify', info=info)
                 WebSocketHandler.send_to_all(oic_event)
-
+                logger.info("\r\n STATE-MACHINE >>> Output ws(OICNotify)  :" + str(oic_event) + "\r\n")
             return dev
 
     def observe_callback(self, response):
@@ -290,7 +307,7 @@ class OicDeviceManager(object):
         self._locker.release()
 
     def add_device(self, oicinfo):
-        logger.info('add_device %s', oicinfo['di'])
+        logger.debug('add_device %s %s',oicinfo['di'],OicDevice.get_device_type(oicinfo))#
         self._locker.acquire()
         try:
             devid = oicinfo['di']
@@ -359,7 +376,12 @@ class OicDeviceManager(object):
             d.name = alias
         else:
             result = False
-        # todo  commit to d.smarthome  # copy logic from setup_alarm
+        
+        if d.use_name_pos_fromDB == "local" :
+            # commit to DB , alway return true
+            db_proxy.set_dev_attr(devid, "name", alias)
+        else:  # todo  commit to d.smarthome
+            pass
         return result
 
     def update_device_posname(self, devid, posname):
@@ -369,7 +391,12 @@ class OicDeviceManager(object):
             d.position = posname
         else:
             result = False
-        # todo  commit to d.smarthome  # copy logic from setup_alarm
+
+        if d.use_name_pos_fromDB == "local":
+            # commit to DB , alway return true
+            db_proxy.set_dev_attr(devid, "position", posname)
+        else:  # todo  commit to d.smarthome
+            pass
         return result
 
     def update_device_con_out(self, devid, con):
@@ -389,7 +416,7 @@ class OicDeviceManager(object):
         else:
             result = False
 
-        # todo commit to DB , alway return true
+        # commit to DB , alway return true
         db_proxy.set_dev_attr(devid, "action_in_outprotect", con)
 
         return result
@@ -411,7 +438,7 @@ class OicDeviceManager(object):
         else:
             result = False
 
-        # todo commit to DB , alway return true
+        # commit to DB , alway return true
         db_proxy.set_dev_attr(devid, "action_in_doorprotect", con)
 
         return result
@@ -426,13 +453,17 @@ class OicDeviceManager(object):
                 return False
         return True
 
-        # todo add device exe funtion like :
-        # todo set_alarm2(uuid,on/off)
-        ##todo set_alarm3(uuid,on/off)
-        # todo set_robot_action(uuid,on/off)
-        # todo set_water_mech(uuid,on/off)
-        # todo set_ele_socket(uuid,on/off)
+    ### todo add device exe funtion like :
+    # todo set_robot_action(uuid,on/off)
+    # todo set_water_mech(uuid,on/off)
+    # todo set_ele_socket(uuid,on/off)
 
+    def setup_alarm_level2(self, on, mode='alarm', seconds=6001):
+        logger.info("todo imp setup_alarm_level2 %s" % on )
+        pass
+    def setup_alarm_level3(self, on, mode='alarm', seconds=6001):
+        logger.info("todo imp setup_alarm_level3 %s" % on)
+        pass
 
 if __name__ == '__main__':
     def thread_get_singleton(name):
@@ -445,4 +476,4 @@ if __name__ == '__main__':
             i -= 1
 
 
-    OicDeviceManager().setup_alarm(True)
+    OicDeviceManager().setup_alarm_level1(True)

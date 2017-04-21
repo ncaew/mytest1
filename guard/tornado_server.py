@@ -7,7 +7,7 @@ import tornado.ioloop
 import tornado.options
 import tornado.httpclient
 import tornado.websocket
-
+import uuid
 import threading
 import json
 from state import StateControl
@@ -76,7 +76,14 @@ class BaseHandler(tornado.web.RequestHandler):
         # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
         self.set_header('Access-Control-Allow-Headers', '*')
         self.set_header('Content-type', 'application/json')
-
+        
+    def get_cookie_id(self):
+        cookie_id =  self.get_cookie("cookie_id", "")
+        if cookie_id == "":
+            cookie_id = str(uuid.uuid4())
+            print "new cookie_id = " + cookie_id
+            self.set_cookie("cookie_id", cookie_id)
+        return cookie_id
 
 class StatusHandler(BaseHandler):
 
@@ -87,9 +94,11 @@ class StatusHandler(BaseHandler):
         # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
         self.set_header('Access-Control-Allow-Headers', '*')
         self.set_header('Content-type', 'application/json')
+        
 
     def get(self):
-        info = StateControl().get_status()
+        cookie_id = self.get_cookie_id()
+        info = StateControl().get_status(cookie_id)
         self.write(info)
 
 
@@ -97,12 +106,13 @@ class SetProtectStartHandler(BaseHandler):
     def get(self):
 
         mode = self.get_argument('protect', 'unknown')
-        StateControl().new_event_from_webservice("set_protect_start",dict(mode=mode))
-        #StateControl().set_protect_start(mode)
+        cookie_id = self.get_cookie_id()
+        StateControl().new_event_from_webservice("set_protect_start",dict(mode=mode,cookie_id=cookie_id))
+        ##StateControl().set_protect_start(mode)
 
-        info = dict(handler=self.__class__.__name__, action='', result='OK')
-        event = dict(event='StatusChanged', info=info)
-        WebSocketHandler.send_to_all(event)
+        # info = dict(handler=self.__class__.__name__, action='', result='OK')
+        # event = dict(event='StatusChanged', info=info)
+        # WebSocketHandler.send_to_all(event)
 
         self.write('{"result":"OK"}')
 
@@ -121,13 +131,14 @@ class CancelProtectHandler(BaseHandler):
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
         systime = self.get_argument('systime', 'unknown')
+        cookie_id = self.get_cookie_id()
 
-        StateControl().new_event_from_webservice("cancel_protect",dict(mode=mode, action=action, password=passwd, systime=systime))
+        StateControl().new_event_from_webservice("cancel_protect",dict(mode=mode, action=action, password=passwd, systime=systime,cookie_id=cookie_id))
         #StateControl().cancel_protect(mode=mode, action=action, password=passwd, systime=systime)
         
-        info = dict(handler=self.__class__.__name__, action=action, result='OK')
-        event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
-        WebSocketHandler.send_to_all(event)
+        # info = dict(handler=self.__class__.__name__, action=action, result='OK')
+        # event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
+        # WebSocketHandler.send_to_all(event)
 
         self.write('{"result":"OK"}')
 
@@ -139,9 +150,9 @@ class StopAlertHandler(BaseHandler):
         StateControl().new_event_from_webservice("stop_alert",dict(alertid=alert_id))
         #StateControl().stop_alert(alertid=alert_id)
 
-        info = dict(handler=self.__class__.__name__, action='', result='OK')
-        event = dict(event='StatusChanged', info=info)
-        WebSocketHandler.send_to_all(event)
+        # info = dict(handler=self.__class__.__name__, action='', result='OK')
+        # event = dict(event='StatusChanged', info=info)
+        # WebSocketHandler.send_to_all(event)
 
         self.write('{"result": "OK"}')
 
@@ -149,13 +160,13 @@ class StopAlertHandler(BaseHandler):
 class SetProtectHandler(BaseHandler):
     def get(self):
         result = self.get_argument('result', '')
-
-        StateControl().new_event_from_webservice("set_protect",dict(result=result))
+        cookie_id = self.get_cookie_id()
+        StateControl().new_event_from_webservice("set_protect",dict(result=result,cookie_id=cookie_id))
         #StateControl().set_protect(result)
 
-        info = dict(handler=self.__class__.__name__, action='', result='OK')
-        event = dict(event='StatusChanged', info=info)
-        WebSocketHandler.send_to_all(event)
+        # info = dict(handler=self.__class__.__name__, action='', result='OK')
+        # event = dict(event='StatusChanged', info=info)
+        # WebSocketHandler.send_to_all(event)
 
         self.write('{"result": "OK"}')
 
@@ -242,9 +253,9 @@ class BellHandler(BaseHandler):
         StateControl().new_event_from_webservice("bell_do",dict(bellid=bellid,action=action))
         #StateControl().bell_do(bellid=bellid, action=action)
 
-        info = dict(handler=self.__class__.__name__, action=action, result='OK')
-        event = dict(event='StatusChanged', info=info)
-        WebSocketHandler.send_to_all(event)
+        # info = dict(handler=self.__class__.__name__, action=action, result='OK')
+        # event = dict(event='StatusChanged', info=info)
+        # WebSocketHandler.send_to_all(event)
 
         self.write('{"result": "OK"}')
 

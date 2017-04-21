@@ -4,7 +4,9 @@ import threading
 class Timer(object):
     """ timer to count down, notify every step"""
 
-    def __init__(self, step, timeout):
+    def __init__(self, step, timeout ,name="",cookie_id=""):
+        self._name = name
+        self.cookie_id = cookie_id
         self._step = step
         self._step_action = None
         self._step_action_args = None

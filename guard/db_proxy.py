@@ -1,3 +1,4 @@
+# coding=utf8
 import hashlib
 import ConfigParser
 import os
