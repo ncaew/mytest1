@@ -515,23 +515,6 @@ class StateControl(object):
 
         return a
 
-    def set_protect_start(self, mode,cookie_id):
-
-        h = HouseState()
- 
-        if mode in ['home', 'indoors']:
-            h.ind()
-        if mode in ['out', 'outgoing']:
-            h.outg()
-
-        g =GuardState()
-        if mode in ['home', 'indoors']:
-            g.trigger_guard()
-            self.update_status('protected')
-        else:
-            g.add_requests_unguard2guard(cookie_id )
-            self.update_status('protect_starting', 60,cookie_id)
-
     def set_protect(self, result,cookie_id):
         logger.debug('%s', result)
         g = GuardState()
@@ -543,45 +526,6 @@ class StateControl(object):
             g.remove_all_unguard2guard()
             g.trigger_guard()
             self.update_status('protected')
-
-    def cancel_protect(self, mode, action, password, systime,cookie_id):
-
-        logger.debug('cancel_protect: %s %s %s %s', mode, action, password, systime)
-        g = GuardState()
-        a = AlarmState()
-        if action == 'cancel' and g.state == "invaded_P1" :
-            self.notify_client_websocket(event='StatusChanged')
-            g.trigger_invadeAL1()
-        elif action == 'start' and self.state == 'protected' and g.state == 'guarded':
-            g.add_requests_guard2unguard(cookie_id)
-            self.update_status('unlock_protect', 30 ,cookie_id)
-        elif action == 'cancel' and g.state == 'guarded':
-            g.remove_guard2unguard_client(cookie_id)
-            self.update_status('protected')
-            logger.info('self.state: %s', self.state)
-        elif action == 'ok' and password != "correct" and g.state == 'invaded_P1' :#@STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
-            return
-        elif action == 'ok': #todo guard or alert
-            
-            g.remove_all_guard2unguard()
-            if len(a.fataldetector_event_queue) == 0:
-                # check password
-                if password == "correct":
-                    GuardState().trigger_unguard()
-                    HouseState().ind()
-                    AlarmState().be_quiet()
-                    self.update_status('protect_check')
-                else:
-                    self.update_status('protected')
-            else: #g.state:invaded, h.state:outgoing, a.state:alert
-                if AlarmState().state == 'noalert':
-                    AlarmState().be_alarm()
-                else:
-                    self.update_status('alert_message')
-
-
-        
-   
     def stop_alert(self, alertid):
         g =GuardState()
         a = AlarmState()
@@ -671,10 +615,42 @@ class StateControl(object):
                 
             self.notify_client_websocket(dict(handler="oic_event",  result='OK'),event='StatusChanged')
         elif event.event_source == 'webservice':
-            if event.event_name  == "set_protect_start":
-                self.set_protect_start(event.event_para["mode"], event.event_para["cookie_id"])
+            if event.event_name == "set_protect_start":
+                logger.debug("set_protect_start("+event.event_para["mode"]+ event.event_para["cookie_id"]+")")
+                if event.event_para["mode"] in ['home', 'indoors']:
+                    h.ind()
+                if event.event_para["mode"] in ['out', 'outgoing']:
+                    h.outg()
+                if event.event_para["mode"] in ['home', 'indoors']:
+                    g.trigger_guard()
+                else:
+                    g.add_requests_unguard2guard(event.event_para["cookie_id"])
+                
             elif event.event_name  == "cancel_protect":
-                self.cancel_protect(event.event_para["mode"], event.event_para["action"], event.event_para["password"], event.event_para["systime"], event.event_para["cookie_id"])
+                logger.debug('cancel_protect: %s %s %s %s %s',event.event_para["mode"], event.event_para["action"], event.event_para["password"],
+                                    event.event_para["systime"], event.event_para["cookie_id"] )
+                if event.event_para["action"] == 'cancel' and g.state == "invaded_P1" :
+                    self.notify_client_websocket(event='StatusChanged')
+                    g.trigger_invadeAL1()
+                elif event.event_para["action"] == 'cancel' and g.state == 'guarded':
+                    g.remove_guard2unguard_client( event.event_para["cookie_id"])
+                elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded':
+                    g.add_requests_guard2unguard( event.event_para["cookie_id"])
+                elif event.event_para["action"] == 'ok' and event.event_para["password"] != "correct" and g.state == 'invaded_P1' :#@STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
+                    pass
+                elif event.event_para["action"] == 'ok': #todo guard or alert
+                    g.remove_all_guard2unguard()
+                    if len(a.fataldetector_event_queue) == 0:
+                        # check password
+                        if event.event_para["password"] == "correct":
+                            GuardState().trigger_unguard()
+                            HouseState().ind()
+                            AlarmState().be_quiet()
+                    else: #g.state:invaded, h.state:outgoing, a.state:alert
+                        if AlarmState().state == 'noalert':
+                            AlarmState().be_alarm()
+                        else:
+                            self.update_status('alert_message')
             elif event.event_name  == "stop_alert":
                 self.stop_alert(event.event_para["alertid"])
             elif event.event_name  == "set_protect":
