@@ -2048,7 +2048,7 @@ button[value="mycheck-switch-on"] {
 	  user-select: none;
 	  outline: none; 
  
- 
+	  opacity: 0.4;
 	  background: url(images/switch_on.png) no-repeat;
 	  transition: background-image ease 0.4s;
 	}
@@ -2073,7 +2073,7 @@ button[value="mycheck-switch-on"] {
 	  user-select: none;
 	  outline: none; 
  
- 
+	  opacity: 0.4;
 	  background: url(images/switch_off.png) no-repeat;
 	  transition: background-image ease 0.4s;
 	}
