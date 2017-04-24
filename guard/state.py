@@ -432,7 +432,7 @@ class StateControl(object):
         self.state = info['status']
         return info
     def get_remain_time(self):
-        # g = GuardState()
+        g = GuardState()
         # h = HouseState()
         # a = AlarmState()
         # b = BellState()
@@ -622,7 +622,7 @@ class StateControl(object):
         h = HouseState()
         a = AlarmState()
         b = BellState()
-        tmp_stat="uistate:%s(%s), g.state:%s, h.state:%s, a.state:%s b.state:%s" % (status_info['status'],self.state ,g.state, h.state, a.state ,b.state)
+        tmp_stat="uistate:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s" % (status_info['status'] ,g.state, h.state, a.state ,b.state)
         logger.info("\r\n STATE-MACHINE <<< input_event  : \r\n" +json.dumps(event.__dict__) + "\r\n @STATE:" + tmp_stat )
         #todo recorect follow MAIN state control logic
         if event.event_source == 'oic_event' and event.event_name == "state_changed":
