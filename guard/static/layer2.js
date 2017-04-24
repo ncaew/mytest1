@@ -1,25 +1,27 @@
 ﻿
 ///////////////      case "protect_check":
 
-function win_protect_check_private_func_gen_block(postion, status, postion_chs) {
+function win_protect_check_private_func_gen_block(type, status, postion) {
     var icon = "icon_gate";
-    switch (postion) {
+    switch (type) {
         case "gate":
             icon = "icon_gate";
             break;
-        case "kitchen":
-            icon = "icon_kitchen";
+        case "magnetismdetector":
+            icon = "icon_window";
             break;
-        case "livingroom":
-            icon = "icon_livingroom";
+        case "irintrusiondetector":
+            icon = "icon_people";
             break;
-        case "window":
+        default:
             icon = "icon_window";
             break;
     }
     str_html = "<!-- one li start -->	<li>"
     str_html += "<div class='protect_check_warnning_block'><img src='images/" + icon + ".png' /></div>"
-    str_html += "<div ><span class='protect_check_WB_status' >" + status + "</span><span class='protect_check_WB_position'> <" + postion_chs + "> </span></div>"
+    //str_html += "<div ><span class='protect_check_WB_status' >" + status + "</span>"
+	str_html += "<div>"
+	str_html += "<span class='protect_check_WB_position'> " + postion + "</span></div>"
     str_html += "</li> <!-- one li end --> "
     return str_html;
 }
@@ -95,14 +97,21 @@ function win_protect_check_init() {
     $.each(win_protect_check_devices_obj, function(index, val) {
 
         if ((val.status_code != '0') && (add_li_num < 6)) {
- 
-            if (debug_log_detail==1)console.log("protect_check  devices draw", val.type, val.status, val.position)
-            str_html += win_protect_check_private_func_gen_block(val.type, val.status, val.position)
-            // "type": "door",
-            //"position": "户内门",
-            //"status_code": "1",
-            // "status": "未锁"
-            add_li_num++;
+             //if (debug_log_detail==1)
+				console.log("protect_check  devices draw", val.type, val.status, val.position)
+			 
+			
+			  if (val.type == "magnetismdetector"  ||  val.type == "irintrusiondetector")//from zhaocheng req
+			  {
+				   str_html += win_protect_check_private_func_gen_block(val.type, val.status, val.position)
+					// "type": "door",
+					//"position": "户内门",
+					//"status_code": "1",
+					// "status": "未锁"
+					add_li_num++;
+			  }
+
+
         }
     });
 
