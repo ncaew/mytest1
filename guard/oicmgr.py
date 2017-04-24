@@ -454,9 +454,46 @@ class OicDeviceManager(object):
         return True
 
     ### todo add device exe funtion like :
-    # todo set_robot_action(uuid,on/off)
-    # todo set_water_mech(uuid,on/off)
-    # todo set_ele_socket(uuid,on/off)
+    def get_bell_binddevices_url(self,belluuid=""):
+        '''
+        :param belluuid:
+        :return url that played by web vlc controls:
+        '''
+        logger.info("todo imp get_bell_binddevices_url belluuid:%s" % belluuid)
+        return "http://127.0.0.1/test.stream"
+        pass
+
+    def get_bell_binddevices_locker(self,belluuid=""):
+        '''
+        :param belluuid:
+        :return the uuid of oic.d.doorlocker that bind with this bell:
+        '''
+        logger.info("todo imp get_bell_binddevices_locker belluuid:%s" % belluuid)
+        return "11111111-1111-1111-1111-111111111111"
+        pass
+    def set_door_locker_onoff(self,uuid,mode="on"):
+        logger.info("todo imp set_door_locker_onoff  door-uuid:%s %s " % (uuid,mode))
+        pass
+    def set_robot_action_off(self,mode="off"):
+        logger.info("todo imp set_robot_action_off %s" % mode)
+        pass
+    def set_water_valve_off(self,mode="off"):
+        logger.info("todo imp set_water_valve_off %s" % mode)
+        pass
+    
+    def set_turn_elesocket_onoff(self,uuid,mode):
+        logger.info("todo imp set_turn_elesocket_onoff %s %s" % (uuid ,mode) )
+        pass
+    def set_outgoing_powersave(self, mode="powersave-on"): #  set ele-socket device
+        '''
+        :param mode:  "powersave-on" / "powersave-off"
+        :return:
+        '''
+        logger.info("set_outgoing_powersave %s" % ( mode))
+        if mode=="powersave-on" :
+            for dev in self.get_devices() :# find all type is ele-socket
+                if dev.type == "oic.d.ele-socket" :
+                    self.set_turn_elesocket_onoff(dev.uuid, "on" if dev.action_in_outprotect =="poweron" else "off") # "poweroff"
 
     def setup_alarm_level2(self, on, mode='alarm', seconds=6001):
         logger.info("todo imp setup_alarm_level2 %s" % on )

@@ -32,7 +32,7 @@ class GuardState(object):
     #todo in __init__ to read those value from ini file
     
     _SEC_UNGUARD2GUARD_WAITUSER = 60
-    _SEC_GUARD2UNGUARD_USERSURE = 60
+    _SEC_GUARD2UNGUARD_USERSURE = 30
     _SEC_INVADE_PHASE1_MAXTIME = 30 # phase1 unlock keyboard 30 second limit
     _SEC_INVADE_AL1_MAXTIME = 30 # level1 alert has 30 second limit
     _SEC_INVADE_AL2_MAXTIME = 30 # level2 alert has 30 second limit
@@ -42,7 +42,7 @@ class GuardState(object):
         {'trigger': 'trigger_invadeAL1', 'source': 'invaded_P1', 'dest': 'invaded_AL1'},
         {'trigger': 'trigger_invadeAL2', 'source': 'invaded_AL1', 'dest': 'invaded_AL2'},
         {'trigger': 'trigger_invadeAL3', 'source': 'invaded_AL2', 'dest': 'invaded_AL3'},
-        {'trigger': 'trigger_unguard', 'source': ['guarded', 'invaded_P1'], 'dest': 'unguarded'},
+        {'trigger': 'trigger_unguard_inner', 'source': ['guarded', 'invaded_P1'], 'dest': 'unguarded'},
         {'trigger': 'trigger_guard', 'source': 'unguarded', 'dest': 'guarded'},
     ]
 
@@ -162,39 +162,45 @@ class GuardState(object):
                                transitions=self.__class__.transitions,
                                initial='guarded', ignore_invalid_triggers=True)
         self.to_alarm_timer = None
-        self.to_protect_timer = None
+        self.guarded_powersave_timer = None
         self.guard2unguard_timer = None
         self.unguard2guard_timer = None
         self.remain_second = 0
+        self.state_start_time = datetime.datetime.now()
 
-    def on_guard_every_time(self, args):
-        self.remain_second = self.to_protect_timer.remain_second
-        logger.debug('on_guard_every_time: %d', self.remain_second)
-        StateControl().notify_client_websocket(dict(type='ToProtect', seconds=self.remain_second),event="CountDown")
+    def guarded_powersave_action(self, args):
+        logger.debug('set_powersave_mode')
+        OicDeviceManager().set_outgoing_powersave("powersave-on")
+        StateControl().notify_client_websocket(dict(handler="powersave",  result='action'),event='StatusChanged')
 
-    def timeout_to_guard(self, args):
-  
-        logger.debug('on_timeout')
-        self.remain_second = -1
-        GuardState().trigger_guard()
-        StateControl().notify_client_websocket(dict(handler="2guard",  result='timeout'),event='StatusChanged')
+    def unset_powersave_mode(self):
+        if self.guarded_powersave_timer is not None :# or  self.guarded_powersave_timer.is_alive():
+            self.guarded_powersave_timer.cancel()
+            self.guarded_powersave_timer = None
+        logger.debug('unset_powersave_mode')
+        OicDeviceManager().set_outgoing_powersave("powersave-off")
 
-
+    def trigger_unguard(self):
+        if HouseState().state == 'outgoing':
+            self.unset_powersave_mode()
+        self.trigger_unguard_inner()
+        
     def on_guarded(self):
         logger.debug('on_guarded')
+        self.state_start_time = datetime.datetime.now()
         if self.remove_all_unguard2guard() >0 :
             logger.error('Why , has unguard2guard client in this time')
-        # if HouseState().state == 'outgoing':
-        #     if self.to_protect_timer is None or not self.to_protect_timer.is_alive():
-        #         self.to_protect_timer = Timer(1, 30,"to_protect_timer")
-        #         self.to_protect_timer.set_step_action(self.on_guard_every_time, self)
-        #         self.to_protect_timer.set_timeout_action(self.timeout_to_guard, self)
-        #         self.to_protect_timer.start()
-        # else:
-        #     GuardState().trigger_guard()
+        if HouseState().state == 'outgoing':
+            if self.guarded_powersave_timer is not None :# or  self.guarded_powersave_timer.is_alive():
+                self.guarded_powersave_timer.cancel()
+                self.guarded_powersave_timer = None
+            self.guarded_powersave_timer = Timer(60, 60,"guarded_powersave_timer")
+            self.guarded_powersave_timer.set_timeout_action(self.guarded_powersave_action, self)
+            self.guarded_powersave_timer.start()
 
     def on_unguarded(self):
         logger.debug('on_unguarded')
+        self.state_start_time = datetime.datetime.now()
         if self.remove_all_guard2unguard() >0 :
             logger.error('Why , has guard2unguard client in this time')
         if self.to_alarm_timer is not None:
@@ -216,15 +222,18 @@ class GuardState(object):
         self.trigger_invadeAL1()
     def on_invadedP1(self):
         logger.debug('on_invadedP1')
-        self.remain_second = self._SEC_INVADE_PHASE1_MAXTIME
-        if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
-            self.to_alarm_timer = Timer( self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY, \
-                                         self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY,  "to_alarm_timer")
-            #self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
-            self.to_alarm_timer.set_timeout_action(self.on_invaded_P1_timeout, self)
-            self.to_alarm_timer.start()
-        else:
-             logger.error('Why , to_alarm_timer is running')
+        if HouseState().state=="indoors": # home protect no im-keyboard(P1 phase)
+            self.trigger_invadeAL1()
+        else: #outdoor invade most is room-owner comeback , so provide a P1 phase
+            self.remain_second = self._SEC_INVADE_PHASE1_MAXTIME
+            if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
+                self.to_alarm_timer = Timer( self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY, \
+                                             self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY,  "to_alarm_timer")
+                #self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
+                self.to_alarm_timer.set_timeout_action(self.on_invaded_P1_timeout, self)
+                self.to_alarm_timer.start()
+            else:
+                 logger.error('Why , to_alarm_timer is running')
     
     def on_invaded_AL1_timeout(self, args):
         logger.debug('on_invaded_AL1_timeout --> Alert level2 ')
@@ -304,7 +313,18 @@ class BellState(object):
         self.machine = Machine(self, states=self.__class__.states,
                                transitions=self.__class__.transitions,
                                initial='noaction', ignore_invalid_triggers=True)
+        self.ts_uuid=""
+        self.ts_vedio_url = ""
+    def set_ts_uuid(self,uuid):
+        self.ts_uuid = uuid
 
+    def trigger_bell_startstream(self):
+        self.ts_vedio_url= OicDeviceManager().get_bell_binddevices_url(self.ts_uuid )
+        self.bell_startstream()
+    
+    def trigger_bell_close(self):
+        self.bell_close()
+    
     def on_noaction(self):
         logger.debug('bell closed')
     def on_ringing(self):
@@ -412,13 +432,13 @@ class StateControl(object):
         self.state = info['status']
         return info
     def get_remain_time(self):
-        g = GuardState()
-        h = HouseState()
-        a = AlarmState()
-        b = BellState()
+        # g = GuardState()
+        # h = HouseState()
+        # a = AlarmState()
+        # b = BellState()
         time_remained=g.remain_second
-        print('get_remain_time status:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s return %d'% \
-                (self.state, g.state, h.state, a.state,b.state, time_remained))
+        # print('get_remain_time status:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s return %d'% \
+        #         (self.state, g.state, h.state, a.state,b.state, time_remained))
         return time_remained
     def update_status(self, status=None, timeout=1, cookie_id=""):
         logger.debug("oldway: update_status with (status=%s,timeout=%d )" % (status,timeout) )
@@ -450,7 +470,14 @@ class StateControl(object):
         else:
             info['bell_status'] = 'standby'
         info['remain_second'] = self.get_remain_time();
-        info['devices_status'] = OicDeviceManager().get_devices()
+        devs = OicDeviceManager().get_devices()
+        #todo  for devs uuid ==
+        if info['status'] == "bell_view" :
+            for dev in devs:
+                if dev['uuid'] == b.ts_uuid :
+                    dev['video_url'] =b.ts_vedio_url
+       
+        info['devices_status'] = devs
         can = []
         ind = {'indoors': 'cannot'}
         out = {'outgoing': 'cannot'}
@@ -538,8 +565,8 @@ class StateControl(object):
             if len(a.fataldetector_event_queue) == 0:
                 # check password
                 if password == PwManager.get_passwd_hash(systime):
-                    HouseState().ind()
                     GuardState().trigger_unguard()
+                    HouseState().ind()
                     AlarmState().be_quiet()
                     self.update_status('protect_check')
                 else:
@@ -625,15 +652,21 @@ class StateControl(object):
                                             event.event_para['dev_name'], \
                                             event.event_para['dev_position'], \
                                             event.event_para['dev_info_value'],str_now)
-                    if g.state == "guarded" : #
+                    if g.state == "guarded" and status_info['status'] != "protect_starting" : # todo bell status ??
                         g.trigger_invade()
             elif "fataldetector" in event.event_para['dev_detectorgroup']  :
-                StateControl().alert(str_now,event.event_para['dev_info_id'])
-                
+                StateControl().alert(str_now, event.event_para['dev_info_id'])
+                if event.event_para["dev_type"] == "oic.d.waterleakagedetector" :
+                    OicDeviceManager().set_water_valve_off("off")
+                elif event.event_para["dev_type"] == "oic.d.flammablegasdetector" \
+                     or event.event_para["dev_type"] == "oic.d.smokesensor":
+                    OicDeviceManager().set_robot_action_off("off")
                 
             if "belldetector" in event.event_para['dev_detectorgroup'] :
-                StateControl().bell_ring()
-
+                if str(event.event_para['dev_info_value']).lower() == "true":
+                    StateControl().bell_ring(event.event_para['dev_devid'])
+               
+                
             self.notify_client_websocket(dict(handler="oic_event",  result='OK'),event='StatusChanged')
         elif event.event_source == 'webservice':
             if event.event_name  == "set_protect_start":
@@ -668,11 +701,10 @@ class StateControl(object):
 
     def new_event_from_oic(self,dev,dev_info,oldstate):
     
-        logger.info("statemachine input Event oic:%s  %s->%s" %(dev.position,str(oldstate),dev_info['value']) )
+        logger.info("statemachine input Event oic:%s  %s->%s" %(dev.position,str(oldstate),str(dev_info['value'])) )
         
         e = State_Event("oic_event")
-        if dev_info['value'] != oldstate :
-            
+        if str(dev_info['value']).lower() != str(oldstate).lower() :
             e.event_name = "state_changed"
         else:
             e.event_name = "device_join"
@@ -701,26 +733,24 @@ class StateControl(object):
 
 
  
-    def bell_ring(self):
-        BellState().bell_ringing()
+    def bell_ring(self,uuid):
+        b =BellState()
+        b.set_ts_uuid(uuid)
+        b.bell_ringing()
         # if GuardState().state == 'unguarded' or HouseState().state == 'indoors':
         #     self.update_status('bell_ring')
 
     def bell_do(self, bellid, action):
         logger.debug('%s %s', bellid, action)
+        b =BellState()
         if action == 'startstream':
-            self.update_status('bell_view')
+            b.trigger_bell_startstream()
         elif action == 'opendoor':
+            OicDeviceManager().set_door_locker_onoff(OicDeviceManager().get_bell_binddevices_locker(b.ts_uuid))
             time.sleep(3)
-            if GuardState().state == 'guarded':
-                self.update_status('protected')
-            if GuardState().state == 'unguarded':
-                self.update_status('protect_check')
-        else:
-            if GuardState().state == 'guarded':
-                self.update_status('protected')
-            if GuardState().state == 'unguarded':
-                self.update_status('protect_check')
+            b.trigger_bell_close()
+        elif action == 'reject':
+            b.trigger_bell_close()
                 
     # def notify_client_StatusChanged(self,info=""):
     #     from tornado_server import WebSocketHandler
@@ -745,18 +775,34 @@ class StateControl(object):
             self.StatusChanged_info=info
         else:
             self.notify_client_websocket_real(info=info ,event=event)
-        
+     
+     
+def test_callback():
+    g = GuardState()
+    g.trigger_unguard()
 if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
     g = GuardState()
+    h = HouseState()
+
     print(g.__class__.states)
     print(g.state)
-    
+
     g.trigger_unguard()
+    h.outg()
+
     g.trigger_guard()
     g.trigger_invade()
     g.trigger_invadeAL1()
     g.trigger_invadeAL2()
     g.trigger_invadeAL3()
     g.trigger_invade()
-    g.trigger_unguard()
+
+    timer = threading.Timer(100,test_callback )
+    timer.setDaemon(True)
+    timer.start()
+    timer.join()
+    
+    print "test over"
+  
+    
