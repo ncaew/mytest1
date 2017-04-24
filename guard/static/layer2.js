@@ -374,11 +374,48 @@ function win_unlock_protect_submit(okorcancel, passwd) {
         cache: false,
         dataType: 'json',
         success: function(data) {
-            	console.warn("submit retrun:"+ JSON.stringify(data));
+            	console.warn("submit retrun:"+ data['result']);
                 //get_ui_state_fromServer();		
         },
         error: function() {
+            alert("网络连接异常！");
+        }
+    });
 
+}
+function win_unlock_protect_submit_ok(okorcancel, passwd) {
+    
+	time_stamp = Math.floor((new Date().getTime()) / 60000);
+	time_stamp= String(time_stamp);
+	passwd= passwd + time_stamp;
+	console.log(passwd);
+	passwd=hex_md5(passwd).toLowerCase()
+    $.ajax({
+        url: "http://"+g_vars_domain_prefix+"/set_cancel_protected",
+        data: {
+            mode: win_protected_protectmode,
+            action: okorcancel,
+			systime:time_stamp,
+            passwd: passwd
+        },
+        type: 'get',
+        cache: false,
+        dataType: 'json',
+        success: function(data) {
+            	if (data['result']=="OK") //"NOK"
+				{
+					win_unlock_protect_stop();
+				}
+				else{
+					 virual_password_keyboard_init("win_unlock_protect_input", function(pw) {
+									win_unlock_protect_submit_ok("ok", pw);
+			
+					});
+				}
+				
+                //get_ui_state_fromServer();		
+        },
+        error: function() {
             alert("网络连接异常！");
         }
     });
@@ -434,8 +471,8 @@ function win_unlock_protect_check_or_show(data) {
         }, 500);
 
         virual_password_keyboard_init("win_unlock_protect_input", function(pw) {
-			win_unlock_protect_stop();
-            win_unlock_protect_submit("ok", pw);
+			
+            win_unlock_protect_submit_ok("ok", pw);
 			
         });
 

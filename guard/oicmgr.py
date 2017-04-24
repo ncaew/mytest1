@@ -492,7 +492,7 @@ class OicDeviceManager(object):
         logger.info("set_outgoing_powersave %s" % ( mode))
         if mode=="powersave-on" :
             for dev in self.get_devices() :# find all type is ele-socket
-                if dev.type == "oic.d.ele-socket" :
+                if dev['type'] == "oic.d.ele-socket" :
                     self.set_turn_elesocket_onoff(dev.uuid, "on" if dev.action_in_outprotect =="poweron" else "off") # "poweroff"
 
     def setup_alarm_level2(self, on, mode='alarm', seconds=6001):

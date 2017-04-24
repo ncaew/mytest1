@@ -545,7 +545,7 @@ class StateControl(object):
             self.update_status('protected')
 
     def cancel_protect(self, mode, action, password, systime,cookie_id):
-        from passwd import PwManager
+
         logger.debug('cancel_protect: %s %s %s %s', mode, action, password, systime)
         g = GuardState()
         a = AlarmState()
@@ -559,12 +559,14 @@ class StateControl(object):
             g.remove_guard2unguard_client(cookie_id)
             self.update_status('protected')
             logger.info('self.state: %s', self.state)
+        elif action == 'ok' and password != "correct" and g.state == 'invaded_P1' :#@STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
+            return
         elif action == 'ok': #todo guard or alert
             
             g.remove_all_guard2unguard()
             if len(a.fataldetector_event_queue) == 0:
                 # check password
-                if password == PwManager.get_passwd_hash(systime):
+                if password == "correct":
                     GuardState().trigger_unguard()
                     HouseState().ind()
                     AlarmState().be_quiet()

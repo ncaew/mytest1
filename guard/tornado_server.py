@@ -126,21 +126,23 @@ class CancelProtectHandler(BaseHandler):
     count = 0
 
     def get(self):
+        from passwd import PwManager
         CancelProtectHandler.count += 1
         mode = self.get_argument('mode', 'unknown')
         action = self.get_argument('action', 'unknown')
         passwd = self.get_argument('passwd', 'unknown')
         systime = self.get_argument('systime', 'unknown')
         cookie_id = self.get_cookie_id()
-
+        if action == 'ok' and passwd != PwManager.get_passwd_hash(systime):
+            retv = '{"result":"NOK"}'
+            passwd="wrong"
+        else:
+            retv = '{"result":"OK"}'
+            passwd="correct"
+            
         StateControl().new_event_from_webservice("cancel_protect",dict(mode=mode, action=action, password=passwd, systime=systime,cookie_id=cookie_id))
-        #StateControl().cancel_protect(mode=mode, action=action, password=passwd, systime=systime)
         
-        # info = dict(handler=self.__class__.__name__, action=action, result='OK')
-        # event = dict(event='StatusChanged', info=info, count=CancelProtectHandler.count)
-        # WebSocketHandler.send_to_all(event)
-
-        self.write('{"result":"OK"}')
+        self.write(retv)
 
 
 class StopAlertHandler(BaseHandler):
