@@ -522,6 +522,7 @@ if __name__ == '__main__':
         dl = []
         ml = []
         i = 1
+     
         d, m = create_device(ip, port, i, "irintrusiondetector", 'sensor.motion')
         dl.append(d)
         ml.append(m)
@@ -561,7 +562,7 @@ if __name__ == '__main__':
         dl.append(d)
         ml.append(m)
         i += 1
-        
+       
         d, m = create_device(ip, port, i, "doorbutton", 'button')
         #d, m = create_device(ip, port, i, "Bellbuttonswitch", 'button')
         dl.append(d)
@@ -595,9 +596,9 @@ if __name__ == '__main__':
         except Queue.Empty:
             pass
 
-        timer = threading.Timer(30, post_devices, (devs,))
-        timer.setDaemon(True)
-        timer.start()
+        # timer = threading.Timer(30, post_devices, (devs,))
+        # timer.setDaemon(True)
+        # timer.start()
 
 
     class StaticHandler(tornado.web.RequestHandler):

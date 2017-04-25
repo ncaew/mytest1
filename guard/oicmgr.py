@@ -198,6 +198,8 @@ class OicDevice(object):
             res = 'motion' if rstate else 'no_motion'
         elif self.is_fatal_detector():
             res = 'alarm' if rstate else 'no_alarm'
+        else: #bell swtich
+            res = 'alarm' if rstate else 'no_alarm'
         return res
 
 
