@@ -460,7 +460,7 @@ class OicDeviceManager(object):
         :return url that played by web vlc controls:
         '''
         logger.info("todo imp get_bell_binddevices_url belluuid:%s" % belluuid)
-        return "http://127.0.0.1/test.stream"
+        return "rtsp://admin:12345@192.168.1.188:554/Streaming/Channels/1?transportmode=unicast&profile=Profile_1"
         pass
 
     def get_bell_binddevices_locker(self,belluuid=""):
