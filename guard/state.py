@@ -222,18 +222,19 @@ class GuardState(object):
         self.trigger_invadeAL1()
     def on_invadedP1(self):
         logger.debug('on_invadedP1')
-        if HouseState().state=="indoors": # home protect no im-keyboard(P1 phase)
-            self.trigger_invadeAL1()
-        else: #outdoor invade most is room-owner comeback , so provide a P1 phase
-            self.remain_second = self._SEC_INVADE_PHASE1_MAXTIME
-            if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
-                self.to_alarm_timer = Timer( self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY, \
-                                             self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY,  "to_alarm_timer")
-                #self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
-                self.to_alarm_timer.set_timeout_action(self.on_invaded_P1_timeout, self)
-                self.to_alarm_timer.start()
-            else:
-                 logger.error('Why , to_alarm_timer is running')
+        #scene 5
+        # if HouseState().state=="indoors": # home protect no im-keyboard(P1 phase)
+        #     self.trigger_invadeAL1()
+        # else: #outdoor invade most is room-owner comeback , so provide a P1 phase
+        self.remain_second = self._SEC_INVADE_PHASE1_MAXTIME
+        if self.to_alarm_timer is None or not self.to_alarm_timer.is_alive():
+            self.to_alarm_timer = Timer( self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY, \
+                                         self._SEC_INVADE_PHASE1_MAXTIME + self._SEC_NETWORK_DELAY,  "to_alarm_timer")
+            #self.to_alarm_timer.set_step_action(self.on_alarm_every_time, self)
+            self.to_alarm_timer.set_timeout_action(self.on_invaded_P1_timeout, self)
+            self.to_alarm_timer.start()
+        else:
+             logger.error('Why , to_alarm_timer is running')
     
     def on_invaded_AL1_timeout(self, args):
         logger.debug('on_invaded_AL1_timeout --> Alert level2 ')
@@ -241,7 +242,7 @@ class GuardState(object):
         self.trigger_invadeAL2()
     def on_invaded_AL1(self):
         logger.debug('on_invadedAL1')
-        if self.to_alarm_timer is not None or  self.to_alarm_timer.is_alive():
+        if self.to_alarm_timer is not None :#or  self.to_alarm_timer.is_alive():
             self.to_alarm_timer.cancel()
             
         StateControl().notify_client_websocket(event='StatusChanged')
@@ -257,7 +258,7 @@ class GuardState(object):
         self.trigger_invadeAL3()
     def on_invaded_AL2(self):
         logger.debug('on_invadedAL2')
-        if self.to_alarm_timer is not None or self.to_alarm_timer.is_alive():
+        if self.to_alarm_timer is not None :#or self.to_alarm_timer.is_alive():
             self.to_alarm_timer.cancel()
     
         StateControl().notify_client_websocket(event='StatusChanged')
@@ -317,6 +318,7 @@ class BellState(object):
         self.ts_vedio_url = ""
     def set_ts_uuid(self,uuid):
         self.ts_uuid = uuid
+        self.ts_vedio_url=""
 
     def trigger_bell_startstream(self):
         self.ts_vedio_url= OicDeviceManager().get_bell_binddevices_url(self.ts_uuid )
@@ -394,7 +396,7 @@ class StateControl(object):
             info = {'status': status}
             
         if a.state != "noalert": # alert_fatal is most high level
-            print "now alert_fatal queue : ", a.fataldetector_event_queue
+            print "now fataldetector_event_queue : ", a.fataldetector_event_queue
             info['status'] = "alert_fatal"
         elif g.state == 'guarded':
             tmp_g2uglist = g.get_guard_request_clients()
@@ -472,10 +474,26 @@ class StateControl(object):
         info['remain_second'] = self.get_remain_time();
         devs = OicDeviceManager().get_devices()
         #todo  for devs uuid ==
-        if info['status'] == "bell_view" :
+        if info['status'] == "bell_view" : #add bell vedio_url
             for dev in devs:
                 if dev['uuid'] == b.ts_uuid :
                     dev['video_url'] =b.ts_vedio_url
+        elif info['status'] == 'alert_fatal':  # only give this fatal device
+            temp_devs = devs[0:len(devs)]
+            devs=[]
+            #find alert_device_uuid
+            alertid = ""
+            x = a.fataldetector_event_queue.popleft()
+            if x is not None :
+                a.fataldetector_event_queue.append(x)
+                alertid = x['devid']
+            if alertid != "":
+                for temp_dev in temp_devs:
+                    if temp_dev['uuid'] == alertid :
+                        devs.append(temp_dev)
+            if len(devs) == 0:
+                devs=temp_devs[0:len(devs)]
+
        
         info['devices_status'] = devs
         can = []
@@ -534,10 +552,15 @@ class StateControl(object):
             g.trigger_invade()
             #self.update_status('unlock_protect', 30)
         else:
-            if len(a.fataldetector_event_queue) > 0:
-                a.fataldetector_event_queue.popleft()
+            temp_l = len(a.fataldetector_event_queue)
+            for item in range(temp_l):
+                x = a.fataldetector_event_queue.popleft()
+                if x['devid'] != alertid :
+                    a.fataldetector_event_queue.append(x)
+            print "after stop_alert" , a.fataldetector_event_queue
+
             if len(a.fataldetector_event_queue) == 0:
-                AlarmState().be_quiet()
+                a.be_quiet()
             #self.update_status('protect_check')
 
     def alert(self, str_now ,devid=''):
@@ -634,10 +657,15 @@ class StateControl(object):
                     g.trigger_invadeAL1()
                 elif event.event_para["action"] == 'cancel' and g.state == 'guarded':
                     g.remove_guard2unguard_client( event.event_para["cookie_id"])
+                elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded' and h.state=='indoors':
+                    # @STATE:uistate:protected, g.state:guarded, h.state:indoors, a.state:noalert b.state:noaction
+                    g.trigger_unguard()
                 elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded':
                     g.add_requests_guard2unguard( event.event_para["cookie_id"])
-                elif event.event_para["action"] == 'ok' and event.event_para["password"] != "correct" and g.state == 'invaded_P1' :#@STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
-                    pass
+                elif event.event_para["action"] == 'ok' and event.event_para["password"] != "correct" and g.state == 'invaded_P1' :
+                    # @STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
+                    # @STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:indoors, a.state:noalert b.state:noaction
+                    return
                 elif event.event_para["action"] == 'ok': #todo guard or alert
                     g.remove_all_guard2unguard()
                     if len(a.fataldetector_event_queue) == 0:
@@ -725,7 +753,9 @@ class StateControl(object):
             b.trigger_bell_startstream()
         elif action == 'opendoor':
             OicDeviceManager().set_door_locker_onoff(OicDeviceManager().get_bell_binddevices_locker(b.ts_uuid))
-            time.sleep(3)
+            if b.ts_vedio_url != "":
+                time.sleep(3)
+                b.ts_vedio_url = ""
             b.trigger_bell_close()
         elif action == 'reject':
             b.trigger_bell_close()
