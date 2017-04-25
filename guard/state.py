@@ -613,6 +613,9 @@ class StateControl(object):
                 elif h.state=="outgoing" and \
                     (event.event_para['dev_action_in_outprotect']=="alart" or event.event_para['dev_action_in_outprotect']=="insist_alart"):
                     tmp_isingored = 0
+                #0425
+                if str(event.event_para['dev_info_value']).lower() != "true":
+                    tmp_isingored = 1
                 # todo  log  those event to logfile
                 if tmp_isingored == 1:
                     logger.info ("this event is ignored")
@@ -623,7 +626,8 @@ class StateControl(object):
                                             event.event_para['dev_info_value'],str_now)
                     if g.state == "guarded" and status_info['status'] != "protect_starting" : # todo bell status ??
                         g.trigger_invade()
-            elif "fataldetector" in event.event_para['dev_detectorgroup']  :
+            elif "fataldetector" in event.event_para['dev_detectorgroup'] and \
+                            str(event.event_para['dev_info_value']).lower() == "true" : #0425
                 StateControl().alert(str_now, event.event_para['dev_info_id'])
                 if event.event_para["dev_type"] == "oic.d.waterleakagedetector" :
                     OicDeviceManager().set_water_valve_off("off")
