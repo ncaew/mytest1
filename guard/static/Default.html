@@ -1038,6 +1038,7 @@ function ui_state_check_or_show(json_data) {
             break;
         case "alert_message":
             isChecked_shouldShow = win_alert_message_check_or_show(json_data);
+			isChecked_shouldShow = 1;//#0425
             break;
         case "bell_ring":
             isChecked_shouldShow = win_bell_ring_check_or_show(json_data);
