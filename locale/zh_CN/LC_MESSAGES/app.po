@@ -3,45 +3,33 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: guard/passwd.py:7 guard/oicmgr.py:85 guard/oicmgr.py:86 guard/oicmgr.py:87
-#: guard/static.bak/tornado_server.py:201
-#: guard/static.bak/tornado_server.py:273
-#: guard/static.bak/tornado_server.py:279 guard/state.py:260
-#: guard/tornado_server.py:106 guard/tornado_server.py:138
-#: guard/tornado_server.py:143 guard/tornado_server.py:152
-#: guard/tornado_server.py:157 guard/tornado_server.py:168
-#: guard/tornado_server.py:169 guard/tornado_server.py:170
-#: guard/tornado_server.py:172 guard/tornado_server.py:174
-#: guard/tornado_server.py:176 guard/tornado_server.py:202
-#: guard/tornado_server.py:203 guard/tornado_server.py:212
-#: guard/tornado_server.py:213
-#, fuzzy
+
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-23 17:39+0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 
-#: guard/passwd.py:16
 msgid "TODO,  update and save passwd"
 msgstr ""
 
-#: guard/coapserver.py:8
+
+msgid "alarm"
+msgstr "警报"
+
+msgid "no_alarm"
+msgstr "未触发"
+
+msgid "no_motion"
+msgstr "未触发"
+
+msgid "motion"
+msgstr "有活动"
+
 msgid "receive muticast post/delete to oic/rd"
 msgstr ""
 
-#: guard/coapserver.py:12
+
 msgid "self.add_resource('oic/rd', BasicResource())"
 msgstr ""
 
-#: guard/coapserver.py:13
 msgid "oic/"
 msgstr ""
 
@@ -98,6 +86,22 @@ msgstr "烟感"
 #: guard/oicmgr.py:14
 msgid "oic.d.waterleakagedetector"
 msgstr "漏水感应"
+
+msgid "magnetismdetector"
+msgstr "门/窗磁"
+
+msgid "irintrusiondetector"
+msgstr "人体感应"
+
+msgid "flammablegasdetector"
+msgstr "可燃气感"
+
+msgid "smokesensor"
+msgstr "烟感"
+
+msgid "waterleakagedetector"
+msgstr "漏水感应"
+
 
 #: guard/oicmgr.py:15
 msgid "oic.d.alarm"
@@ -159,8 +163,7 @@ msgid "OicDeviceManager"
 msgstr ""
 
 #: guard/oicmgr.py:84 guard/oicmgr.py:107
-msgid "alarm"
-msgstr ""
+
 
 #: guard/oicmgr.py:91
 msgid "/AlarmSwitchResURI"

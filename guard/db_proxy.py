@@ -74,7 +74,7 @@ def set_dev_attr(uuid,key_name, value):
 	except Exception as e:
 		pass
 	ini_config.set(uuid, key_name, value)
-	ini_config.write(open(db_file_path, 'w'))
+	ini_config.write(open(db_file_path,mode='w'))#,encoding='utf-8'))
 
 	update_cache(key_name, value)
 	return True

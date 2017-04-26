@@ -19,9 +19,11 @@ function win_protect_check_private_func_gen_block(type, status, postion) {
     }
     str_html = "<!-- one li start -->	<li>"
     str_html += "<div class='protect_check_warnning_block'><img src='images/" + icon + ".png' /></div>"
-    //str_html += "<div ><span class='protect_check_WB_status' >" + status + "</span>"
+    
 	str_html += "<div>"
-	str_html += "<span class='protect_check_WB_position'> " + postion + "</span></div>"
+	str_html += "<span class='protect_check_WB_position'> " + postion + " "+status+"</span>"
+	//str_html += "<span class='protect_check_WB_status' >" + status + "</span>"
+	str_html += "</div>"
     str_html += "</li> <!-- one li end --> "
     return str_html;
 }
