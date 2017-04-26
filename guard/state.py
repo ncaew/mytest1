@@ -548,11 +548,9 @@ class StateControl(object):
         g =GuardState()
         a = AlarmState()
         logger.debug('%s %s', alertid, g.state)
-      
-        if g.state == 'invaded_AL1':
-            g.trigger_invade()
-            #self.update_status('unlock_protect', 30)
-        else:
+
+        #fateal alarm is highest level ,so first consider it
+        if a.state != 'noalert':
             temp_l = len(a.fataldetector_event_queue)
             for item in range(temp_l):
                 x = a.fataldetector_event_queue.popleft()
@@ -563,6 +561,9 @@ class StateControl(object):
             if len(a.fataldetector_event_queue) == 0:
                 a.be_quiet()
             #self.update_status('protect_check')
+        elif g.state in ['invaded_AL1','invaded_AL2','invaded_AL3']:
+            g.trigger_invade()
+            # self.update_status('unlock_protect', 30)
 
     def alert(self, str_now ,devid=''):
         e = {'devid': devid}
