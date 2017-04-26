@@ -1,7 +1,11 @@
 # coding=utf8
+import os
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 import hashlib
 import ConfigParser
-import os
+
 
 db_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'db.ini'))
 def check_db():
