@@ -50,7 +50,7 @@
 
 
   <script type="text/javascript" >
-		
+		var g_vars_domain_prefix="";
 		$(document).ready(function(){//$(function($) {
 	
 		  		//init websocket
@@ -60,9 +60,13 @@
 				
 				
 		});
+		 if (g_vars_domain_prefix=="")
+	{
+		g_vars_domain_prefix =window.location.host
+	}
 	
 	      $('#rolePopUp').on('show.bs.modal', function() {
-				$.getJSON("http://127.0.0.1:8000/get_oicinfo", function(data) {
+				$.getJSON("http://"+g_vars_domain_prefix+"/get_oicinfo", function(data) {
 						var strHTML=""
 						$.each(data,function (index,val){
 							console.log ( "alert_message   draw",val.id,val.rt,val.value)
@@ -79,7 +83,7 @@
 		  });
 		  function alert2(uuid){
 					 $.ajax( {    
-												url:"http://127.0.0.1:8000/change_oicinfo",
+												url:"http://"+g_vars_domain_prefix+"/change_oicinfo",
 												data:{    
 														 id:uuid,
 														 oldval:"",

@@ -602,19 +602,37 @@ if __name__ == '__main__':
 
 
     class StaticHandler(tornado.web.RequestHandler):
-
+        def set_default_headers(self):
+            self.set_header('Access-Control-Allow-Origin', '*')
+            self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+            self.set_header('Access-Control-Max-Age', 1000)
+            # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
+            self.set_header('Access-Control-Allow-Headers', '*')
+            self.set_header('Content-type', 'application/json')
         def get(self):
             self.write('It works')
 
     class OicHandler(tornado.web.RequestHandler):
-
+        def set_default_headers(self):
+            self.set_header('Access-Control-Allow-Origin', '*')
+            self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+            self.set_header('Access-Control-Max-Age', 1000)
+            # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
+            self.set_header('Access-Control-Allow-Headers', '*')
+            self.set_header('Content-type', 'application/json')
         def get(self):
             global server
 
             self.write(json.dumps(server.reslist))
 
     class ChangeOicHandler(tornado.web.RequestHandler):
-
+        def set_default_headers(self):
+            self.set_header('Access-Control-Allow-Origin', '*')
+            self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+            self.set_header('Access-Control-Max-Age', 1000)
+            # self.set_header('Access-Control-Allow-Headers', 'origin, x-csrftoken, content-type, accept')
+            self.set_header('Access-Control-Allow-Headers', '*')
+            self.set_header('Content-type', 'application/json')
         def get(self):
             global server
 
