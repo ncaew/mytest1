@@ -37,15 +37,22 @@ class GuardState(object):
     _SEC_INVADE_AL1_MAXTIME = 30 # level1 alert has 30 second limit
     _SEC_INVADE_AL2_MAXTIME = 30 # level2 alert has 30 second limit
     _SEC_NETWORK_DELAY = 10
+    
     transitions = [
-        {'trigger': 'trigger_invade', 'source': ['guarded','invaded_AL1','invaded_AL2','invaded_AL3'],  'dest': 'invaded_P1'},
+        {'trigger': 'trigger_invade_inner', 'source': ['guarded','invaded_AL1','invaded_AL2','invaded_AL3'],  'dest': 'invaded_P1'},
         {'trigger': 'trigger_invadeAL1', 'source': 'invaded_P1', 'dest': 'invaded_AL1'},
         {'trigger': 'trigger_invadeAL2', 'source': 'invaded_AL1', 'dest': 'invaded_AL2'},
         {'trigger': 'trigger_invadeAL3', 'source': 'invaded_AL2', 'dest': 'invaded_AL3'},
         {'trigger': 'trigger_unguard_inner', 'source': ['guarded', 'invaded_P1'], 'dest': 'unguarded'},
         {'trigger': 'trigger_guard', 'source': 'unguarded', 'dest': 'guarded'},
+        {'trigger': 'restore_invadeAL2', 'source': 'invaded_P1', 'dest': 'invaded_AL2'},
+        {'trigger': 'restore_invadeAL3', 'source': 'invaded_P1', 'dest': 'invaded_AL3'},
+        
     ]
-
+    last_state = ""
+    def trigger_invade(self):
+        self.last_state = self.state
+        self.trigger_invade_inner()
     ''''''
     requests_guard2unguard_list=[]
     
@@ -219,7 +226,14 @@ class GuardState(object):
     def on_invaded_P1_timeout(self, args):
         logger.debug('invadep1_timeout --> Alert level1 ')
         self.remain_second = self._SEC_INVADE_AL1_MAXTIME
-        self.trigger_invadeAL1()
+        if self.last_state == "invaded_AL2" :
+            self.last_state = ""
+            self.restore_invadeAL2()
+        elif self.last_state == "invaded_AL3" :
+            self.last_state = ""
+            self.restore_invadeAL3()
+        else:
+            self.trigger_invadeAL1()
     def on_invadedP1(self):
         logger.debug('on_invadedP1')
         #scene 5
@@ -455,7 +469,7 @@ class StateControl(object):
         h = HouseState()
         a = AlarmState()
         b = BellState()
-        logger.info('update_status:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s' %(self.state, g.state, h.state, a.state ,b.state))
+        logger.debug('update_status:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s' %(self.state, g.state, h.state, a.state ,b.state))
         info = self.update_self_status( status,timeout,cookie_id)
  
         if g.state in ['guarded', 'invaded_P1']:
@@ -529,7 +543,7 @@ class StateControl(object):
             a['status2'] =a['status']
             a['status'] = "alert_message"
 
-        logger.info("\r\n STATE-MACHINE >>> Output  : \r\n" +  str(a) + "\r\n" )
+        logger.info("\r\n STATE-MACHINE >>> Output  'status':'%s' \r\n" % a['status'] +  str(a) + "\r\n" )
 
         return a
 
@@ -549,21 +563,7 @@ class StateControl(object):
         a = AlarmState()
         logger.debug('%s %s', alertid, g.state)
 
-        #fateal alarm is highest level ,so first consider it
-        if a.state != 'noalert':
-            temp_l = len(a.fataldetector_event_queue)
-            for item in range(temp_l):
-                x = a.fataldetector_event_queue.popleft()
-                if x['devid'] != alertid :
-                    a.fataldetector_event_queue.append(x)
-            print "after stop_alert" , a.fataldetector_event_queue
 
-            if len(a.fataldetector_event_queue) == 0:
-                a.be_quiet()
-            #self.update_status('protect_check')
-        elif g.state in ['invaded_AL1','invaded_AL2','invaded_AL3']:
-            g.trigger_invade()
-            # self.update_status('unlock_protect', 30)
 
     def alert(self, str_now ,devid=''):
         e = {'devid': devid}
@@ -594,7 +594,8 @@ class StateControl(object):
         a = AlarmState()
         b = BellState()
         tmp_stat="uistate:%s, g.state:%s, h.state:%s, a.state:%s b.state:%s" % (status_info['status'] ,g.state, h.state, a.state ,b.state)
-        logger.info("\r\n STATE-MACHINE <<< input_event  : \r\n" +json.dumps(event.__dict__) + "\r\n @STATE:" + tmp_stat )
+        logger.info("\r\n \r\n========================================================================= "  )
+        logger.info("\r\n STATE-MACHINE <<< input_event %s : \r\n" % event.event_name +json.dumps(event.__dict__) + "\r\n @STATE:" + tmp_stat +"\r\n")
         #todo recorect follow MAIN state control logic
         if event.event_source == 'oic_event' and event.event_name == "state_changed":
             
@@ -621,7 +622,7 @@ class StateControl(object):
                 # todo  log  those event to logfile
                 if tmp_isingored == 1:
                     logger.info ("this event is ignored")
-                else:
+                else:#T1
                     g.add_invade_event(event.event_para['dev_devid'], \
                                             event.event_para['dev_name'], \
                                             event.event_para['dev_position'], \
@@ -630,6 +631,7 @@ class StateControl(object):
                         g.trigger_invade()
             elif "fataldetector" in event.event_para['dev_detectorgroup'] and \
                             str(event.event_para['dev_info_value']).lower() == "true" : #0425
+            #T31
                 StateControl().alert(str_now, event.event_para['dev_info_id'])
                 if event.event_para["dev_type"] == "oic.d.waterleakagedetector" :
                     OicDeviceManager().set_water_valve_off("off")
@@ -639,6 +641,7 @@ class StateControl(object):
                 
             if "belldetector" in event.event_para['dev_detectorgroup'] :
                 if str(event.event_para['dev_info_value']).lower() == "true":
+                #T41
                     StateControl().bell_ring(event.event_para['dev_devid'])
                
                 
@@ -658,35 +661,73 @@ class StateControl(object):
             elif event.event_name  == "cancel_protect":
                 logger.debug('cancel_protect: %s %s %s %s %s',event.event_para["mode"], event.event_para["action"], event.event_para["password"],
                                     event.event_para["systime"], event.event_para["cookie_id"] )
+                
                 if event.event_para["action"] == 'cancel' and g.state == "invaded_P1" :
-                    self.notify_client_websocket(event='StatusChanged')
-                    g.trigger_invadeAL1()
+                #T2 T13
+                    if g.last_state == "invaded_AL2" :
+                        g.last_state = ""
+                        g.restore_invadeAL2()
+                    elif g.last_state == "invaded_AL3" :
+                        g.last_state = ""
+                        g.restore_invadeAL3()
+                    else:
+                        g.trigger_invadeAL1()
                 elif event.event_para["action"] == 'cancel' and g.state == 'guarded':
+                #T4
                     g.remove_guard2unguard_client( event.event_para["cookie_id"])
                 elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded' and h.state=='indoors':
-                    # @STATE:uistate:protected, g.state:guarded, h.state:indoors, a.state:noalert b.state:noaction
+                    #T21 @STATE:uistate:protected, g.state:guarded, h.state:indoors, a.state:noalert b.state:noaction
                     g.trigger_unguard()
-                elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded':
+                elif event.event_para["action"] == 'start' and self.state == 'protected' and g.state == 'guarded' and h.state =='outgoing':
+                    #T3
                     g.add_requests_guard2unguard( event.event_para["cookie_id"])
                 elif event.event_para["action"] == 'ok' and event.event_para["password"] != "correct" and g.state == 'invaded_P1' :
-                    # @STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
+                    # T15 @STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:outgoing, a.state:noalert b.state:noaction
                     # @STATE:uistate:unlock_protect, g.state:invaded_P1, h.state:indoors, a.state:noalert b.state:noaction
                     return
-                elif event.event_para["action"] == 'ok': #todo guard or alert
-                    g.remove_all_guard2unguard()
-                    if len(a.fataldetector_event_queue) == 0:
-                        # check password
-                        if event.event_para["password"] == "correct":
-                            GuardState().trigger_unguard()
-                            HouseState().ind()
-                            AlarmState().be_quiet()
-                    else: #g.state:invaded, h.state:outgoing, a.state:alert
-                        if AlarmState().state == 'noalert':
-                            AlarmState().be_alarm()
-                        else:
-                            self.update_status('alert_message')
+                elif event.event_para["action"] == 'ok' and g.state == 'guarded' :
+                    #T5 @STATE:uistate:unlock_protect, g.state:guarded, h.state:outgoing, a.state:noalert b.state:noaction
+                    g.remove_all_guard2unguard() #add this to back to protected
+                    if event.event_para["password"] == "correct":
+                        g.trigger_unguard()
+                        h.ind()
+                elif event.event_para["action"] == 'ok' and a.state != 'guarded' and event.event_para["password"] == "correct":
+                    #T22 T9
+                    g.trigger_unguard()
+                    h.ind()
+                    ##old logic
+                    # if len(a.fataldetector_event_queue) == 0:
+                    #     # check password
+                    #     if event.event_para["password"] == "correct":
+                    #         GuardState().trigger_unguard()
+                    #         HouseState().ind()
+                    #         AlarmState().be_quiet()
+                    # else: #g.state:invaded, h.state:outgoing, a.state:alert
+                    #     if AlarmState().state == 'noalert':
+                    #         AlarmState().be_alarm()
+                    #     else:
+                    #         self.update_status('alert_message')
             elif event.event_name  == "stop_alert":
-                self.stop_alert(event.event_para["alertid"])
+                # fatal alarm is highest level ,so first consider it
+                if a.state != 'noalert':
+                #T33
+                    temp_l = len(a.fataldetector_event_queue)
+                    for item in range(temp_l):
+                        x = a.fataldetector_event_queue.popleft()
+                        if x['devid'] != event.event_para["alertid"]:
+                            a.fataldetector_event_queue.append(x)
+                    print "after stop_alert", a.fataldetector_event_queue
+    
+        
+                    if len(a.fataldetector_event_queue) == 0:
+                    #T32
+                        a.be_quiet()
+                        # self.update_status('protect_check')
+                elif g.state in ['invaded_AL1', 'invaded_AL2', 'invaded_AL3']:
+                #T14
+                    g.trigger_invade()
+                    # self.update_status('unlock_protect', 30)
+                    
             elif event.event_name  == "set_protect":
                 self.set_protect(event.event_para["result"],event.event_para["cookie_id"])
             elif event.event_name  == "bell_do":
@@ -703,7 +744,7 @@ class StateControl(object):
         return
     
     def new_event_from_webservice(self, event_name, event_para):
-        logger.info("statemachine input Event web:" + str(event_name) + str(event_para))
+        #logger.info("statemachine input Event web:" + str(event_name) + str(event_para))
         e = State_Event("webservice")
         e.event_name = event_name
         e.event_para = event_para
