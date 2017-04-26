@@ -548,11 +548,7 @@ class StateControl(object):
         g =GuardState()
         a = AlarmState()
         logger.debug('%s %s', alertid, g.state)
-        try:
-            traceback.print_stack(limit=10)
-        except BaseException as e:
-            pass
-        
+      
         if g.state == 'invaded_AL1':
             g.trigger_invade()
             #self.update_status('unlock_protect', 30)
