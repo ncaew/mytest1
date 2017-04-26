@@ -975,7 +975,7 @@ function get_ui_state_fromServer() {
 
 </script>
 
-<script type="text/javascript" src="layer2.js?v=0.9"></script>
+<script type="text/javascript" src="layer2.js?v=0.93"></script>
 
 <script type="text/javascript">
 var pi_l2_all_win = new  Array("protect_check","protect_starting","protected","unlock_protect","alert_message","bell_ring","bell_view");
@@ -1038,7 +1038,7 @@ function ui_state_check_or_show(json_data) {
             break;
         case "alert_message":
             isChecked_shouldShow = win_alert_message_check_or_show(json_data);
-			isChecked_shouldShow = 1;//#0425
+			//isChecked_shouldShow = 1;//#0425
             break;
         case "bell_ring":
             isChecked_shouldShow = win_bell_ring_check_or_show(json_data);

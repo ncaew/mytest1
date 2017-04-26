@@ -456,12 +456,12 @@ class OicDeviceManager(object):
         return True
 
     ### todo add device exe funtion like :
-    def get_bell_binddevices_url(self,belluuid=""):
+    def set_camera_devices_media_start(self,camera_uuid=""):
         '''
         :param belluuid:
         :return url that played by web vlc controls:
         '''
-        logger.info("todo imp get_bell_binddevices_url belluuid:%s" % belluuid)
+        logger.info("todo imp set_camera_devices_media_start belluuid:%s" % camera_uuid)
         return "rtsp://admin:12345@192.168.1.188:554/Streaming/Channels/1?transportmode=unicast&profile=Profile_1"
         pass
 

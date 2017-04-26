@@ -321,7 +321,7 @@ class BellState(object):
         self.ts_vedio_url=""
 
     def trigger_bell_startstream(self):
-        self.ts_vedio_url= OicDeviceManager().get_bell_binddevices_url(self.ts_uuid )
+        self.ts_vedio_url= OicDeviceManager().set_camera_devices_media_start(self.ts_uuid )
         self.bell_startstream()
     
     def trigger_bell_close(self):
@@ -548,6 +548,11 @@ class StateControl(object):
         g =GuardState()
         a = AlarmState()
         logger.debug('%s %s', alertid, g.state)
+        try:
+            traceback.print_stack(limit=10)
+        except BaseException as e:
+            pass
+        
         if g.state == 'invaded_AL1':
             g.trigger_invade()
             #self.update_status('unlock_protect', 30)

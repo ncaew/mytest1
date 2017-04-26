@@ -532,6 +532,7 @@ function win_alert_message_check_or_show(data) {
     //win_alert_message_alertid ="343wsrwws"
     //win_alert_message_explain ="厨房检测到火警 "
     var first_found = 0;
+	console.log(data["devices_status"])
     $.each(data["devices_status"], function(index, val) {
         if ((val.status_code != '0') && (first_found == 0)) {
             //console.log ( "alert_message   draw", JSON.stringify(val))
@@ -546,19 +547,22 @@ function win_alert_message_check_or_show(data) {
         }
 
     });
-
+	$('#alert_message_btn-stopalert').off('click');
+	$('#alert_message_btn-stopalert').on('click', function() {
+		audio_system_play_click();
+		win_alert_message_submit(win_alert_message_alertid);
+	});
+	win_alert_message_init();
 
 	if (ui_state_current_shown == 'alert_message'){
-		win_alert_message_init();
 		return 0;
 	}
 
     $('#' + data.status).on('shown.bs.modal', function() {
-
 		$('#alert_message_btn-stopalert').on('click', function() {
 			audio_system_play_click();
-            win_alert_message_submit(win_alert_message_alertid);
-        });
+			win_alert_message_submit(win_alert_message_alertid);
+		});
 		audio_system_play_alerm();
         on_window_shown('alert_message');
     });
