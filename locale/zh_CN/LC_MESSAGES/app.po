@@ -23,83 +23,24 @@ msgstr "未触发"
 msgid "motion"
 msgstr "有活动"
 
-msgid "receive muticast post/delete to oic/rd"
-msgstr ""
+msgid "oic.d.doorbutton"
+msgstr "门铃"
 
-
-msgid "self.add_resource('oic/rd', BasicResource())"
-msgstr ""
-
-msgid "oic/"
-msgstr ""
-
-#: guard/coapserver.py:14
-msgid "oic/rd/"
-msgstr ""
-
-#: guard/coapserver.py:17
-msgid "oic/ resource not impl"
-msgstr ""
-
-#: guard/coapserver.py:18
-msgid "DirResource"
-msgstr ""
-
-#: guard/coapserver.py:38
-msgid "oic/rd resource "
-msgstr ""
-
-#: guard/coapserver.py:39
-msgid "RdResource"
-msgstr ""
-
-#: guard/coapserver.py:63 guard/oicmgr.py:237
-#: guard/static.bak/tornado_server.py:29 guard/state.py:288 guard/timer.py:56
-#: guard/tornado_server.py:254
-msgid "__main__"
-msgstr ""
-
-#: guard/coapserver.py:65
-msgid "224.0.1.187"
-msgstr ""
-
-#: guard/oicmgr.py:10
-msgid "Oic device info "
-msgstr ""
-
-#: guard/oicmgr.py:11
 msgid "oic.d.magnetismdetector"
 msgstr "门/窗磁"
 
-#: guard/oicmgr.py:12
 msgid "oic.d.irintrusiondetector"
 msgstr "人体感应"
 
-#: guard/oicmgr.py:13
 msgid "oic.d.flammablegasdetector"
 msgstr "可燃气感"
 
-#: guard/oicmgr.py:13
+
 msgid "oic.d.smokesensor"
 msgstr "烟感"
 
-#: guard/oicmgr.py:14
+
 msgid "oic.d.waterleakagedetector"
-msgstr "漏水感应"
-
-msgid "magnetismdetector"
-msgstr "门/窗磁"
-
-msgid "irintrusiondetector"
-msgstr "人体感应"
-
-msgid "flammablegasdetector"
-msgstr "可燃气感"
-
-msgid "smokesensor"
-msgstr "烟感"
-
-msgid "waterleakagedetector"
 msgstr "漏水感应"
 
 
