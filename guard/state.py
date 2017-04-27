@@ -436,7 +436,7 @@ class StateControl(object):
                 info['debug_status_%s' % client] = "protect_starting"
         elif g.state == 'invaded_P1':
                 info['status'] = "unlock_protect"
-        elif g.state == 'invaded_AL1':
+        elif g.state in ['invaded_AL1','invaded_AL2','invaded_AL3']:
                 info['status'] = "protect_invade"
             
         if b.state != 'noaction' and ((g.state == 'guarded' and  h.state == 'indoors') or g.state == 'unguarded' ) :
@@ -445,6 +445,10 @@ class StateControl(object):
             elif  b.state == "connected":
                 info['status'] = "bell_view"
                 
+        if a.state != "noalert": # alert_fatal is most high level
+            print "now fataldetector_event_queue : ", a.fataldetector_event_queue
+            info['status'] = "alert_fatal"
+            
         self.state = info['status']
         return info
     def get_remain_time(self):
