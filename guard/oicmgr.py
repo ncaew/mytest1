@@ -419,7 +419,7 @@ class OicDeviceManager(object):
             result = False
 
         # commit to DB , alway return true
-        db_proxy.set_dev_attr(devid, "action_in_outprotect", con)
+        db_proxy.set_dev_attr(devid, "action_in_outprotect", d.action_in_outprotect)
 
         return result
 
@@ -441,7 +441,7 @@ class OicDeviceManager(object):
             result = False
 
         # commit to DB , alway return true
-        db_proxy.set_dev_attr(devid, "action_in_doorprotect", con)
+        db_proxy.set_dev_attr(devid, "action_in_doorprotect", d.action_in_doorprotect)
 
         return result
 
