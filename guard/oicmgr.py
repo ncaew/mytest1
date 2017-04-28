@@ -370,7 +370,18 @@ class OicDeviceManager(object):
             l.append(a)
             logger.debug("device info:%s", a)
         return l
-
+    def lookup_order(self,dev):
+        stype = dev['type']
+        stype = stype.replace("irintrusiondetector","0")
+        stype = stype.replace("magnetismdetector", "1")
+        stype = stype.replace("doorbutton", "2")
+       # "smokesensor", "flammablegasdetector", "waterleakagedetector"
+        return  stype
+    def get_devices_sorted(self):
+        devs = self.get_devices()
+        #devs list[{},{},{} ...]
+        devs.sort(key=(lambda d:self.lookup_order(d)))
+        return  devs
     def update_device_alias(self, devid, alias):
         result = True
         if devid in self._devices:
