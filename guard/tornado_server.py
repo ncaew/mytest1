@@ -221,9 +221,20 @@ class SetDevAttrHandler(BaseHandler):
         logging.info("%s %s (aliasname:%s ,posname:%s, outdoor:%s,inhome:%s) %s %s"%("SetDevAttr",devid,aliasname,posname,outdoor,inhome," return:",json.dumps(info)))
 
 class GetDevicesListHandler(BaseHandler):
+    def lookup_order(self,dev):
+        stype = dev['type']
+        stype = stype.replace("irintrusiondetector","0")
+        stype = stype.replace("magnetismdetector", "1")
+        stype = stype.replace("doorbutton", "2")
+       # "smokesensor", "flammablegasdetector", "waterleakagedetector"
+        return  stype
     def get(self):
         from oicmgr import OicDeviceManager
-        info = {'devices_status': OicDeviceManager().get_devices()}
+        devs = OicDeviceManager().get_devices()
+        #devs list[{},{},{]...]
+
+        devs.sort(key=(lambda d:self.lookup_order(d)))
+        info = {'devices_status': devs}
         self.write(json.dumps(info))
 
 
