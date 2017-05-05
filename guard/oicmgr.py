@@ -19,6 +19,10 @@ class OicDevice(object):
     fatal_device_type = ['oic.d.flammablegasdetector', 'oic.d.smokesensor',
                          'oic.d.waterleakagedetector']
 
+    roboticarm_device_type = ['oic.d.roboticarm']
+    watervalve_device_type = ['oic.d.watervalve']
+    smartplug_device_type = ['oic.d.smartplug']
+
     alarm_device_type = ['oic.d.alarm']
     bell_device_type = ['oic.d.doorbutton']
 
@@ -167,8 +171,25 @@ class OicDevice(object):
     def get_detectorgroup_define(self):
         return self.detectorgroup;
 
+    def is_roboticarm(self):
+        b = self.type in OicDevice.roboticarm_device_type
+        logger.debug('is_roboticarm: %s', b)
+        return b
+
+    def is_watervalve(self):
+        b = self.type in OicDevice.watervalve_device_type
+        logger.debug('is_watervalve: %s', b)
+        return b
+
+    def is_smartplug(self):
+        b = self.type in OicDevice.smartplug_device_type
+        logger.debug('is_smartplug: %s', b)
+        return b
+
     def is_smart_elesocket(self):
-        b = self.type == 'oic.d.smart.elesocket'  # todo repell this type
+        #b = self.type == 'oic.d.smart.elesocket'  # todo repell this type
+        b = self.type in OicDevice.smartplug_device_type
+        logger.debug('is_smart_elesocket: %s', b)
         return b
 
     def observe_resources(self, oicinfo, cb):
@@ -319,8 +340,9 @@ class OicDeviceManager(object):
                 if d.type == 'oic.d.Bellbuttonswitch':
                     OnvifDiscover.add_bell(oicinfo)
 
-                if d.is_detector():
-                    d.observe_resources(oicinfo, self.observe_callback)
+                if d.is_detector() or d.is_roboticarm() or d.is_watervalve() or d.is_smartplug():
+                    if d.is_detector():
+                        d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
                     self._devices[devid] = d
                 if d.is_alarmer():
@@ -488,11 +510,91 @@ class OicDeviceManager(object):
         logger.info("todo imp set_door_locker_onoff  door-uuid:%s %s " % (uuid,mode))
         pass
     def set_robot_action_off(self,mode="off"):
-        logger.info("todo imp set_robot_action_off %s" % mode)
+        logger.info("set_robot_action_off %s" % mode)
+        if mode == "off":
+            self.set_roboticarm_action(0)
+        elif mode == "on":
+            self.set_roboticarm_action(100)
         pass
+
     def set_water_valve_off(self,mode="off"):
-        logger.info("todo imp set_water_valve_off %s" % mode)
+        logger.info("set_water_valve_off %s" % mode)
+        if mode == "off":
+            self.set_watervalve_action(0)
+        elif mode == "on":
+            self.set_watervalve_action(100)
         pass
+
+    #openlevel '100' means open, '0' means close, other values are invalid
+    def set_roboticarm_action(self, openlevel):
+        logger.info("set_roboticarm_action %d" % openlevel)
+        roboticarm_dev = {}
+        for dev in self.get_devices():
+            if dev['type_tr'] in OicDevice.roboticarm_device_type:
+                roboticarm_dev = dev
+                break
+
+        if roboticarm_dev:
+            roboticarm_uri = ''
+            dev_id = roboticarm_dev['uuid']
+            oic = self._oic_info[dev_id]
+            for link in oic['links']:
+                if link['href'].find('/OpenLevelResURI') > 0:
+                    roboticarm_uri = link['href']
+
+            if len(roboticarm_uri) > 0:
+                p = dict(id=dev_id, openlevel=openlevel)
+                host, port, uri = parse_uri(roboticarm_uri)
+                client = HelperClient(server=(host, port))
+                response = client.post(uri, json.dumps(p))
+                logger.info("=====roboticarm cmd get response=====%s====", response.pretty_print())
+                client.stop
+
+    #openlevel '100' means open, '0' means close, other values are invalid
+    def set_watervalve_action(self, openlevel):
+        logger.info("set_watervalve_action %d" % openlevel)
+        watervalve_dev = {}
+        for dev in self.get_devices():
+            if dev['type_tr'] in OicDevice.watervalve_device_type:
+                watervalve_dev = dev
+                break
+
+        if watervalve_dev:
+            watervalve_uri = ''
+            dev_id = watervalve_dev['uuid']
+            oic = self._oic_info[dev_id]
+            for link in oic['links']:
+                if link['href'].find('/OpenLevelResURI') > 0:
+                    roboticarm_uri = link['href']
+
+            if len(watervalve_uri) > 0:
+                p = dict(id=dev_id, openlevel=openlevel)
+                host, port, uri = parse_uri(watervalve_uri)
+                client = HelperClient(server=(host, port))
+                response = client.post(uri, json.dumps(p))
+                logger.info("=====watervalve cmd get response=====%s====", response.pretty_print())
+                client.stop
+
+    #turn all the smartplug on or off, smartplug_value requires value 'True' or 'False'
+    def set_smartplug_action(self, smartplug_value):
+        logger.info("set_smartplug_action %s" % smartplug_value)
+        smartplug_dev = {}
+        for dev in self.get_devices():
+            if dev['type_tr'] in OicDevice.smartplug_device_type:
+                smartplug_dev = dev
+                dev_id = smartplug_dev['uuid']
+                oic = self._oic_info[dev_id]
+                for link in oic['links']:
+                    smartplug_uri = ''
+                    if link['href'].find('/BinarySwitchResURI') > 0:
+                        smartplug_uri = link['href']
+                        if len(smartplug_uri) > 0:
+                            p = dict(id=dev_id, value=smartplug_value)
+                            host, port, uri = parse_uri(smartplug_uri)
+                            client = HelperClient(server=(host, port))
+                            response = client.post(uri, json.dumps(p))
+                            logger.info("=====smartplug cmd get response=====%s====", response.pretty_print())
+                            client.stop
     
     def set_turn_elesocket_onoff(self,uuid,mode):
         logger.info("todo imp set_turn_elesocket_onoff %s %s" % (uuid ,mode) )
@@ -504,6 +606,7 @@ class OicDeviceManager(object):
         '''
         logger.info("set_outgoing_powersave %s" % ( mode))
         if mode=="powersave-on" :
+            self.set_smartplug_action(False)
             for dev in self.get_devices() :# find all type is ele-socket
                 if dev['type'] == "oic.d.ele-socket" :
                     self.set_turn_elesocket_onoff(dev.uuid, "on" if dev.action_in_outprotect =="poweron" else "off") # "poweroff"
