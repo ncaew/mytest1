@@ -383,6 +383,16 @@ class OicDeviceManager(object):
                 rstate = d.res_state.values()[0]['value']
             else:
                 rstate = False
+           
+            if type(rstate) in [str,unicode] :
+                try:
+                    rstate = rstate.lower()
+                except Exception as e:
+                    pass
+                if rstate  == 'false' or rstate == u'false' :
+                    rstate = False
+                else:
+                    rstate = True
             a['status_code'] = 1 if rstate else 0
             a['status'] = _(d.get_status_str(rstate))
             vurl = d.get_stream_uri()
