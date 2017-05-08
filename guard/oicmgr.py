@@ -291,6 +291,7 @@ class OicDeviceManager(object):
                 old_state = False
 
             dev.res_state[rt] = info
+            logger.info('dev.res_state: %s' % dev.res_state.__str__())
 
             StateControl().new_event_from_oic(dev,info,old_state)
             # logger.debug('%s %s', old_state, state)
@@ -490,13 +491,13 @@ class OicDeviceManager(object):
 
     ### todo add device exe funtion like :
     def clear_detector_state(self,uuid):
-        found =0;
-        for dev in self.get_devices():
-            if dev['uuid'] == uuid and dev.type == 'oic.d.smokesensor':
-                found =1
-                break
-        if found == 1:
-            logger.info("todo imp set smokesensor  clear this alarm"  )
+        found = 0;
+        # for dev in self.get_devices():
+        #     if dev['uuid'] == uuid and dev['type'] == 'oic.d.smokesensor':
+        #         found =1
+        #         break
+        #if found == 1:
+        logger.info("todo imp set smokesensor  clear this alarm"  )
         pass
     def set_camera_devices_media_start(self,camera_uuid=""):
         '''
