@@ -43,6 +43,16 @@ msgstr "烟感"
 msgid "oic.d.waterleakagedetector"
 msgstr "漏水感应"
 
+msgid "oic.d.roboticarm"
+msgstr "机械臂"
+
+msgid "oic.d.watervalve"
+msgstr "水阀开关"
+
+msgid "oic.d.smartplug"
+msgstr "智能插座"
+
+
 
 #: guard/oicmgr.py:15
 msgid "oic.d.alarm"

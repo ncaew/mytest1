@@ -720,6 +720,8 @@ class StateControl(object):
                         x = a.fataldetector_event_queue.popleft()
                         if x['devid'] != event.event_para["alertid"]:
                             a.fataldetector_event_queue.append(x)
+                        else:
+                            OicDeviceManager().clear_detector_state(event.event_para["alertid"])
                     print "after stop_alert", a.fataldetector_event_queue
     
         
