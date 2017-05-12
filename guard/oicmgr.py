@@ -22,6 +22,7 @@ class OicDevice(object):
     roboticarm_device_type = ['oic.d.roboticarm']
     watervalve_device_type = ['oic.d.watervalve']
     smartplug_device_type = ['oic.d.smartplug']
+    smartlock_device_type = ['oic.d.smartlock']
 
     alarm_device_type = ['oic.d.alarm']
     bell_device_type = ['oic.d.doorbutton']
@@ -170,6 +171,11 @@ class OicDevice(object):
 
     def get_detectorgroup_define(self):
         return self.detectorgroup;
+
+    def is_smartlock(self):
+        b = self.type in OicDevice.smartlock_device_type
+        logger.debug('is_smartlock: %s', b)
+        return b
 
     def is_roboticarm(self):
         b = self.type in OicDevice.roboticarm_device_type
@@ -341,7 +347,7 @@ class OicDeviceManager(object):
                 if d.type == 'oic.d.Bellbuttonswitch':
                     OnvifDiscover.add_bell(oicinfo)
 
-                if d.is_detector() or d.is_roboticarm() or d.is_watervalve() or d.is_smartplug():
+                if d.is_detector() or d.is_roboticarm() or d.is_watervalve() or d.is_smartplug() or d.is_smartlock():
                     if d.is_detector():
                         d.observe_resources(oicinfo, self.observe_callback)
                     self._oic_info[devid] = oicinfo
@@ -524,10 +530,53 @@ class OicDeviceManager(object):
         :return the uuid of oic.d.doorlocker that bind with this bell:
         '''
         logger.info("todo imp get_bell_binddevices_locker belluuid:%s" % belluuid)
-        return "11111111-1111-1111-1111-111111111111"
+        doorbutton_dev = {}
+        for dev in self.get_devices():
+            logger.info("kelvin log: dev_type: %s" % dev['type'])
+            if dev['type'] == OicDevice.bell_device_type[0][6:]:
+                doorbutton_dev = dev
+                break
+        logger.info("get_doorbutton_action %s" % doorbutton_dev)
+        for dev in self.get_devices():
+            if dev['type'] == 'Bellbuttonswitch':
+                doorbutton_dev = dev
+                break
+        logger.info("get_Bellbuttonswitch_action %s" % doorbutton_dev['uuid'])
+        dev_id = doorbutton_dev['uuid'];
+        return dev_id
         pass
     def set_door_locker_onoff(self,uuid,mode="on"):
         logger.info("todo imp set_door_locker_onoff  door-uuid:%s %s " % (uuid,mode))
+	if mode == "on":
+		smart_lock_state="Unlocked"
+	elif mode == "off":
+		smart_lock_state="Locked"
+	smartlock_dev = {}
+        for dev in self.get_devices():
+            if dev['type'] in OicDevice.smartlock_device_type[0][6:]:
+                smartlock_dev = dev
+                logger.info("get_smartlock_action %s" % smartlock_dev)
+                break
+
+        if smartlock_dev:
+            smartlock_uri = ''
+            dev_id = smartlock_dev['uuid']
+            oic = self._oic_info[dev_id]
+            for link in oic['links']:
+                #logger.info("get_smartlock_link %s" % link)
+                if link['href'].find('/LockStatusResURI') > 0:
+                    smartlock_uri = link['href']
+            #logger.info("get_smartlock_uri %s" % smartlock_uri)
+
+            if len(smartlock_uri) > 0:
+                p = dict(id=dev_id, lockState=smart_lock_state)
+                host, port, uri = parse_uri(smartlock_uri)
+                logger.info("smartlock_action host port uri P %s %s %s %s " % (host, port, uri,p))
+                client = HelperClient(server=(host, port))
+                response = client.post(uri, json.dumps(p))
+                logger.info("=====smartlock cmd get response=====%s====", response.pretty_print())
+                client.stop
+
         pass
     def set_robot_action_off(self,mode="off"):
         logger.info("set_robot_action_off %s" % mode)
